@@ -5,6 +5,8 @@ import { useAuthStore } from './auth'
 
 const HISTORY_MAX_LENGTH = 5
 
+const locales = import.meta.glob('../../public/i18n/*.json')
+
 export const useMainStore = defineStore('main', {
   state: () => ({
     config: storage.get('config', {}),
@@ -24,12 +26,16 @@ export const useMainStore = defineStore('main', {
       this.config = { ...config }
       storage.set('config', this.config)
 
-      // Carregar tradução dinamicamente
       const locale = config.locale || 'pt_BR'
-      try {
-        const dictionary = await import(`../../static/i18n/${locale}.json`)
-        this.dict = dictionary.default
-      } catch (e) { console.error('Erro i18n', e) }
+      // O caminho deve bater exatamente com a estrutura de pastas
+      const path = `../../public/i18n/${locale}.json`
+
+      if (locales[path]) {
+        const mod = await locales[path]()
+        this.dict = mod.default
+      } else {
+        console.warn(`Arquivo de tradução não encontrado: ${path}`)
+      }
     },
 
     async fetchApiInfo() {
