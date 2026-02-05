@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { ref, shallowRef, computed, onBeforeMount, onBeforeUnmount, watch } from 'vue'
+import { shallowRef, computed, onBeforeMount, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMainStore } from '@/stores/main'
 import { useAuthStore } from '@/stores/auth'
@@ -27,15 +27,21 @@ let isRunning = false
 const themeName = computed(() => mainStore.theme || 'Default')
 
 // Watcher para trocar o layout se o tema mudar nas configurações
-watch(themeName, (newTheme) => {
-  try {
-    // Se você tiver múltiplos temas, pode mapeá-los aqui
-    // Ex: if (newTheme === 'Dark') currentThemeComponent.value = DarkLayout
-    currentThemeComponent.value = DefaultLayout
-  } catch (e) {
-    currentThemeComponent.value = DefaultLayout
-  }
-}, { immediate: true })
+watch(
+  themeName,
+  (newTheme) => {
+    try {
+      // Se você tiver múltiplos temas, pode mapeá-los aqui
+      // Ex: if (newTheme === 'Dark') currentThemeComponent.value = DarkLayout
+      console.log('Trocando tema para:', newTheme)
+      currentThemeComponent.value = DefaultLayout
+    } catch (e) {
+      log('Erro ao carregar tema: ' + e)
+      currentThemeComponent.value = DefaultLayout
+    }
+  },
+  { immediate: true },
+)
 
 /**
  * Gerenciamento de Token (Verifica se precisa renovar ou gerar novo)
@@ -83,7 +89,7 @@ const startTokenMonitor = () => {
   timeoutId = setTimeout(async () => {
     if (!isRunning) return
     log('Monitor: Verificando validade do token...')
-    await checkAndRefreshToken().catch(() => { })
+    await checkAndRefreshToken().catch(() => {})
     startTokenMonitor()
   }, 60 * 1000)
 }
@@ -123,6 +129,7 @@ const connect = async (attempts = 3) => {
 
     log('Conectado ao Mercure com sucesso.')
   } catch (e) {
+    log('Erro ao conectar ao Mercure: ' + e)
     if (attempts > 0) {
       log(`Falha na conexão. Tentando novamente... (${attempts})`)
       setTimeout(() => connect(attempts - 1), 2000)

@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-
+import Queue from 'promise-queue'
 
 // Props (Substitui o export default props)
 const props = defineProps({
@@ -64,9 +64,13 @@ const blink = () => {
 }
 
 // Watcher para disparar a animação quando a mensagem mudar
-watch(() => props.message, () => {
-  queue.add(blink)
-}, { deep: true }) // deep: true caso apenas propriedades internas da mensagem mudem
+watch(
+  () => props.message,
+  () => {
+    queue.add(blink)
+  },
+  { deep: true },
+) // deep: true caso apenas propriedades internas da mensagem mudem
 </script>
 
 <style scoped>
