@@ -1,8 +1,29 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
+
+// Definimos as rotas
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    // Lazy loading: carrega a página apenas quando acessada
+    component: () => import('@/pages/Home.vue')
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: () => import('@/pages/Settings.vue')
+  },
+  {
+    // No Vue Router 4, o seletor '*' mudou para uma regex específica
+    path: '/:pathMatch(.*)*',
+    redirect: '/'
+  }
+]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [],
+  // Para aplicações Electron, o Hash History é o mais seguro
+  history: createWebHashHistory(),
+  routes
 })
 
 export default router
