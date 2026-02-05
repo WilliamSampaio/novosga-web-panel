@@ -6,7 +6,7 @@
           <img src="/images/logo.png" alt="Novo SGA">
           <hr>
           <router-link to="/" class="button is-light is-fullwidth mb-4">
-            <span class="icon"><i class="fa fa-chevron-left"></i></span>
+            <span class="icon mdi mdi-chevron-left"></span>
             <span>{{ $t ? $t('menu.go_back') : 'Voltar' }}</span>
           </router-link>
 
@@ -56,7 +56,7 @@
                       <option value="pt_BR">Português (Brasil)</option>
                     </select>
                   </span>
-                  <span class="icon is-left"><i class="fa fa-globe"></i></span>
+                  <span class="icon mdi mdi-translate"></span>
                 </div>
               </div>
             </div>
@@ -71,7 +71,7 @@
                       </option>
                     </select>
                   </span>
-                  <span class="icon is-left"><i class="fa fa-paint-brush"></i></span>
+                  <span class="icon mdi mdi-brush-variant"></span>
                 </div>
               </div>
             </div>
@@ -162,7 +162,9 @@
                 </div>
               </div>
               <div class="control">
-                <button type="button" class="button" @click="testAlert"><i class="fa fa-play"></i></button>
+                <button type="button" class="button" @click="testAlert">
+                  <span class="mdi mdi-play"></span>
+                </button>
               </div>
             </div>
           </div>
@@ -186,17 +188,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useSettingsStore } from '@/stores/settings'
 import { useAlert } from '@/composables/audio'
 import { useSpeech } from '@/composables/speech'
-
-// Componente interno para o botão de salvar (DRY)
-const SaveButton = {
-  template: `
-    <div class="field is-grouped is-grouped-right mt-5">
-      <button type="submit" class="button is-primary is-large">
-        Salvar Configurações &nbsp; <i class="fa fa-save"></i>
-      </button>
-    </div>
-  `
-}
+import SaveButton from '@/components/SaveButton.vue'
 
 const mainStore = useMainStore()
 const authStore = useAuthStore()

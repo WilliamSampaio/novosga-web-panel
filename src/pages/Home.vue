@@ -3,7 +3,7 @@
     <div class="menu">
       <router-link to="/settings">
         <span class="icon">
-          <i class="fa fa-cog"></i>
+          <span class="mdi mdi-cog"></span>
         </span>
         {{ $t ? $t('menu.settings') : 'Configurações' }}
       </router-link>
