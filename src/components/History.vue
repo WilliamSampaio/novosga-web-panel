@@ -2,7 +2,7 @@
   <div class="history">
     <div v-if="messages.length === 0" class="empty">
       <p :style="{ color: fontColorNormal }">
-        {{ $t ? $t('history.empty') : 'Histórico vazio' }}
+        {{ $t('history.empty') }}
       </p>
     </div>
 
@@ -15,7 +15,11 @@
         {{ message.subtitle }}
       </span>
 
-      <span v-if="showMessageDescription" class="description" :style="{ color: getFontColor(message) }">
+      <span
+        v-if="showMessageDescription"
+        class="description"
+        :style="{ color: getFontColor(message) }"
+      >
         {{ message.description }}
       </span>
     </div>
@@ -23,7 +27,6 @@
 </template>
 
 <script setup>
-// Props definidas com a nova macro defineProps
 const props = defineProps({
   messages: {
     required: true,
@@ -48,20 +51,18 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
-// Método convertido em função simples
 const getFontColor = (message) => {
-  // Mantendo a lógica de verificação de peso para prioridade
-  const peso = message.$data ? message.$data.peso : 0;
-  return peso > 0 ? props.fontColorPriority : props.fontColorNormal;
-};
+  const peso = message.$data ? message.$data.peso : 0
+  return peso > 0 ? props.fontColorPriority : props.fontColorNormal
+}
 </script>
 
 <style scoped>
-.history {
-  /* Estilos específicos do histórico */
-}
+/* Estilos específicos do histórico */
+/* .history {
+} */
 
 .message {
   margin-bottom: 0.5rem;

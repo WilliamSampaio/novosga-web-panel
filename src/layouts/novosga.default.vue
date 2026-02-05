@@ -1,35 +1,65 @@
 <template>
-  <div class="novosga-default layout-content"
-    :style="{ backgroundColor: getColor('pageBgColor'), color: getColor('pageFontColor') }">
+  <div
+    class="novosga-default layout-content"
+    :style="{ backgroundColor: getColor('pageBgColor'), color: getColor('pageFontColor') }"
+  >
     <div class="columns is-gapless">
       <div class="column is-multiline featured-column">
         <header class="column">
-          <Featured v-if="lastMessage?.id" :message="lastMessage"
-            :fontColor="getColor('featuredFontColor', 'pageFontColor')" />
+          <Featured
+            v-if="lastMessage?.id"
+            :message="lastMessage"
+            :fontColor="getColor('featuredFontColor', 'pageFontColor')"
+          />
         </header>
-        <footer class="column"
-          :style="{ backgroundColor: getColor('footerBgColor'), color: getColor('footerFontColor') }">
-          <img :src="logoUrl" class="is-pulled-left">
-          <h1 v-if="mainStore.config.themeOptions?.footerText" class="is-pulled-left"
-            :style="{ color: getColor('footerFontColor') }">
+        <footer
+          class="column"
+          :style="{
+            backgroundColor: getColor('footerBgColor'),
+            color: getColor('footerFontColor'),
+          }"
+        >
+          <img :src="logoUrl" class="is-pulled-left" />
+          <h1
+            v-if="mainStore.config.themeOptions?.footerText"
+            class="is-pulled-left"
+            :style="{ color: getColor('footerFontColor') }"
+          >
             {{ mainStore.config.themeOptions.footerText }}
           </h1>
         </footer>
       </div>
 
-      <div class="column is-one-quarter history-column"
-        :style="{ backgroundColor: getColor('sidebarBgColor'), color: getColor('sidebarFontColor') }">
+      <div
+        class="column is-one-quarter history-column"
+        :style="{
+          backgroundColor: getColor('sidebarBgColor'),
+          color: getColor('sidebarFontColor'),
+        }"
+      >
         <header>
           <h2 class="title" :style="{ color: getColor('sidebarFontColor') }">
-            {{ $t ? $t('history.title') : 'Histórico' }}
+            {{ $t('history.title') }}
           </h2>
-          <History v-if="lastMessage?.id" :messages="mainStore.history"
-            :fontColorNormal="mainStore.config.historyFontColorNormal || mainStore.config.sidebarFontColorNormal"
-            :fontColorPriority="mainStore.config.historyFontColorPriority || mainStore.config.sidebarFontColorPriority" />
+          <History
+            v-if="lastMessage?.id"
+            :messages="mainStore.history"
+            :fontColorNormal="
+              mainStore.config.historyFontColorNormal || mainStore.config.sidebarFontColorNormal
+            "
+            :fontColorPriority="
+              mainStore.config.historyFontColorPriority || mainStore.config.sidebarFontColorPriority
+            "
+          />
         </header>
-        <footer :style="{ backgroundColor: getColor('clockBgColor'), color: getColor('clockFontColor') }">
-          <Clock :locale="mainStore.config.locale" :dateFormat="$t ? $t('date_format') : 'DD/MM/YYYY'"
-            :fontColor="getColor('clockFontColor')" />
+        <footer
+          :style="{ backgroundColor: getColor('clockBgColor'), color: getColor('clockFontColor') }"
+        >
+          <Clock
+            :locale="mainStore.config.locale"
+            :dateFormat="$t('date_format')"
+            :fontColor="getColor('clockFontColor')"
+          />
         </footer>
       </div>
     </div>
@@ -76,7 +106,7 @@ const playAudio = async () => {
       const texts = ['Senha']
 
       // Soletra a sigla (ex: A, B, C)
-      msg.siglaSenha.split('').forEach(char => texts.push(char))
+      msg.siglaSenha.split('').forEach((char) => texts.push(char))
       texts.push(msg.numeroSenha)
       texts.push(msg.local)
       texts.push(msg.numeroLocal)
@@ -107,16 +137,17 @@ const getColor = (prefix, fallback) => {
 }
 
 // Watcher para novas mensagens vindas da Store
-watch(() => mainStore.message, (newVal) => {
-  if (newVal && newVal.id !== lastMessage.value?.id) {
-    call()
-  }
-})
+watch(
+  () => mainStore.message,
+  (newVal) => {
+    if (newVal && newVal.id !== lastMessage.value?.id) {
+      call()
+    }
+  },
+)
 </script>
 
 <style scoped lang="scss">
-/* O seu CSS original foi mantido, apenas trocado para 'scoped' e 'scss'
-   para garantir que não vaze para outros temas. */
 .novosga-default {
   position: fixed;
   width: 100%;
@@ -128,11 +159,11 @@ watch(() => mainStore.message, (newVal) => {
   }
 
   .featured-column {
-    >header {
+    > header {
       height: 80vh;
     }
 
-    >footer {
+    > footer {
       height: 20vh;
       padding: 5vh;
       display: flex;
@@ -154,13 +185,13 @@ watch(() => mainStore.message, (newVal) => {
     display: flex;
     flex-direction: column;
 
-    >header {
+    > header {
       flex: 1;
       padding: 1rem;
       overflow: hidden;
     }
 
-    >footer {
+    > footer {
       height: 20vh;
       display: flex;
       align-items: center;

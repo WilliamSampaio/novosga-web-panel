@@ -3,9 +3,9 @@
     <div class="menu">
       <router-link to="/settings">
         <span class="icon">
-          <span class="mdi mdi-cog"></span>
+          <i class="fa fa-cog"></i>
         </span>
-        {{ $t ? $t('menu.settings') : 'Configurações' }}
+        {{ $t('menu.settings') }}
       </router-link>
     </div>
 
@@ -18,7 +18,7 @@
  * No Vue 3 com <script setup>, basta importar o componente
  * para que ele fique disponível no template.
  */
-import LayoutLoader from '@/components/LayoutLoader.vue';
+import LayoutLoader from '@/components/LayoutLoader.vue'
 </script>
 
 <style scoped lang="scss">

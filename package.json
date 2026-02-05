@@ -14,10 +14,10 @@
     "format": "prettier --write --experimental-cli src/"
   },
   "dependencies": {
-    "@mdi/font": "^7.4.47",
     "axios": "^1.13.4",
     "axios-retry": "^4.5.0",
     "bulma": "^1.0.4",
+    "font-awesome": "^4.7.0",
     "moment": "^2.30.1",
     "pinia": "^3.0.4",
     "promise-queue": "^2.2.5",

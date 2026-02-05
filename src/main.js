@@ -6,7 +6,7 @@ import i18n from './plugins/i18n'
 import pinia from './plugins/pinia'
 
 import 'bulma/css/bulma.min.css'
-import '@mdi/font/css/materialdesignicons.css'
+import 'font-awesome/css/font-awesome.min.css'
 
 const app = createApp(App)
 

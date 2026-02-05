@@ -10,13 +10,13 @@ export const useSettingsStore = defineStore('settings', {
     availableThemes: [
       {
         id: 'novosga.default',
-        name: 'Default',
+        name: 'Padrão',
         options: [
-          { name: 'logo', label: 'Logo', type: 'url' },
-          { name: 'footerText', label: 'Texto Rodapé', type: 'text' }
-        ]
-      }
-    ]
+          { name: 'logo', i18n: 'settings.label.logo', type: 'url' },
+          { name: 'footerText', i18n: 'settings.label.footer_text', type: 'text' },
+        ],
+      },
+    ],
   }),
 
   actions: {
@@ -38,6 +38,6 @@ export const useSettingsStore = defineStore('settings', {
       const api = new Client(main.config.server)
       const data = await api.services(auth.accessToken, unityId)
       this.services = data
-    }
-  }
+    },
+  },
 })
