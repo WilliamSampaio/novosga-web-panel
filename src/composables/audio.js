@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 
-const ALERT_PATH = 'static/sound/alert'
+const ALERT_PATH = 'sound'
 
 export const alertsAvailable = {
   'Default': 'ekiga-vm.wav',

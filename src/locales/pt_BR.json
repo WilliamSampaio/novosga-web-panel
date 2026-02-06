@@ -57,6 +57,7 @@
   "settings.label.enable_speech": "Ativar Vocalização (Voz)",
   "settings.btn.test_speech": "Testar Voz",
   "settings.btn.save": "Salvar",
+  "settings.btn.test_alert": "Testar Alerta",
   "settings.services.empty": "Nenhum serviço",
   "date_format": "DD [de] MMMM [de] YYYY"
 }

@@ -86,12 +86,8 @@
             <div class="field" v-for="opt in selectedTheme.options" :key="opt.name">
               <label class="label">{{ $t ? $t(opt.i18n) : 'Opções do Tema' }}</label>
               <div class="control">
-                <input
-                  :type="opt.type"
-                  :placeholder="opt.placeholder"
-                  v-model="form.themeOptions[opt.name]"
-                  class="input"
-                />
+                <input :type="opt.type" :placeholder="opt.placeholder" v-model="form.themeOptions[opt.name]"
+                  class="input" />
               </div>
             </div>
           </div>
@@ -163,23 +159,20 @@
         </form>
 
         <form @submit.prevent="save" v-if="tab === 'sound'">
-          <div class="field">
-            <label class="label">{{ $t('settings.label.alert_sound') }}</label>
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <div class="select is-fullwidth">
-                  <select v-model="form.alert">
-                    <option v-for="(file, name) in alertsAvailable" :key="file" :value="file">
-                      {{ name }}
-                    </option>
-                  </select>
-                </div>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select v-model="form.alert">
+                  <option v-for="(file, name) in alertsAvailable" :key="file" :value="file">
+                    {{ name }}
+                  </option>
+                </select>
               </div>
-              <div class="control">
-                <button type="button" class="button" @click="testAlert">
-                  <i class="fa fa-play"></i>
-                </button>
-              </div>
+            </div>
+            <div class="control">
+              <button type="button" class="button is-primary" @click="testAlert">
+                {{ $t('settings.btn.test_alert') }} &nbsp; <i class="fa fa-play"></i>
+              </button>
             </div>
           </div>
           <div class="field">
@@ -339,7 +332,9 @@ onBeforeMount(async () => {
   loadDataFromStore()
 
   if (authStore.isAuthenticated) {
-    if (authStore.isExpired) await authStore.refresh().catch(() => {})
+    if (authStore.isExpired) await authStore.refresh().catch(() => {
+      //
+    })
     if (form.server) {
       settingsStore.fetchUnities()
       if (form.unity) settingsStore.fetchServices(form.unity)
