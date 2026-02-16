@@ -3,7 +3,7 @@ import { Client } from '@/composables/api'
 import storage from '@/composables/storage'
 import { useAuthStore } from './auth'
 
-const HISTORY_MAX_LENGTH = 5
+const HISTORY_MAX_LENGTH = 3
 
 const locales = import.meta.glob('../../public/i18n/*.json')
 
@@ -12,13 +12,13 @@ export const useMainStore = defineStore('main', {
     config: storage.get('config', {}),
     apiInfo: {},
     messages: [], // A primeira mensagem [0] é a atual, o resto é histórico
-    dict: {}
+    dict: {},
   }),
 
   getters: {
     message: (state) => state.messages[0] || { id: 0, title: '', subtitle: '', description: '' },
     history: (state) => state.messages.slice(1),
-    theme: (state) => state.config.theme || 'novosga.default'
+    theme: (state) => state.config.theme || 'novosga.default',
   },
 
   actions: {
@@ -59,7 +59,9 @@ export const useMainStore = defineStore('main', {
       if (this.messages.length > 0 && this.messages[0].id === message.id) return
 
       // Remove se a mesma senha já existe no histórico para não repetir na lateral
-      const idx = this.messages.findIndex(m => m.title === message.title && m.type === message.type)
+      const idx = this.messages.findIndex(
+        (m) => m.senha === message.senha && m.type === message.type,
+      )
       if (idx !== -1) this.messages.splice(idx, 1)
 
       this.messages.unshift(message)
@@ -70,11 +72,11 @@ export const useMainStore = defineStore('main', {
       return {
         id: data.id,
         type: 'ticket',
-        title: data.siglaSenha + ('000' + data.numeroSenha).slice(-3),
-        subtitle: `${data.local} ${('00' + data.numeroLocal).slice(-2)}`,
-        description: data.prioridade,
-        $data: data
+        senha: data.siglaSenha + ('000' + data.numeroSenha).slice(-3),
+        local: `${data.local} ${('00' + data.numeroLocal).slice(-2)}`,
+        prioridade: data.prioridade === 'Prioridade' ? true : false,
+        $data: data,
       }
-    }
-  }
+    },
+  },
 })

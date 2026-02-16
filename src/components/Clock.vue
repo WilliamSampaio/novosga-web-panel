@@ -1,21 +1,21 @@
 <template>
-  <div class="clock">
-    <div class="date" v-if="showDate">
-      <span :style="{ color: fontColor }">{{ formattedDate }}</span>
+  <div class="text-2xl text-white text-center">
+    <div v-if="showDate">
+      <span>{{ formattedDate }}</span>
     </div>
 
-    <div class="time">
-      <span v-if="showHours" class="hours" :style="{ color: fontColor }">
+    <div>
+      <span v-if="showHours">
         {{ hours }}
       </span>
 
-      <span v-if="showMinutes" class="separator" :style="{ color: fontColor }">:</span>
-      <span v-if="showMinutes" class="minutes" :style="{ color: fontColor }">
+      <span v-if="showMinutes">:</span>
+      <span v-if="showMinutes">
         {{ minutes }}
       </span>
 
-      <span v-if="showSeconds" class="separator" :style="{ color: fontColor }">:</span>
-      <span v-if="showSeconds" class="seconds" :style="{ color: fontColor }">
+      <span v-if="showSeconds">:</span>
+      <span v-if="showSeconds">
         {{ seconds }}
       </span>
     </div>
@@ -63,9 +63,4 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
-/* Adicione seu CSS aqui se necessário */
-.separator {
-  padding: 0 2px;
-}
-</style>
+<style scoped></style>

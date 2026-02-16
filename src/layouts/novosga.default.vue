@@ -1,67 +1,27 @@
 <template>
-  <div
-    class="novosga-default layout-content"
-    :style="{ backgroundColor: getColor('pageBgColor'), color: getColor('pageFontColor') }"
-  >
-    <div class="columns is-gapless">
-      <div class="column is-multiline featured-column">
-        <header class="column">
-          <Featured
-            v-if="lastMessage?.id"
-            :message="lastMessage"
-            :fontColor="getColor('featuredFontColor', 'pageFontColor')"
-          />
-        </header>
-        <footer
-          class="column"
-          :style="{
-            backgroundColor: getColor('footerBgColor'),
-            color: getColor('footerFontColor'),
-          }"
-        >
-          <img :src="logoUrl" class="is-pulled-left" />
-          <h1
-            v-if="mainStore.config.themeOptions?.footerText"
-            class="is-pulled-left"
-            :style="{ color: getColor('footerFontColor') }"
-          >
-            {{ mainStore.config.themeOptions.footerText }}
-          </h1>
-        </footer>
-      </div>
+  <div>
+    <div class="flex h-25 items-center justify-between bg-[#00519e] px-5">
+      <img class="h-21 py-5 w-40" :src="logoHeaderUrl" />
+      <span class="text-4xl font-bold text-white uppercase">{{ unidadeDescricao }}</span>
+    </div>
 
-      <div
-        class="column is-one-quarter history-column"
-        :style="{
-          backgroundColor: getColor('sidebarBgColor'),
-          color: getColor('sidebarFontColor'),
-        }"
-      >
-        <header>
-          <h2 class="title" :style="{ color: getColor('sidebarFontColor') }">
-            {{ $t('history.title') }}
-          </h2>
-          <History
-            v-if="lastMessage?.id"
-            :messages="mainStore.history"
-            :fontColorNormal="
-              mainStore.config.historyFontColorNormal || mainStore.config.sidebarFontColorNormal
-            "
-            :fontColorPriority="
-              mainStore.config.historyFontColorPriority || mainStore.config.sidebarFontColorPriority
-            "
-          />
-        </header>
-        <footer
-          :style="{ backgroundColor: getColor('clockBgColor'), color: getColor('clockFontColor') }"
-        >
-          <Clock
-            :locale="mainStore.config.locale"
-            :dateFormat="$t('date_format')"
-            :fontColor="getColor('clockFontColor')"
-          />
-        </footer>
+    <div class="flex h-50 items-center justify-between bg-[#ffffff]">
+      <div class="ml-5 flex h-40 w-150 flex-col">
+        <span class="text-2xl font-bold text-black uppercase">senha{{ mainStore.message.prioridade ? ' (Prioridade)' :
+          ''
+          }}</span>
+        <span :class="`text-5xl font-bold ${colorSenha} uppercase`">{{ mainStore.message.senha ?? '---' }}</span>
+        <span class="text-2xl font-bold text-black uppercase">{{ mainStore.message.$data?.servico.descricao ?? '---'
+          }}</span>
+        <span class="text-5xl font-bold text-[#2f5ea9] uppercase">{{ mainStore.message.local ?? '---' }}</span>
       </div>
+      <History v-if="lastMessage?.id" :messages="mainStore.history" />
+    </div>
+
+    <div class="flex h-25 items-center justify-between bg-[#00519e] px-5">
+      <img class="h-21 py-5 w-40" :src="logoFooterLeftUrl" />
+      <Clock :locale="mainStore.config.locale" :dateFormat="$t('date_format')" />
+      <img class="h-21 py-5 w-40" :src="logoFooterRightUrl" />
     </div>
   </div>
 </template>
@@ -69,15 +29,17 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useMainStore } from '@/stores/main'
+import { useSettingsStore } from '@/stores/settings'
 import { useAlert } from '@/composables/audio'
 import { useSpeech } from '@/composables/speech'
 
 // Componentes (No Vue 3 com script setup, basta importar para usar)
 import Clock from '@/components/Clock.vue'
-import Featured from '@/components/Featured.vue'
 import History from '@/components/History.vue'
 
 const mainStore = useMainStore()
+const settingsStore = useSettingsStore()
+
 const { playAlert } = useAlert()
 const { speakAll } = useSpeech()
 
@@ -85,7 +47,17 @@ const isCalling = ref(false)
 const lastMessage = ref({})
 const messageQueue = []
 
-const logoUrl = computed(() => mainStore.config.themeOptions?.logo || '/images/logo.png')
+const logoHeaderUrl = computed(() => mainStore.config.themeOptions?.logo || '/images/logo_hemoam.svg')
+const logoFooterLeftUrl = computed(() => mainStore.config.themeOptions?.logo || '/images/logo_hemoam.svg')
+const logoFooterRightUrl = computed(() => mainStore.config.themeOptions?.logoFooterRight || '/images/logo-gov-horizontal-contraste.svg')
+
+const unidadeDescricao = computed(() => {
+  return settingsStore.unities.filter((u) => u.id === mainStore.config.unity)[0]?.nome || '---'
+})
+
+const colorSenha = computed(() => {
+  return mainStore.message.prioridade ? 'text-red-700' : 'text-[#2f5ea9]'
+})
 
 /**
  * Lógica de Chamada (Áudio + Voz)
@@ -127,15 +99,6 @@ const call = () => {
   playAudio()
 }
 
-/**
- * Gerenciador de Cores Dinâmicas (Normal vs Prioridade)
- */
-const getColor = (prefix, fallback) => {
-  const peso = lastMessage.value?.$data ? lastMessage.value.$data.peso : 0
-  const suffix = peso > 0 ? 'Priority' : 'Normal'
-  return mainStore.config[prefix + suffix] || mainStore.config[(fallback || prefix) + suffix]
-}
-
 // Watcher para novas mensagens vindas da Store
 watch(
   () => mainStore.message,
@@ -147,56 +110,4 @@ watch(
 )
 </script>
 
-<style scoped lang="scss">
-.novosga-default {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-
-  .columns {
-    height: 100%;
-  }
-
-  .featured-column {
-    > header {
-      height: 80vh;
-    }
-
-    > footer {
-      height: 20vh;
-      padding: 5vh;
-      display: flex;
-      align-items: center;
-
-      img {
-        height: 10vh;
-      }
-
-      h1 {
-        font-size: 5vh;
-        margin-left: 2rem;
-      }
-    }
-  }
-
-  .history-column {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-
-    > header {
-      flex: 1;
-      padding: 1rem;
-      overflow: hidden;
-    }
-
-    > footer {
-      height: 20vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-}
-</style>
+<style scoped></style>

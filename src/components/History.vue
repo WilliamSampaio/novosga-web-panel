@@ -1,28 +1,21 @@
 <template>
-  <div class="history">
-    <div v-if="messages.length === 0" class="empty">
-      <p :style="{ color: fontColorNormal }">
-        {{ $t('history.empty') }}
-      </p>
-    </div>
+  <div class="flex h-40 w-50 flex-col items-center rounded-l-3xl bg-[#d2e8fc]">
+    <span class="font-medium">{{ $t('history.title') }}</span>
 
-    <div v-for="message in messages" class="message" :key="message.id">
-      <span v-if="showMessageTitle" class="title" :style="{ color: getFontColor(message) }">
-        {{ message.title }}
-      </span>
+    <span v-if="props.messages.length === 0" class="text-2xl font-bold text-gray-600">{{ $t('history.empty') }}</span>
 
-      <span v-if="showMessageSubtitle" class="subtitle" :style="{ color: getFontColor(message) }">
-        {{ message.subtitle }}
-      </span>
-
-      <span
-        v-if="showMessageDescription"
-        class="description"
-        :style="{ color: getFontColor(message) }"
-      >
-        {{ message.description }}
-      </span>
-    </div>
+    <ul v-else>
+      <li v-for="message in props.messages" :key="message.id">
+        <div :class="`flex flex-col text-center ${message.prioridade ? 'text-red-700' : 'text-[#2f5ea9]'} `">
+          <span class="text-3xl font-bold">
+            {{ message.senha }}
+          </span>
+          <span class="text-2">
+            {{ message.local }}
+          </span>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -30,14 +23,6 @@
 const props = defineProps({
   messages: {
     required: true,
-  },
-  fontColorNormal: {
-    type: String,
-    default: '#000000',
-  },
-  fontColorPriority: {
-    type: String,
-    default: '#FF0000',
   },
   showMessageTitle: {
     type: Boolean,
@@ -52,19 +37,6 @@ const props = defineProps({
     default: false,
   },
 })
-
-const getFontColor = (message) => {
-  const peso = message.$data ? message.$data.peso : 0
-  return peso > 0 ? props.fontColorPriority : props.fontColorNormal
-}
 </script>
 
-<style scoped>
-/* Estilos específicos do histórico */
-/* .history {
-} */
-
-.message {
-  margin-bottom: 0.5rem;
-}
-</style>
+<style scoped></style>
