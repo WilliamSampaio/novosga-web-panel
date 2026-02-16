@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home h-screen w-full relative">
     <div class="menu">
       <router-link to="/settings">
         <span class="icon">
@@ -9,7 +9,7 @@
       </router-link>
     </div>
 
-    <LayoutLoader />
+    <LayoutLoader class="h-full w-full" />
   </div>
 </template>
 

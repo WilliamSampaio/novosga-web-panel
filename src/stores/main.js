@@ -3,7 +3,7 @@ import { Client } from '@/composables/api'
 import storage from '@/composables/storage'
 import { useAuthStore } from './auth'
 
-const HISTORY_MAX_LENGTH = 3
+const HISTORY_MAX_LENGTH = 4
 
 const locales = import.meta.glob('../../public/i18n/*.json')
 
