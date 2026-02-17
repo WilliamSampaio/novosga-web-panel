@@ -5,6 +5,8 @@ import { useMainStore } from './stores/main'
 import i18n from './plugins/i18n'
 import pinia from './plugins/pinia'
 
+import 'moment/dist/locale/pt-br'
+
 import 'bulma/css/bulma.min.css'
 import 'font-awesome/css/font-awesome.min.css'
 import './style.css'

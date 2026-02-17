@@ -1,21 +1,22 @@
 <template>
-  <span class="text-xl font-bold mb-5">{{ $t('history.title') }}</span>
+  <span class="text-3xl font-bold uppercase">{{ $t('history.title') }}</span>
 
-  <span v-if="props.messages.length === 0" class="text-4xl font-bold text-gray-600">{{ $t('history.empty')
-    }}</span>
+  <span v-if="props.messages.length === 0" class="text-5xl font-bold uppercase text-gray-600">{{ $t('history.empty')
+  }}</span>
 
-  <ul v-else>
-    <li class="mb-5" v-for="message in props.messages" :key="message.id">
-      <div :class="`flex flex-col text-center ${message.prioridade ? 'text-red-700' : 'text-[#2f5ea9]'} `">
-        <span class="text-4xl font-bold">
-          {{ message.senha }}
-        </span>
-        <span class="text-4">
-          {{ message.local }}
-        </span>
-      </div>
-    </li>
-  </ul>
+  <div class="w-full h-full flex flex-col items-center justify-around" v-else>
+
+    <div v-for="message in props.messages" :key="message.id"
+      :class="`flex flex-col text-center ${message.prioridade ? 'text-red-700' : 'text-[#2f5ea9]'} `">
+      <span class="text-7xl font-bold uppercase">
+        {{ message.senha }}
+      </span>
+      <span class="text-3xl font-bold uppercase">
+        {{ message.local }}
+      </span>
+    </div>
+
+  </div>
 </template>
 
 <script setup>

@@ -2,24 +2,24 @@
   <div class="h-screen w-full flex flex-col bg-white overflow-hidden">
     <div class="flex h-32 items-center justify-between bg-[#00519e] px-5">
       <img class="h-21 w-40" :src="logoHeaderUrl" />
-      <span class="text-4xl font-bold text-white uppercase">{{ unidadeDescricao }}</span>
+      <span class="text-5xl font-bold text-white uppercase">{{ unidadeDescricao }}</span>
     </div>
 
     <div class="flex flex-1 py-10 items-center justify-between bg-white">
 
       <!-- SENHA -->
-      <div class="ml-5 flex w-full h-full flex-col justify-between">
-        <span class="text-4xl font-bold text-black uppercase">senha{{ mainStore.message.prioridade ? ' (Prioridade)' :
-          ''
+      <div class="ml-5 flex w-3/4 h-full flex-col justify-between">
+        <span class="text-5xl font-bold text-black uppercase">senha{{ mainStore.message.prioridade ? ' (Prioridade)' :
+          '' }}</span>
+        <span :class="`text-9xl font-bold ${colorSenha} uppercase`">{{ mainStore.message.senha ?? '---' }}</span>
+        <span class="text-5xl font-bold text-black uppercase">{{ mainStore.message.$data?.servico.descricao ??
+          '---'
         }}</span>
-        <span :class="`text-8xl font-bold ${colorSenha} uppercase`">{{ mainStore.message.senha ?? '---' }}</span>
-        <span class="text-4xl font-bold text-black uppercase">{{ mainStore.message.$data?.servico.descricao ?? '---'
-        }}</span>
-        <span class="text-6xl font-bold text-[#2f5ea9] uppercase">{{ mainStore.message.local ?? '---' }}</span>
+        <span class="text-8xl font-bold text-[#2f5ea9] uppercase">{{ mainStore.message.local ?? '---' }}</span>
       </div>
 
       <!-- HISTÓRICO -->
-      <div class="pr-5 flex w-80 h-full flex-col items-center rounded-l-3xl bg-[#d2e8fc]">
+      <div class="px-5 flex w-1/4 h-full flex-col items-center rounded-l-3xl bg-[#d2e8fc]">
         <History :messages="mainStore.history" />
       </div>
     </div>

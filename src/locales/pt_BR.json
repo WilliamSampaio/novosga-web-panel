@@ -7,7 +7,7 @@
   "menu.services": "Serviços",
   "menu.sound": "Som",
   "history.title": "Senhas Anteriores",
-  "history.empty": "Vazio",
+  "history.empty": "---",
   "settings.title": "Configurações",
   "settings.subtitle": "Configurações do painel",
   "settings.interface.theme_options": "Opções do tema",
