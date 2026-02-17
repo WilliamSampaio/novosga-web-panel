@@ -1,19 +1,27 @@
 <template>
-  <span class="text-3xl font-bold uppercase">{{ $t('history.title') }}</span>
+  <span class="text-3xl font-bold uppercase" :style="{ color: props.historyLabelColor }">
+    {{ $t('panel.history.title') }}
+  </span>
 
-  <span v-if="props.messages.length === 0" class="text-5xl font-bold uppercase text-gray-600">{{ $t('history.empty')
-  }}</span>
+  <span v-if="props.history.length === 0" class="text-5xl font-bold uppercase"
+    :style="{ color: props.historyEmptyColor }">
+    {{ $t('panel.empty') }}
+  </span>
 
   <div class="w-full h-full flex flex-col items-center justify-around" v-else>
 
-    <div v-for="message in props.messages" :key="message.id"
-      :class="`flex flex-col text-center ${message.prioridade ? 'text-red-700' : 'text-[#2f5ea9]'} `">
+    <div v-for="ticket in props.history" :key="ticket.id" class="flex flex-col text-center" :style="{
+      color: ticket.prioridade ? props.historyTicketPriorityColor : props.historyTicketColor
+    }">
+
       <span class="text-7xl font-bold uppercase">
-        {{ message.senha }}
+        {{ ticket.senha }}
       </span>
-      <span class="text-3xl font-bold uppercase">
-        {{ message.local }}
+
+      <span v-if="props.showTicketLocal" class="text-3xl font-bold uppercase">
+        {{ ticket.local }}
       </span>
+
     </div>
 
   </div>
@@ -21,20 +29,28 @@
 
 <script setup>
 const props = defineProps({
-  messages: {
+  history: {
     required: true,
   },
-  showMessageTitle: {
+  showTicketLocal: {
     type: Boolean,
     default: true,
   },
-  showMessageSubtitle: {
-    type: Boolean,
-    default: true,
+  historyLabelColor: {
+    type: String,
+    default: '#000000',
   },
-  showMessageDescription: {
-    type: Boolean,
-    default: false,
+  historyEmptyColor: {
+    type: String,
+    default: '#000000',
+  },
+  historyTicketColor: {
+    type: String,
+    default: '#000000',
+  },
+  historyTicketPriorityColor: {
+    type: String,
+    default: '#ff0000',
   },
 })
 </script>

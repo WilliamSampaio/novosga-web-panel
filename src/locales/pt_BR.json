@@ -6,8 +6,6 @@
   "menu.server": "Servidor",
   "menu.services": "Serviços",
   "menu.sound": "Som",
-  "history.title": "Senhas Anteriores",
-  "history.empty": "---",
   "settings.title": "Configurações",
   "settings.subtitle": "Configurações do painel",
   "settings.interface.theme_options": "Opções do tema",
@@ -59,5 +57,9 @@
   "settings.btn.save": "Salvar",
   "settings.btn.test_alert": "Testar Alerta",
   "settings.services.empty": "Nenhum serviço",
+  "panel.ticket": "Senha",
+  "panel.priority": "Prioridade",
+  "panel.history.title": "Senhas Anteriores",
+  "panel.empty": "---",
   "date_format": "DD [de] MMMM [de] YYYY"
 }

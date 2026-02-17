@@ -1,33 +1,62 @@
 <template>
   <div class="h-screen w-full flex flex-col bg-white overflow-hidden">
-    <div class="flex h-32 items-center justify-between bg-[#00519e] px-5">
-      <img class="h-21 w-40" :src="logoHeaderUrl" />
-      <span class="text-5xl font-bold text-white uppercase">{{ unidadeDescricao }}</span>
+
+    <!-- HEADER -->
+    <div class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
+      :style="{ backgroundColor: header.bgColor, color: header.textColor }">
+
+      <img v-if="panelStore.headerLeftLogoUrlIsDefined" class="w-60" :src="header.leftLogoUrl" />
+
+      <span class="text-5xl font-bold uppercase">{{ unityDescription }}</span>
+
     </div>
 
-    <div class="flex flex-1 py-10 items-center justify-between bg-white">
+    <!-- MAIN -->
+    <div class="flex flex-1 py-10 items-center justify-between bg-white" :style="{ backgroundColor: main.bgColor }">
 
-      <!-- SENHA -->
+      <!-- CURRENT TICKET -->
       <div class="ml-5 flex w-3/4 h-full flex-col justify-between">
-        <span class="text-5xl font-bold text-black uppercase">senha{{ mainStore.message.prioridade ? ' (Prioridade)' :
-          '' }}</span>
-        <span :class="`text-9xl font-bold ${colorSenha} uppercase`">{{ mainStore.message.senha ?? '---' }}</span>
-        <span class="text-5xl font-bold text-black uppercase">{{ mainStore.message.$data?.servico.descricao ??
-          '---'
-        }}</span>
-        <span class="text-8xl font-bold text-[#2f5ea9] uppercase">{{ mainStore.message.local ?? '---' }}</span>
+
+        <span class="text-5xl font-bold uppercase" :style="{ color: main.ticketLabelColor }">
+          {{ ticketLabel }}
+        </span>
+
+        <span class="text-9xl font-bold uppercase" :style="{ color: ticketColor }">
+          {{ mainStore.message.senha ?? $t('panel.empty') }}
+        </span>
+
+        <span class="text-5xl font-bold uppercase" :style="{ color: main.serviceColor }">
+          {{ mainStore.message.$data?.servico.descricao ?? $t('panel.empty') }}
+        </span>
+
+        <span class="text-8xl font-bold uppercase" :style="{ color: main.localColor }">
+          {{ mainStore.message.local ?? $t('panel.empty') }}
+        </span>
+
       </div>
 
-      <!-- HISTÓRICO -->
-      <div class="px-5 flex w-1/4 h-full flex-col items-center rounded-l-3xl bg-[#d2e8fc]">
-        <History :messages="mainStore.history" />
+      <!-- HISTORY -->
+      <div class="px-5 flex w-1/4 h-full flex-col items-center rounded-l-3xl"
+        :style="{ backgroundColor: main.historyBgColor }">
+
+        <History :history="mainStore.history" :historyLabelColor="main.historyLabelColor"
+          :historyEmptyColor="main.historyEmptyColor" :historyTicketColor="main.ticketColor"
+          :historyTicketPriorityColor="main.ticketPriorityColor" :showTicketLocal="main.historyShowLocal" />
+
       </div>
+
     </div>
 
-    <div class="flex h-32 items-center justify-between bg-[#00519e] px-5">
-      <img class="h-21 w-40" :src="logoFooterLeftUrl" />
-      <Clock :locale="mainStore.config.locale" :dateFormat="$t('date_format')" />
-      <img class="h-21 w-40" :src="logoFooterRightUrl" />
+    <!-- FOOTER -->
+    <div class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
+      :style="{ backgroundColor: footer.bgColor, color: footer.textColor }">
+
+      <img v-if="panelStore.footerLeftLogoUrlIsDefined" class="w-60" :src="footer.leftLogoUrl" />
+
+      <Clock v-if="footer.showClock" :locale="mainStore.config.locale" :dateFormat="$t('date_format')" />
+
+      <img v-if="panelStore.footerRightLogoUrlIsDefined" class="w-60" :src="footer.rightLogoUrl" />
+
     </div>
   </div>
 </template>
@@ -35,16 +64,23 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useMainStore } from '@/stores/main'
+import { usePanelStore } from '@/stores/panel'
 import { useSettingsStore } from '@/stores/settings'
 import { useAlert } from '@/composables/audio'
 import { useSpeech } from '@/composables/speech'
+import { useI18n } from 'vue-i18n'
 
 // Componentes (No Vue 3 com script setup, basta importar para usar)
 import Clock from '@/components/Clock.vue'
 import History from '@/components/History.vue'
 
+const { t } = useI18n()
+
 const mainStore = useMainStore()
 const settingsStore = useSettingsStore()
+
+const panelStore = usePanelStore()
+const { header, main, footer } = panelStore
 
 const { playAlert } = useAlert()
 const { speakAll } = useSpeech()
@@ -53,16 +89,16 @@ const isCalling = ref(false)
 const lastMessage = ref({})
 const messageQueue = []
 
-const logoHeaderUrl = computed(() => mainStore.config.themeOptions?.logo || '/images/logo_hemoam.svg')
-const logoFooterLeftUrl = computed(() => mainStore.config.themeOptions?.logo || '/images/logo_hemoam.svg')
-const logoFooterRightUrl = computed(() => mainStore.config.themeOptions?.logoFooterRight || '/images/logo-gov-horizontal-contraste.svg')
-
-const unidadeDescricao = computed(() => {
+const unityDescription = computed(() => {
   return settingsStore.unities.filter((u) => u.id === mainStore.config.unity)[0]?.nome || '---'
 })
 
-const colorSenha = computed(() => {
-  return mainStore.message.prioridade ? 'text-red-700' : 'text-[#2f5ea9]'
+const ticketLabel = computed(() => {
+  return mainStore.message.prioridade ? `${t('panel.ticket')} (${t('panel.priority')})` : t('panel.ticket')
+})
+
+const ticketColor = computed(() => {
+  return mainStore.message.prioridade ? main.ticketPriorityColor : main.ticketColor
 })
 
 /**
