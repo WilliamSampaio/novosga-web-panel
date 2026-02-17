@@ -1,5 +1,5 @@
 <template>
-  <div class="text-2xl text-white text-center">
+  <div class="text-4xl text-white text-center font-medium">
     <div v-if="showDate">
       <span>{{ formattedDate }}</span>
     </div>
