@@ -60,7 +60,7 @@ export const useMainStore = defineStore('main', {
 
       // Remove se a mesma senha já existe no histórico para não repetir na lateral
       const idx = this.messages.findIndex(
-        (m) => m.senha === message.senha && m.type === message.type,
+        (m) => m.ticket === message.ticket && m.type === message.type,
       )
       if (idx !== -1) this.messages.splice(idx, 1)
 
@@ -72,9 +72,10 @@ export const useMainStore = defineStore('main', {
       return {
         id: data.id,
         type: 'ticket',
-        senha: data.siglaSenha + ('000' + data.numeroSenha).slice(-3),
+        ticket: data.siglaSenha + ('000' + data.numeroSenha).slice(-3),
+        clientName: data.nomeCliente,
         local: `${data.local} ${('00' + data.numeroLocal).slice(-2)}`,
-        prioridade: data.prioridade === 'Prioridade' ? true : false,
+        priority: data.prioridade === 'Prioridade' ? true : false,
         $data: data,
       }
     },

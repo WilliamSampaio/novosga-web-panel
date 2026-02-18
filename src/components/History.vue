@@ -11,11 +11,11 @@
   <div class="w-full h-full flex flex-col items-center justify-around" v-else>
 
     <div v-for="ticket in props.history" :key="ticket.id" class="flex flex-col text-center" :style="{
-      color: ticket.prioridade ? props.historyTicketPriorityColor : props.historyTicketColor
+      color: ticket.priority ? props.historyTicketPriorityColor : props.historyTicketColor
     }">
 
       <span class="text-7xl font-bold uppercase">
-        {{ ticket.senha }}
+        {{ ticket.ticket }}
       </span>
 
       <span v-if="props.showTicketLocal" class="text-3xl font-bold uppercase">

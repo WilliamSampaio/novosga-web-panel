@@ -23,9 +23,18 @@
           {{ ticketLabel }}
         </span>
 
-        <span class="text-9xl font-bold uppercase" :style="{ color: ticketColor }">
-          {{ mainStore.message.senha ?? $t('panel.empty') }}
-        </span>
+        <div class="flex flex-col">
+
+          <span class="text-8xl font-bold uppercase" :style="{ color: ticketColor }">
+            {{ mainStore.message.ticket ?? $t('panel.empty') }}
+          </span>
+
+          <span v-if="mainStore.message.clientName" class="text-5xl font-bold uppercase"
+            :style="{ color: ticketColor }">
+            {{ mainStore.message.clientName }}
+          </span>
+
+        </div>
 
         <span class="text-5xl font-bold uppercase" :style="{ color: main.serviceColor }">
           {{ mainStore.message.$data?.servico.descricao ?? $t('panel.empty') }}
@@ -97,11 +106,11 @@ const unityDescription = computed(() => {
 })
 
 const ticketLabel = computed(() => {
-  return mainStore.message.prioridade ? `${t('panel.ticket')} (${t('panel.priority')})` : t('panel.ticket')
+  return mainStore.message.priority ? `${t('panel.ticket')} (${t('panel.priority')})` : t('panel.ticket')
 })
 
 const ticketColor = computed(() => {
-  return mainStore.message.prioridade ? main.ticketPriorityColor : main.ticketColor
+  return mainStore.message.priority ? main.ticketPriorityColor : main.ticketColor
 })
 
 /**
