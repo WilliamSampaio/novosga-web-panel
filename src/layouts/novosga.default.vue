@@ -1,4 +1,6 @@
 <template>
+  <!-- <VideoPlayer v-if="panelStore.video.videoId" :videoId="panelStore.video.videoId" :isPlaylist="panelStore.video.isPlaylist" /> -->
+
   <div class="h-screen w-full flex flex-col bg-white overflow-hidden">
 
     <!-- HEADER -->
@@ -73,6 +75,7 @@ import { useI18n } from 'vue-i18n'
 // Componentes (No Vue 3 com script setup, basta importar para usar)
 import Clock from '@/components/Clock.vue'
 import History from '@/components/History.vue'
+import VideoPlayer from '@/components/VideoPlayer.vue'
 
 const { t } = useI18n()
 

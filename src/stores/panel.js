@@ -51,6 +51,13 @@ export const usePanelStore = defineStore('panel', {
         import.meta.env.VITE_MAIN_HISTORY_SHOW_LOCAL === 'true',
       ),
     },
+    video: {
+      videoId: storage.get('video_id', import.meta.env.VITE_VIDEO_ID),
+      isPlaylist: storage.get(
+        'video_is_playlist',
+        import.meta.env.VITE_VIDEO_IS_PLAYLIST === 'true',
+      ),
+    },
   }),
 
   getters: {
