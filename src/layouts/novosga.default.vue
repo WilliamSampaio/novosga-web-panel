@@ -1,72 +1,119 @@
 <template>
-  <!-- <VideoPlayer v-if="panelStore.video.videoId" :videoId="panelStore.video.videoId" :isPlaylist="panelStore.video.isPlaylist" /> -->
+  <div class="h-screen w-full relative overflow-hidden bg-white">
 
-  <div class="h-screen w-full flex flex-col bg-white overflow-hidden">
+    <!-- <div class="absolute inset-0 z-0 flex flex-col transition-opacity duration-500"
+      :style="{ opacity: isCalling ? 0 : 1 }">
 
-    <!-- HEADER -->
-    <div class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
-      :style="{ backgroundColor: header.bgColor, color: header.textColor }">
+      <div class="flex h-32 items-center justify-between z-10" :style="{ backgroundColor: main.bgColor }">
 
-      <img v-if="panelStore.headerLeftLogoUrlIsDefined" class="w-60" :src="header.leftLogoUrl" />
+        <div class="flex flex-col w-2/5 pl-5">
 
-      <span class="text-5xl font-bold uppercase">{{ unityDescription }}</span>
+          <span class="text-2xl font-bold uppercase" :style="{ color: main.ticketLabelColor }">{{ ticketLabel }}</span>
 
-    </div>
-
-    <!-- MAIN -->
-    <div class="flex flex-1 py-10 items-center justify-between bg-white" :style="{ backgroundColor: main.bgColor }">
-
-      <!-- CURRENT TICKET -->
-      <div class="ml-5 flex w-3/4 h-full flex-col justify-between">
-
-        <span class="text-5xl font-bold uppercase" :style="{ color: main.ticketLabelColor }">
-          {{ ticketLabel }}
-        </span>
-
-        <div class="flex flex-col">
-
-          <span class="text-8xl font-bold uppercase" :style="{ color: ticketColor }">
+          <span class="text-6xl font-bold uppercase" :style="{ color: ticketColor }">
             {{ mainStore.message.ticket ?? $t('panel.empty') }}
-          </span>
-
-          <span v-if="mainStore.message.clientName" class="text-5xl font-bold uppercase"
-            :style="{ color: ticketColor }">
-            {{ mainStore.message.clientName }}
           </span>
 
         </div>
 
-        <span class="text-5xl font-bold uppercase" :style="{ color: main.serviceColor }">
-          {{ mainStore.message.$data?.servico.descricao ?? $t('panel.empty') }}
-        </span>
+        <div class="flex flex-col w-1/5 px-5 h-full items-center justify-center"
+          :style="{ backgroundColor: header.bgColor }">
 
-        <span class="text-8xl font-bold uppercase" :style="{ color: main.localColor }">
-          {{ mainStore.message.local ?? $t('panel.empty') }}
-        </span>
+          <img v-if="panelStore.headerLeftLogoUrlIsDefined" class="w-60" :src="header.leftLogoUrl" />
+
+        </div>
+
+        <div class="flex flex-col w-2/5 pl-5">
+
+          <span class="text-2xl font-bold uppercase" :style="{ color: main.serviceColor }">
+            {{ mainStore.message.$data?.servico.descricao ?? $t('panel.empty') }}
+          </span>
+
+          <span class="text-6xl font-bold uppercase" :style="{ color: main.localColor }">
+            {{ mainStore.message.local ?? $t('panel.empty') }}
+          </span>
+
+        </div>
 
       </div>
 
-      <!-- HISTORY -->
-      <div class="px-5 flex w-1/4 h-full flex-col items-center rounded-l-3xl"
-        :style="{ backgroundColor: main.historyBgColor }">
+      <div class="flex h-80 bg-black">
 
-        <History :history="mainStore.history" :historyLabelColor="main.historyLabelColor"
-          :historyEmptyColor="main.historyEmptyColor" :historyTicketColor="main.ticketColor"
-          :historyTicketPriorityColor="main.ticketPriorityColor" :showTicketLocal="main.historyShowLocal" />
+        <LiteYouTubeEmbed :id="panelStore.video.videoId" :playlist="panelStore.video.isPlaylist" ref="iframe" />
+
+      </div>
+    </div> -->
+
+    <div class="absolute inset-0 z-50 flex flex-col bg-white overflow-hidden">
+
+      <!-- HEADER -->
+      <div class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
+        :style="{ backgroundColor: header.bgColor, color: header.textColor }">
+
+        <img v-if="panelStore.headerLeftLogoUrlIsDefined" class="w-60" :src="header.leftLogoUrl" />
+
+        <span class="text-5xl font-bold uppercase">{{ unityDescription }}</span>
 
       </div>
 
-    </div>
+      <!-- MAIN -->
+      <div class="flex flex-1 py-10 items-center justify-between bg-white" :style="{ backgroundColor: main.bgColor }">
 
-    <!-- FOOTER -->
-    <div class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
-      :style="{ backgroundColor: footer.bgColor, color: footer.textColor }">
+        <!-- CURRENT TICKET -->
+        <div class="ml-5 flex w-3/4 h-full flex-col justify-between">
 
-      <img v-if="panelStore.footerLeftLogoUrlIsDefined" class="w-60" :src="footer.leftLogoUrl" />
+          <span class="text-5xl font-bold uppercase" :style="{ color: main.ticketLabelColor }">
+            {{ ticketLabel }}
+          </span>
 
-      <Clock v-if="footer.showClock" :locale="mainStore.config.locale" :dateFormat="$t('date_format')" />
+          <div class="flex flex-col">
 
-      <img v-if="panelStore.footerRightLogoUrlIsDefined" class="w-60" :src="footer.rightLogoUrl" />
+            <span class="text-8xl font-bold uppercase" :style="{ color: ticketColor }">
+              {{ mainStore.message.ticket ?? $t('panel.empty') }}
+            </span>
+
+            <span v-if="mainStore.message.clientName" class="text-5xl font-bold uppercase"
+              :style="{ color: ticketColor }">
+              {{ mainStore.message.clientName }}
+            </span>
+
+          </div>
+
+          <span class="text-5xl font-bold uppercase" :style="{ color: main.serviceColor }">
+            {{ mainStore.message.$data?.servico.descricao ?? $t('panel.empty') }}
+          </span>
+
+          <span class="text-8xl font-bold uppercase" :style="{ color: main.localColor }">
+            {{ mainStore.message.local ?? $t('panel.empty') }}
+          </span>
+
+        </div>
+
+        <!-- HISTORY -->
+        <div class="px-5 flex w-1/4 h-full flex-col items-center rounded-l-3xl"
+          :style="{ backgroundColor: main.historyBgColor }">
+
+          <History :history="mainStore.history" :historyLabelColor="main.historyLabelColor"
+            :historyEmptyColor="main.historyEmptyColor" :historyTicketColor="main.ticketColor"
+            :historyTicketPriorityColor="main.ticketPriorityColor" :showTicketLocal="main.historyShowLocal" />
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
+        :style="{ backgroundColor: footer.bgColor, color: footer.textColor }">
+
+        <img v-if="panelStore.footerLeftLogoUrlIsDefined" class="w-60" :src="footer.leftLogoUrl" />
+
+        <div class="text-4xl text-white text-center font-medium">
+          <Clock v-if="footer.showClock" :locale="mainStore.config.locale" :dateFormat="$t('date_format')" />
+        </div>
+
+        <img v-if="panelStore.footerRightLogoUrlIsDefined" class="w-60" :src="footer.rightLogoUrl" />
+
+      </div>
 
     </div>
   </div>
@@ -84,7 +131,6 @@ import { useI18n } from 'vue-i18n'
 // Componentes (No Vue 3 com script setup, basta importar para usar)
 import Clock from '@/components/Clock.vue'
 import History from '@/components/History.vue'
-import VideoPlayer from '@/components/VideoPlayer.vue'
 
 const { t } = useI18n()
 
@@ -129,13 +175,17 @@ const playAudio = async () => {
     // 2. Vocalização (Se habilitado)
     if (mainStore.config.speech) {
       const msg = lastMessage.value.$data
-      const texts = ['Senha']
 
-      // Soletra a sigla (ex: A, B, C)
-      msg.siglaSenha.split('').forEach((char) => texts.push(char))
-      texts.push(msg.numeroSenha)
-      texts.push(msg.local)
-      texts.push(msg.numeroLocal)
+      const texts = [
+        'Senha',
+        ...msg.siglaSenha,
+        msg.numeroSenha,
+        // 'Paciente',
+        msg.nomeCliente,
+        // 'Local',
+        msg.local,
+        msg.numeroLocal
+      ]
 
       await speakAll(texts, mainStore.config.locale)
     }
@@ -144,7 +194,9 @@ const playAudio = async () => {
   } finally {
     isCalling.value = false
     // Tenta chamar a próxima se houver fila
-    if (messageQueue.length > 0) playAudio()
+    if (messageQueue.length > 0) {
+      playAudio()
+    }
   }
 }
 

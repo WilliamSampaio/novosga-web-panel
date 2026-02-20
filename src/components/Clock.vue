@@ -1,24 +1,22 @@
 <template>
-  <div class="text-4xl text-white text-center font-medium">
-    <div v-if="showDate">
-      <span>{{ formattedDate }}</span>
-    </div>
+  <div v-if="showDate">
+    <span>{{ formattedDate }}</span>
+  </div>
 
-    <div>
-      <span v-if="showHours">
-        {{ hours }}
-      </span>
+  <div>
+    <span v-if="showHours">
+      {{ hours }}
+    </span>
 
-      <span v-if="showMinutes">:</span>
-      <span v-if="showMinutes">
-        {{ minutes }}
-      </span>
+    <span v-if="showMinutes">:</span>
+    <span v-if="showMinutes">
+      {{ minutes }}
+    </span>
 
-      <span v-if="showSeconds">:</span>
-      <span v-if="showSeconds">
-        {{ seconds }}
-      </span>
-    </div>
+    <span v-if="showSeconds">:</span>
+    <span v-if="showSeconds">
+      {{ seconds }}
+    </span>
   </div>
 </template>
 
