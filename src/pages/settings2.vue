@@ -8,8 +8,10 @@
         <v-list-item>
           <template v-slot:prepend>
             <v-avatar v-if="rail" image="/favicon.ico"></v-avatar>
-            <v-img v-else width="100" src="/images/logo.png" cover></v-img>
           </template>
+
+          <v-img v-if="!rail" width="100" src="/images/logo.png" cover></v-img>
+
           <template v-slot:append>
             <v-btn icon="mdi-chevron-left" variant="text" @click.stop="rail = !rail"></v-btn>
           </template>
@@ -19,6 +21,21 @@
       <v-divider></v-divider>
 
       <v-list density="compact" nav>
+
+        <v-btn v-if="rail" :to="{ name: 'home' }" icon="mdi-chevron-left" size="small" variant="tonal"
+          color="primary"></v-btn>
+
+        <v-btn v-else :to="{ name: 'home' }" prepend-icon="mdi-chevron-left" variant="tonal" color="primary" block>
+          {{ $t('menu.go_back') }}
+        </v-btn>
+
+      </v-list>
+
+      <v-divider></v-divider>
+
+      <v-list density="compact" nav>
+
+
         <v-list-item prepend-icon="mdi-cog" title="Configurações" value="myfiles"></v-list-item>
       </v-list>
 
