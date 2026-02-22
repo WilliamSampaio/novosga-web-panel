@@ -60,7 +60,7 @@
 
                 <v-row>
 
-                  <v-col cols="8">
+                  <v-col cols="9">
 
                     <v-sheet class="flex items-center justify-center bg-grey-lighten-4 py-10">
 
@@ -177,19 +177,19 @@
 
                   </v-col>
 
-                  <v-col cols="4">
+                  <v-col cols="3">
 
-                    <v-switch v-model="panelState.empty" label="Painel vazio" hide-details inset color="primary"
+                    <v-switch v-model="panelState.empty" label="Painel vazio" hide-details color="primary"
                       :disabled="panelState.hideClientName === true || panelState.priority === true || panelState.historyEmpty === true"></v-switch>
 
-                    <v-switch v-model="panelState.hideClientName" label="Ocultar nome do cliente" hide-details inset
+                    <v-switch v-model="panelState.hideClientName" label="Ocultar nome do cliente" hide-details
                       color="primary" :disabled="panelState.empty === true"></v-switch>
 
-                    <v-switch v-model="panelState.priority" label="Senha atual prioridade" hide-details inset
-                      color="primary" :disabled="panelState.empty === true"></v-switch>
+                    <v-switch v-model="panelState.priority" label="Senha atual prioridade" hide-details color="primary"
+                      :disabled="panelState.empty === true"></v-switch>
 
-                    <v-switch v-model="panelState.historyEmpty" label="Histórico vazio" hide-details inset
-                      color="primary" :disabled="panelState.empty === true"></v-switch>
+                    <v-switch v-model="panelState.historyEmpty" label="Histórico vazio" hide-details color="primary"
+                      :disabled="panelState.empty === true"></v-switch>
 
                   </v-col>
 
