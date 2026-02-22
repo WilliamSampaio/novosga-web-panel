@@ -114,22 +114,22 @@
                           {{ $t('panel.history.title') }}
                         </span>
 
-                        <span v-if="[].length === 0" class="text-1xl font-bold uppercase"
+                        <span v-if="fakeHistory.length === 0" class="text-2xl font-bold uppercase"
                           :style="{ color: main.historyEmptyColor }">
                           {{ $t('panel.empty') }}
                         </span>
 
                         <div class="w-full h-full flex flex-col items-center justify-around" v-else>
 
-                          <div v-for="ticket in []" :key="ticket.id" class="flex flex-col text-center" :style="{
+                          <div v-for="ticket in fakeHistory" :key="ticket.id" class="flex flex-col text-center" :style="{
                             color: ticket.priority ? main.ticketPriorityColor : main.ticketColor
                           }">
 
-                            <span class="text-7xl font-bold uppercase">
+                            <span class="text-2xl font-bold uppercase">
                               {{ ticket.ticket }}
                             </span>
 
-                            <span v-if="main.historyShowLocal" class="text-3xl font-bold uppercase">
+                            <span v-if="main.historyShowLocal" class="font-bold uppercase">
                               {{ ticket.local }}
                             </span>
 
@@ -191,5 +191,26 @@ const mainStore = useMainStore()
 const ticketLabel = computed(() => {
   return mainStore.message.priority ? `${t('panel.ticket')} (${t('panel.priority')})` : t('panel.ticket')
 })
+
+const fakeHistory = [
+  {
+    id: 1,
+    ticket: 'A001',
+    local: 'guichê 1',
+    priority: false
+  },
+  {
+    id: 2,
+    ticket: 'A002',
+    local: 'guichê 2',
+    priority: true
+  },
+  {
+    id: 3,
+    ticket: 'A003',
+    local: 'guichê 3',
+    priority: false
+  }
+]
 
 </script>
