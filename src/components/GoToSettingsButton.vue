@@ -2,9 +2,7 @@
   <div class="home">
     <div class="menu">
       <router-link to="/settings">
-        <span class="icon">
-          <i class="fa fa-cog"></i>
-        </span>
+        <span class="mdi mdi-cog"></span>
         {{ $t('menu.settings') }}
       </router-link>
     </div>
