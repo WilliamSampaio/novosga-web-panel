@@ -9,14 +9,14 @@
 </template>
 
 <script setup>
-import { useAuthStore } from '@/stores/auth';
-import { useMainStore } from '@/stores/main';
-import { useRouter } from 'vue-router';
-import { log } from '@/util/functions';
-import { onBeforeMount, onBeforeUnmount } from 'vue';
+import { useAuthStore } from '@/stores/auth'
+import { useMainStore } from '@/stores/main'
+import { useRouter } from 'vue-router'
+import { log } from '@/util/functions'
+import { onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
-import GoToSettingsButton from '@/components/GoToSettingsButton.vue';
-import Panel from '@/components/Panel.vue';
+import GoToSettingsButton from '@/components/GoToSettingsButton.vue'
+import Panel from '@/components/Panel.vue'
 
 const router = useRouter()
 const mainStore = useMainStore()
@@ -131,6 +131,16 @@ onBeforeUnmount(() => {
   isRunning = false
   clearTimeout(timeoutId)
   if (eventSource) eventSource.close()
+})
+
+onMounted(() => {
+  document.documentElement.style.overflow = 'hidden'
+  document.body.style.overflow = 'hidden'
+})
+
+onUnmounted(() => {
+  document.documentElement.style.overflow = 'auto'
+  document.body.style.overflow = 'auto'
 })
 </script>
 

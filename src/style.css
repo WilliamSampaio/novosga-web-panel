@@ -5,8 +5,6 @@
 html,
 body,
 #app {
-  height: 100vh; /* Usa a altura da janela */
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Evita barras de rolagem indesejadas */
 }

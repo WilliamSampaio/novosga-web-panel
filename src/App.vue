@@ -1,7 +1,9 @@
 <script setup></script>
 
 <template>
-  <RouterView />
+  <v-app id="inspire">
+    <RouterView />
+  </v-app>
 </template>
 
 <style scoped></style>
