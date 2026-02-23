@@ -100,7 +100,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { usePanelStore } from '@/stores/panel'
 import PanelPreview from '@/components/PanelPreview.vue'
 import DialogGetImageUrlFromCustom from '@/components/DialogGetImageUrlFromCustom.vue'
@@ -110,10 +110,19 @@ const rail = ref(false)
 
 const panelStore = usePanelStore()
 
-// watch(panelState, () => {
-//   panelStore.setHeader(panelDataPreview.value.header)
-//   panelStore.setMain(panelDataPreview.value.main)
-//   panelStore.setFooter(panelDataPreview.value.footer)
-// }, { deep: true, immediate: true })
+let timer = null;
+
+watch(
+  () => panelStore.$state,
+  () => {
+    if (timer) clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      panelStore.save();
+      alert('Configurações salvas!');
+    }, 2000);
+  },
+  { deep: true }
+);
 
 </script>
