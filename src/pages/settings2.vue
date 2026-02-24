@@ -33,8 +33,8 @@
 
     <v-list density="compact" nav>
 
-
       <v-list-item prepend-icon="mdi-cog" title="Configurações" value="myfiles"></v-list-item>
+
     </v-list>
 
     <template #append>
@@ -102,6 +102,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { usePanelStore } from '@/stores/panel'
+import { useMessagesStore } from '@/stores/messages'
 import PanelPreview from '@/components/PanelPreview.vue'
 import DialogGetImageUrlFromCustom from '@/components/DialogGetImageUrlFromCustom.vue'
 
@@ -109,6 +110,8 @@ const drawer = ref(true)
 const rail = ref(false)
 
 const panelStore = usePanelStore()
+
+const messages = useMessagesStore()
 
 let timer = null;
 
@@ -119,7 +122,7 @@ watch(
 
     timer = setTimeout(() => {
       panelStore.save();
-      alert('Configurações salvas!');
+      messages.add({ text: 'Configurações salvas com sucesso!', color: 'success' })
     }, 2000);
   },
   { deep: true }
