@@ -1,6 +1,6 @@
 <template>
 
-  <v-navigation-drawer v-model="drawer" :rail="rail" permanent @click="rail = false">
+  <!-- <v-navigation-drawer v-model="drawer" :rail="rail" permanent @click="rail = false">
 
     <v-list>
       <v-list-item>
@@ -8,36 +8,36 @@
           <v-avatar v-if="rail" image="/favicon.ico"></v-avatar>
         </template>
 
-        <v-img v-if="!rail" width="100" src="/images/logo.png" cover></v-img>
+<v-img v-if="!rail" width="100" src="/images/logo.png" cover></v-img>
 
-        <template v-slot:append>
+<template v-slot:append>
           <v-btn icon="mdi-chevron-left" variant="text" @click.stop="rail = !rail"></v-btn>
         </template>
-      </v-list-item>
-    </v-list>
+</v-list-item>
+</v-list>
 
-    <v-divider></v-divider>
+<v-divider></v-divider>
 
-    <v-list density="compact" nav>
+<v-list density="compact" nav>
 
-      <v-btn v-if="rail" :to="{ name: 'home' }" icon="mdi-chevron-left" size="small" variant="tonal"
-        color="primary"></v-btn>
+  <v-btn v-if="rail" :to="{ name: 'home' }" icon="mdi-chevron-left" size="small" variant="tonal"
+    color="primary"></v-btn>
 
-      <v-btn v-else :to="{ name: 'home' }" prepend-icon="mdi-chevron-left" variant="tonal" color="primary" block>
-        {{ $t('menu.go_back') }}
-      </v-btn>
+  <v-btn v-else :to="{ name: 'home' }" prepend-icon="mdi-chevron-left" variant="tonal" color="primary" block>
+    {{ $t('menu.go_back') }}
+  </v-btn>
 
-    </v-list>
+</v-list>
 
-    <v-divider></v-divider>
+<v-divider></v-divider>
 
-    <v-list density="compact" nav>
+<v-list density="compact" nav>
 
-      <v-list-item prepend-icon="mdi-cog" title="Configurações" value="myfiles"></v-list-item>
+  <v-list-item prepend-icon="mdi-cog" title="Configurações" value="myfiles"></v-list-item>
 
-    </v-list>
+</v-list>
 
-    <template #append>
+<template #append>
       <v-divider></v-divider>
       <v-list density="compact" nav>
         <v-list-item prepend-icon="mdi-github" title="NovoSGA Web Panel"
@@ -45,13 +45,66 @@
       </v-list>
     </template>
 
-  </v-navigation-drawer>
+</v-navigation-drawer> -->
 
   <v-main>
     <v-container class="py-8 px-6" fluid>
       <v-row>
         <v-col cols="12">
-          <v-card prepend-icon="mdi-panorama-outline" title="Painel" subtitle="Configurações do Painel.">
+
+          <v-card class="mb-5" prepend-icon="mdi-server-outline" title="Servidor" subtitle="Conexão com o servidor.">
+            <v-divider></v-divider>
+
+            <v-card-text>
+
+              <v-select v-model="serverStore.apiVersion" :items="[
+                { value: '21', title: 'NovoSGA v2.1' },
+                { value: '22', title: 'NovoSGA v2.2' },
+              ]" density="compact" label="Versão do NovoSGA" prepend-icon="mdi-source-branch" clearable></v-select>
+
+              <div v-if="serverStore.apiVersion !== null && serverStore.apiVersion === '21'">
+
+                <v-text-field v-model="serverStore.apiUrl" label="URL do Servidor" prepend-icon="mdi-server"
+                  density="compact" clearable></v-text-field>
+
+                <v-text-field v-model="serverStore.apiUsername" label="Usuário da API" prepend-icon="mdi-account"
+                  density="compact" clearable></v-text-field>
+
+                <v-text-field v-model="serverStore.apiPassword" label="Senha da API" prepend-icon="mdi-lock"
+                  density="compact" clearable type="password"></v-text-field>
+
+                <v-text-field v-model="serverStore.apiClientId" label="Client ID da API" prepend-icon="mdi-application"
+                  density="compact" clearable></v-text-field>
+
+                <v-text-field v-model="serverStore.apiToken" label="Client Secret da API" prepend-icon="mdi-shield-key"
+                  density="compact" clearable></v-text-field>
+
+                <v-text-field v-model="serverStore.apiRetries" label="Número de tentativas em caso de falha"
+                  prepend-icon="mdi-repeat" density="compact" clearable type="number"></v-text-field>
+
+              </div>
+
+              <div v-else-if="serverStore.apiVersion !== null && serverStore.apiVersion === '22'">
+                <v-alert type="warning" variant="tonal" density="comfortable">
+                  Ainda não foi implementado o suporte para o NovoSGA v2.2. Aguarde por favor (ou melhor, implemente
+                  você mesmo!).
+                </v-alert>
+              </div>
+
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn append-icon="mdi-connection" variant="flat" size="large" color="primary"
+                @click="saveSettings">Salvar
+                e Conectar</v-btn>
+            </v-card-actions>
+
+          </v-card>
+
+          <v-card class="mb-5" prepend-icon="mdi-panorama-outline" title="Painel" subtitle="Configurações do Painel.">
             <v-divider></v-divider>
 
             <v-card-text class="pa-0">
@@ -173,15 +226,18 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
+import { useServerStore } from '@/stores/server'
 import { usePanelStore } from '@/stores/panel'
 import { useMessagesStore } from '@/stores/messages'
 import PanelPreview from '@/components/PanelPreview.vue'
 import DialogGetImageUrlFromCustom from '@/components/DialogGetImageUrlFromCustom.vue'
 import ColorInput from '@/components/ColorInput.vue'
 
-const drawer = ref(true)
-const rail = ref(false)
+// const drawer = ref(true)
+// const rail = ref(false)
+
+const serverStore = useServerStore()
 
 const panelStore = usePanelStore()
 
