@@ -48,6 +48,9 @@
 </v-navigation-drawer> -->
 
   <v-main>
+    <v-fab :to="{ name: 'home' }" :absolute="false" :app="true" color="success" location="top right" variant="flat"
+      text="Ir para o Painel" append-icon="mdi-chevron-right" extended />
+
     <v-container class="py-8 px-6" fluid>
       <v-row>
         <v-col cols="12">
