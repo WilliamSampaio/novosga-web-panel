@@ -9,7 +9,6 @@
 </template>
 
 <script setup>
-import { useAuthStore } from '@/stores/auth'
 import { useMainStore } from '@/stores/main'
 import { useRouter } from 'vue-router'
 import { log } from '@/util/functions'
@@ -17,10 +16,11 @@ import { onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
 import GoToSettingsButton from '@/components/GoToSettingsButton.vue'
 import Panel from '@/components/Panel.vue'
+import { useAuthStoreOld } from '@/stores/authOld'
 
 const router = useRouter()
 const mainStore = useMainStore()
-const authStore = useAuthStore()
+const authStore = useAuthStoreOld()
 
 let eventSource = null
 let timeoutId = null

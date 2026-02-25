@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { Client } from '@/composables/api'
+import { Client } from '@/composables/api/21'
 import storage from '@/composables/storage'
-import { useAuthStore } from './auth'
+import { useAuthStoreOld } from './authOld'
 
 const HISTORY_MAX_LENGTH = 4
 
@@ -39,13 +39,13 @@ export const useMainStore = defineStore('main', {
     },
 
     async fetchApiInfo() {
-      const auth = useAuthStore()
+      const auth = useAuthStoreOld()
       const api = new Client(this.config.server)
       this.apiInfo = await api.info(auth.accessToken)
     },
 
     async fetchMessages() {
-      const auth = useAuthStore()
+      const auth = useAuthStoreOld()
       const api = new Client(this.config.server, null, this.config.retries)
       const messages = await api.messages(auth.accessToken, this.config.unity, this.config.services)
 

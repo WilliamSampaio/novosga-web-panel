@@ -98,8 +98,9 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn append-icon="mdi-connection" variant="flat" size="large" color="primary"
-                @click="saveSettings">Salvar
-                e Conectar</v-btn>
+                @click="saveServerSettings">
+                Salvar e Conectar
+              </v-btn>
             </v-card-actions>
 
           </v-card>
@@ -243,19 +244,28 @@ const panelStore = usePanelStore()
 
 const messages = useMessagesStore()
 
-let timer = null;
+const saveServerSettings = () => {
+  try {
+    serverStore.save()
+    messages.add({ text: 'Configurações do servidor salvas com sucesso!', color: 'success' })
+  } catch (error) {
+    messages.add({ text: 'Erro ao salvar as configurações do servidor: ' + error.message, color: 'error' })
+  }
+}
+
+let timer = null
 
 watch(
   () => panelStore.$state,
   () => {
-    if (timer) clearTimeout(timer);
+    if (timer) clearTimeout(timer)
 
     timer = setTimeout(() => {
-      panelStore.save();
+      panelStore.save()
       messages.add({ text: 'Configurações salvas com sucesso!', color: 'success' })
-    }, 2000);
+    }, 2000)
   },
   { deep: true }
-);
+)
 
 </script>

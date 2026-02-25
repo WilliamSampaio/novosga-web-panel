@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia'
-import { Client } from '@/composables/api'
+import { Client } from '@/composables/api/21'
 import storage from '@/composables/storage'
 import moment from 'moment'
 import { useMainStore } from './main'
 
-export const useAuthStore = defineStore('auth', {
+export const useAuthStoreOld = defineStore('authOld', {
   state: () => ({
     accessToken: storage.get('access_token'),
     refreshToken: storage.get('refresh_token'),
-    expireDate: storage.get('expire_date')
+    expireDate: storage.get('expire_date'),
   }),
 
   getters: {
@@ -16,7 +16,7 @@ export const useAuthStore = defineStore('auth', {
     isExpired: (state) => {
       if (!state.expireDate) return true
       return moment(state.expireDate).isSameOrBefore(moment())
-    }
+    },
   },
 
   actions: {
@@ -52,7 +52,7 @@ export const useAuthStore = defineStore('auth', {
         client_id: clientId,
         client_secret: clientSecret,
         username,
-        password
+        password,
       })
 
       const api = new Client(server)
@@ -67,13 +67,13 @@ export const useAuthStore = defineStore('auth', {
         grant_type: 'refresh_token',
         client_id: mainStore.config.clientId,
         client_secret: mainStore.config.clientSecret,
-        refresh_token: this.refreshToken
+        refresh_token: this.refreshToken,
       })
 
       const api = new Client(mainStore.config.server)
       const data = await api.request('/token', { method: 'POST', data: params })
       this.updateToken(data)
       return data
-    }
-  }
+    },
+  },
 })

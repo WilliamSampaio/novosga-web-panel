@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { Client } from '@/composables/api'
+import { Client } from '@/composables/api/21'
 import { useMainStore } from './main'
-import { useAuthStore } from './auth'
+import { useAuthStoreOld } from './authOld'
 
 export const useSettingsStore = defineStore('settings', {
   state: () => ({
@@ -22,7 +22,7 @@ export const useSettingsStore = defineStore('settings', {
   actions: {
     async fetchUnities() {
       const main = useMainStore()
-      const auth = useAuthStore()
+      const auth = useAuthStoreOld()
       const api = new Client(main.config.server)
       const data = await api.unities(auth.accessToken)
       this.unities = data
@@ -34,7 +34,7 @@ export const useSettingsStore = defineStore('settings', {
         return
       }
       const main = useMainStore()
-      const auth = useAuthStore()
+      const auth = useAuthStoreOld()
       const api = new Client(main.config.server)
       const data = await api.services(auth.accessToken, unityId)
       this.services = data

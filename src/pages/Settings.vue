@@ -194,13 +194,13 @@
 <script setup>
 import { ref, reactive, computed, onBeforeMount, watch, onMounted } from 'vue'
 import { useMainStore } from '@/stores/main'
-import { useAuthStore } from '@/stores/auth'
 import { useSettingsStore } from '@/stores/settings'
 import { useAlert } from '@/composables/audio'
 import { useSpeech } from '@/composables/speech'
 import { useI18n } from 'vue-i18n'
 import SaveButton from '@/components/SaveButton.vue'
 import storage from '@/composables/storage'
+import { useAuthStoreOld } from '@/stores/authOld'
 
 const { locale } = useI18n()
 
@@ -229,7 +229,7 @@ onMounted(() => {
 // }
 
 const mainStore = useMainStore()
-const authStore = useAuthStore()
+const authStore = useAuthStoreOld()
 const settingsStore = useSettingsStore()
 const { playAlert, alertsAvailable } = useAlert()
 const { speakAll } = useSpeech()
