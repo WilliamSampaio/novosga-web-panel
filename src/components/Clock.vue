@@ -1,9 +1,9 @@
 <template>
-  <div v-if="showDate">
+  <div v-if="showDate" :style="{ color: fontColor }">
     <span>{{ formattedDate }}</span>
   </div>
 
-  <div>
+  <div :style="{ color: fontColor }">
     <span v-if="showHours">
       {{ hours }}
     </span>

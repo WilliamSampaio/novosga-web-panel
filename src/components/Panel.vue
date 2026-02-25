@@ -13,7 +13,7 @@
     </div>
 
     <!-- MAIN -->
-    <div class="flex flex-1 py-10 items-center justify-between bg-white" :style="{ backgroundColor: main.bgColor }">
+    <div class="flex flex-1 py-10 items-center justify-between" :style="{ backgroundColor: main.bgColor }">
 
       <!-- CURRENT TICKET -->
       <div class="ml-5 flex w-3/4 h-full flex-col justify-between">
@@ -59,12 +59,13 @@
 
     <!-- FOOTER -->
     <div class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
-      :style="{ backgroundColor: footer.bgColor, color: footer.textColor }">
+      :style="{ backgroundColor: footer.bgColor }">
 
       <img v-if="panelStore.footerLeftLogoUrlIsDefined" class="w-60" :src="footer.leftLogoUrl" />
 
-      <div class="text-4xl text-white text-center font-medium">
-        <Clock v-if="footer.showClock" :locale="mainStore.config.locale" :dateFormat="$t('date_format')" />
+      <div class="text-4xl text-white text-center font-medium" :style="{ color: footer.textColor }">
+        <Clock v-if="footer.showClock" :locale="mainStore.config.locale" :dateFormat="$t('date_format')"
+          :fontColor="footer.textColor" />
       </div>
 
       <img v-if="panelStore.footerRightLogoUrlIsDefined" class="w-60" :src="footer.rightLogoUrl" />

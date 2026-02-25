@@ -22,7 +22,7 @@
 
           <!-- MAIN -->
           <v-sheet height="200px">
-            <div class="flex flex-1 h-full py-2 items-center justify-between bg-white"
+            <div class="flex flex-1 h-full py-2 items-center justify-between"
               :style="{ backgroundColor: main.bgColor }">
 
               <!-- CURRENT TICKET -->
@@ -95,13 +95,14 @@
           <!-- FOOTER -->
           <v-sheet height="80px">
             <div class="flex h-full px-5 items-center justify-between [&>*:only-child]:mx-auto"
-              :style="{ backgroundColor: footer.bgColor, color: footer.textColor }">
+              :style="{ backgroundColor: footer.bgColor }">
 
               <img v-if="panelStore.footerLeftLogoUrlIsDefined" class="w-24" :src="footer.leftLogoUrl" />
 
               <div class="text-1xl text-white text-center font-medium">
 
-                <Clock v-if="footer.showClock" :locale="mainStore.config.locale" :dateFormat="$t('date_format')" />
+                <Clock v-if="footer.showClock" :locale="mainStore.config.locale" :dateFormat="$t('date_format')"
+                  :fontColor="footer.textColor" />
 
               </div>
 
