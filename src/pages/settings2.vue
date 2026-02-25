@@ -91,6 +91,79 @@
 
               </v-text-field>
 
+              <v-switch v-model="panelStore.footer.showClock" prepend-icon="mdi-clock-digital"
+                label="Exibir data e hora no rodapé" density="compact">
+              </v-switch>
+
+              <v-switch v-model="panelStore.main.historyShowLocal"
+                prepend-icon="mdi-arrow-top-right-thin-circle-outline" label="Exibir local no histórico"
+                density="compact">
+              </v-switch>
+
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-text>
+
+              <v-row>
+                <v-col cols="4">
+                  <ColorInput id="header.bgColor" v-model="panelStore.header.bgColor" label="Fundo do Cabeçalho" />
+                </v-col>
+
+                <v-col cols="4">
+                  <ColorInput id="header.textColor" v-model="panelStore.header.textColor" label="Texto do Cabeçalho" />
+                </v-col>
+
+                <v-col cols="4">
+                  <ColorInput id="main.bgColor" v-model="panelStore.main.bgColor" label="Fundo do Painel Principal" />
+                </v-col>
+
+                <v-col cols="4">
+                  <ColorInput id="main.ticketLabelColor" v-model="panelStore.main.ticketLabelColor"
+                    label="Cor do Rótulo do Ticket" />
+                </v-col>
+
+                <v-col cols="4">
+                  <ColorInput id="main.ticketColor" v-model="panelStore.main.ticketColor" label="Texto do Ticket" />
+                </v-col>
+
+                <v-col cols="4">
+                  <ColorInput id="main.ticketPriorityColor" v-model="panelStore.main.ticketPriorityColor"
+                    label="Cor da Prioridade do Ticket" />
+                </v-col>
+
+                <v-col cols="4">
+                  <ColorInput id="main.serviceColor" v-model="panelStore.main.serviceColor" label="Texto do Serviço" />
+                </v-col>
+
+                <v-col cols="4">
+                  <ColorInput id="main.localColor" v-model="panelStore.main.localColor" label="Texto do Local" />
+                </v-col>
+
+                <v-col cols="4">
+                  <ColorInput id="main.historyBgColor" v-model="panelStore.main.historyBgColor"
+                    label="Fundo do Histórico" />
+                </v-col>
+
+                <v-col cols="4">
+                  <ColorInput id="main.historyLabelColor" v-model="panelStore.main.historyLabelColor"
+                    label="Texto do Histórico" />
+                </v-col>
+
+                <v-col cols="4">
+                  <ColorInput id="main.historyEmptyColor" v-model="panelStore.main.historyEmptyColor"
+                    label="Texto do Histórico Vazio" />
+                </v-col>
+
+                <v-col cols="4">
+                  <ColorInput id="footer.bgColor" v-model="panelStore.footer.bgColor" label="Fundo do Rodapé" />
+                </v-col>
+
+                <v-col cols="4">
+                  <ColorInput id="footer.textColor" v-model="panelStore.footer.textColor" label="Texto do Rodapé" />
+                </v-col>
+              </v-row>
             </v-card-text>
           </v-card>
         </v-col>
@@ -105,6 +178,7 @@ import { usePanelStore } from '@/stores/panel'
 import { useMessagesStore } from '@/stores/messages'
 import PanelPreview from '@/components/PanelPreview.vue'
 import DialogGetImageUrlFromCustom from '@/components/DialogGetImageUrlFromCustom.vue'
+import ColorInput from '@/components/ColorInput.vue'
 
 const drawer = ref(true)
 const rail = ref(false)
