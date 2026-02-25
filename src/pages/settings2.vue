@@ -65,7 +65,7 @@
               <div v-if="serverStore.apiVersion !== null && serverStore.apiVersion === '21'">
 
                 <v-text-field v-model="serverStore.apiUrl" label="URL do Servidor" prepend-icon="mdi-server"
-                  density="compact" clearable></v-text-field>
+                  density="compact" clearable @change="() => clearUnitiesAndServices(true)"></v-text-field>
 
                 <v-text-field v-model="serverStore.apiUsername" label="Usuário da API" prepend-icon="mdi-account"
                   density="compact" clearable></v-text-field>
@@ -76,8 +76,8 @@
                 <v-text-field v-model="serverStore.apiClientId" label="Client ID da API" prepend-icon="mdi-application"
                   density="compact" clearable></v-text-field>
 
-                <v-text-field v-model="serverStore.apiToken" label="Client Secret da API" prepend-icon="mdi-shield-key"
-                  density="compact" clearable></v-text-field>
+                <v-text-field v-model="serverStore.apiClientSecret" label="Client Secret da API"
+                  prepend-icon="mdi-shield-key" density="compact" clearable></v-text-field>
 
                 <v-text-field v-model="serverStore.apiRetries" label="Número de tentativas em caso de falha"
                   prepend-icon="mdi-repeat" density="compact" clearable type="number"></v-text-field>
@@ -100,6 +100,44 @@
               <v-btn append-icon="mdi-connection" variant="flat" size="large" color="primary"
                 @click="saveServerSettings">
                 Salvar e Conectar
+              </v-btn>
+            </v-card-actions>
+
+          </v-card>
+
+          <v-card class="mb-5" prepend-icon="mdi-server-outline" title="Serviços"
+            subtitle="Configurações dos serviços e unidades.">
+            <v-divider></v-divider>
+
+            <v-card-text>
+
+              <v-select v-model="settingsStore.currentUnity" :items="selectDataUnities" item-title="title"
+                item-value="value" label="Unidade" prepend-icon="mdi-domain" density="compact" clearable
+                @click:clear="() => clearUnitiesAndServices()" @update:model-value="loadServices">
+              </v-select>
+
+              <div v-if="settingsStore.services.length > 0">
+
+                <v-switch v-for="(s, index) in settingsStore.services" :key="index"
+                  v-model="settingsStore.enabledServices[index]" :label="`${index} - ${s.servico.nome}`"
+                  density="compact">
+                </v-switch>
+
+              </div>
+
+              <v-alert v-else type="info" variant="tonal" density="comfortable">
+                Selecione a unidade e clique em "Buscar Serviços" para carregar os serviços disponíveis.
+              </v-alert>
+
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn append-icon="mdi-connection" variant="flat" size="large" color="primary"
+                @click="settingsStore.save()">
+                Salvar
               </v-btn>
             </v-card-actions>
 
@@ -227,26 +265,50 @@
 </template>
 
 <script setup>
-import { watch } from 'vue'
-import { useServerStore } from '@/stores/server'
-import { usePanelStore } from '@/stores/panel'
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 import { useMessagesStore } from '@/stores/messages'
+import { usePanelStore } from '@/stores/panel'
+import { useServerStore } from '@/stores/server'
+import { useSettingsStore } from '@/stores/settings'
 import PanelPreview from '@/components/PanelPreview.vue'
 import DialogGetImageUrlFromCustom from '@/components/DialogGetImageUrlFromCustom.vue'
 import ColorInput from '@/components/ColorInput.vue'
+import { useI18n } from 'vue-i18n'
+import storage from '@/composables/storage'
 
 // const drawer = ref(true)
 // const rail = ref(false)
 
+const selectDataUnities = computed(() => {
+  return settingsStore.unities.map(
+    u => ({
+      value: u.id,
+      title: `${u.id} - ${u.nome} (${u.descricao})`,
+    })
+  )
+})
+
 const serverStore = useServerStore()
+
+const authStore = useAuthStore()
+
+const settingsStore = useSettingsStore()
 
 const panelStore = usePanelStore()
 
 const messages = useMessagesStore()
 
-const saveServerSettings = () => {
+const saveServerSettings = async () => {
   try {
     serverStore.save()
+
+    if (!authStore.isAuthenticated || authStore.isExpired) {
+      await authStore.token()
+    }
+
+    await settingsStore.fetchUnities()
+
     messages.add({ text: 'Configurações do servidor salvas com sucesso!', color: 'success' })
   } catch (error) {
     messages.add({ text: 'Erro ao salvar as configurações do servidor: ' + error.message, color: 'error' })
@@ -268,4 +330,50 @@ watch(
   { deep: true }
 )
 
+// Herança da antiga página de configurações. Precisa ser refatorada para o novo design.
+const { locale } = useI18n()
+
+const selectedLocale = ref(null)
+
+watch(selectedLocale, (newLocaleValue) => {
+  locale.value = newLocaleValue
+  const config = storage.get('config') || {}
+  storage.set('config', { ...config, locale: newLocaleValue })
+})
+
+onMounted(() => {
+  const config = storage.get('config') || {}
+  selectedLocale.value = config.locale || 'pt_BR'
+})
+
+const clearUnitiesAndServices = (clearCurrentUnities = false) => {
+  settingsStore.currentUnity = null
+  settingsStore.enabledServices = []
+  if (clearCurrentUnities) settingsStore.unities = []
+  settingsStore.services = []
+  settingsStore.save()
+}
+
+const loadServices = () => {
+  if (settingsStore.currentUnity) settingsStore.fetchServices(settingsStore.currentUnity)
+}
+
+onBeforeMount(async () => {
+
+  // Se já estiver autenticado, tenta atualizar o token e carregar as unidades e serviços
+  if (authStore.isAuthenticated) {
+
+    // Se o token estiver expirado, tenta atualizar. Se falhar, exibe mensagem de erro.
+    if (authStore.isExpired) await authStore.refresh().catch(() => {
+      messages.add({ text: 'Sessão expirada. Faça login novamente.', color: 'error' })
+    })
+
+    // Se ainda estiver autenticado após tentar atualizar o token, carrega as unidades e serviços
+    if (serverStore.apiUrl) {
+
+      settingsStore.fetchUnities()
+      if (settingsStore.currentUnity) settingsStore.fetchServices(settingsStore.currentUnity)
+    }
+  }
+})
 </script>

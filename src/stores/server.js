@@ -9,7 +9,7 @@ export const useServerStore = defineStore('server', {
       apiUsername: import.meta.env.VITE_API_USERNAME,
       apiPassword: import.meta.env.VITE_API_PASSWORD,
       apiClientId: import.meta.env.VITE_API_CLIENT_ID,
-      apiToken: import.meta.env.VITE_API_TOKEN,
+      apiClientSecret: import.meta.env.VITE_API_CLIENT_SECRET,
       apiRetries: parseInt(import.meta.env.VITE_API_RETRIES) || 0,
     }
 

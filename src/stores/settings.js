@@ -1,30 +1,37 @@
 import { defineStore } from 'pinia'
-import { Client } from '@/composables/api/21'
-import { useMainStore } from './main'
-import { useAuthStoreOld } from './authOld'
+import { Client as Client21 } from '@/composables/api/21'
+import { useServerStore } from './server'
+import { useAuthStore } from './auth'
+import storage from '@/composables/storage'
 
 export const useSettingsStore = defineStore('settings', {
-  state: () => ({
-    unities: [],
-    services: [],
-    availableThemes: [
-      {
-        id: 'novosga.default',
-        name: 'Padrão',
-        options: [
-          { name: 'logo', i18n: 'settings.label.logo', type: 'url' },
-          { name: 'footerText', i18n: 'settings.label.footer_text', type: 'text' },
-        ],
-      },
-    ],
-  }),
+  state: () => {
+    const defaults = {
+      unities: [],
+      services: [],
+      currentUnity: null,
+      enabledServices: [],
+    }
+
+    const saved = storage.get('settings')
+    if (!saved) return defaults
+
+    return {
+      ...defaults,
+      ...saved,
+    }
+  },
 
   actions: {
+    save() {
+      storage.set('settings', this.$state)
+    },
+
     async fetchUnities() {
-      const main = useMainStore()
-      const auth = useAuthStoreOld()
-      const api = new Client(main.config.server)
-      const data = await api.unities(auth.accessToken)
+      const serverStore = useServerStore()
+      const authStore = useAuthStore()
+      const api = new Client21(serverStore.apiUrl)
+      const data = await api.unities(authStore.accessToken)
       this.unities = data
     },
 
@@ -33,10 +40,10 @@ export const useSettingsStore = defineStore('settings', {
         this.services = []
         return
       }
-      const main = useMainStore()
-      const auth = useAuthStoreOld()
-      const api = new Client(main.config.server)
-      const data = await api.services(auth.accessToken, unityId)
+      const serverStore = useServerStore()
+      const authStore = useAuthStore()
+      const api = new Client21(serverStore.apiUrl)
+      const data = await api.services(authStore.accessToken, unityId)
       this.services = data
     },
   },

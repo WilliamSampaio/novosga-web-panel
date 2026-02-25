@@ -16,11 +16,11 @@ import { onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
 import GoToSettingsButton from '@/components/GoToSettingsButton.vue'
 import Panel from '@/components/Panel.vue'
-import { useAuthStoreOld } from '@/stores/authOld'
+import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 const mainStore = useMainStore()
-const authStore = useAuthStoreOld()
+const authStore = useAuthStore()
 
 let eventSource = null
 let timeoutId = null
