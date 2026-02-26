@@ -132,16 +132,21 @@ const playAudio = async () => {
     if (settingsStore.speech) {
       const msg = lastMessage.value.$data
 
-      const texts = [
-        'Senha',
-        ...msg.siglaSenha,
-        msg.numeroSenha,
-        // 'Paciente',
-        msg.nomeCliente,
-        // 'Local',
-        msg.local,
-        msg.numeroLocal
-      ]
+      const texts = []
+
+      texts.push('Senha')
+      texts.push(...msg.siglaSenha)
+      texts.push(msg.numeroSenha)
+
+      // texts.push('Paciente')
+
+      console.log(msg.nomeCliente)
+      if (msg.nomeCliente) texts.push(msg.nomeCliente)
+
+      // texts.push('Local')
+
+      texts.push(msg.local)
+      texts.push(msg.numeroLocal)
 
       await speakAll(texts, settingsStore.locale)
     }
