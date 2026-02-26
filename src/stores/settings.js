@@ -32,7 +32,7 @@ export const useSettingsStore = defineStore('settings', {
     async fetchUnities() {
       const serverStore = useServerStore()
       const authStore = useAuthStore()
-      const api = new Client21(serverStore.apiUrl)
+      const api = new Client21(serverStore.apiUrl, null, serverStore.apiRetries)
       const data = await api.unities(authStore.accessToken)
       this.unities = data
     },
@@ -44,7 +44,7 @@ export const useSettingsStore = defineStore('settings', {
       }
       const serverStore = useServerStore()
       const authStore = useAuthStore()
-      const api = new Client21(serverStore.apiUrl)
+      const api = new Client21(serverStore.apiUrl, null, serverStore.apiRetries)
       const data = await api.services(authStore.accessToken, unityId)
       this.services = data
     },

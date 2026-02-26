@@ -67,7 +67,7 @@ export const useAuthStore = defineStore('auth', {
         password: serverStore.apiPassword,
       })
 
-      const api = new Client21(serverStore.apiUrl)
+      const api = new Client21(serverStore.apiUrl, null, serverStore.apiRetries)
       const data = await api.request('/token', { method: 'POST', data: params })
       this.updateToken(data)
       return data
@@ -83,7 +83,7 @@ export const useAuthStore = defineStore('auth', {
         refresh_token: this.refreshToken,
       })
 
-      const api = new Client21(serverStore.apiUrl)
+      const api = new Client21(serverStore.apiUrl, null, serverStore.apiRetries)
       const data = await api.request('/token', { method: 'POST', data: params })
       this.updateToken(data)
       return data

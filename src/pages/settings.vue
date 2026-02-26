@@ -134,16 +134,6 @@
 
             </v-card-text>
 
-            <v-divider></v-divider>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn append-icon="mdi-connection" variant="flat" size="large" color="primary"
-                @click="settingsStore.save()">
-                Salvar
-              </v-btn>
-            </v-card-actions>
-
           </v-card>
 
           <v-card class="mb-5" prepend-icon="mdi-panorama-outline" title="Painel" subtitle="Configurações do Painel.">
@@ -384,6 +374,19 @@ watch(
 
     timer = setTimeout(() => {
       panelStore.save()
+      messages.add({ text: 'Configurações salvas com sucesso!', color: 'success' })
+    }, 2000)
+  },
+  { deep: true }
+)
+
+watch(
+  () => settingsStore.$state,
+  () => {
+    if (timer) clearTimeout(timer)
+
+    timer = setTimeout(() => {
+      settingsStore.save()
       messages.add({ text: 'Configurações salvas com sucesso!', color: 'success' })
     }, 2000)
   },
