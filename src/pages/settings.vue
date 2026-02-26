@@ -121,9 +121,9 @@
 
               <div v-if="settingsStore.services.length > 0">
 
-                <v-switch v-for="(s, index) in settingsStore.services" :key="index"
-                  :label="`${index} - ${s.servico.nome}`" :value="index" v-model="settingsStore.enabledServices"
-                  color="info" density="compact"></v-switch>
+                <v-switch v-for="s in settingsStore.services" :key="s.servico.id"
+                  :label="`${s.servico.id} - ${s.servico.nome}`" :value="s.servico.id"
+                  v-model="settingsStore.enabledServices" color="info" density="compact"></v-switch>
 
               </div>
 
