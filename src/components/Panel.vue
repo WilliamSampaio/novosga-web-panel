@@ -104,7 +104,7 @@ const lastMessage = ref({})
 const messageQueue = []
 
 const unityDescription = computed(() => {
-  return settingsStore.unities.filter((u) => u.id === mainStore.config.unity)[0]?.nome || '---'
+  return settingsStore.unities.filter((u) => u.id === settingsStore.currentUnity)[0]?.nome || '---'
 })
 
 const ticketLabel = computed(() => {
@@ -126,10 +126,10 @@ const playAudio = async () => {
 
   try {
     // 1. Toca o Alerta Sonoro
-    await playAlert(mainStore.config.alert)
+    await playAlert(settingsStore.alertSound)
 
     // 2. Vocalização (Se habilitado)
-    if (mainStore.config.speech) {
+    if (settingsStore.speech) {
       const msg = lastMessage.value.$data
 
       const texts = [
