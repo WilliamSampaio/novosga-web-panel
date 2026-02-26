@@ -271,7 +271,7 @@
               </v-select>
 
               <v-switch color="info" v-model="settingsStore.speech" prepend-icon="mdi-account-voice"
-                label="Exibir local no histórico" density="compact">
+                label="Ativar vocalização" density="compact">
 
                 <template v-slot:append>
 
