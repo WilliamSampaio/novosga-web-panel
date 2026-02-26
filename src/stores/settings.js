@@ -11,6 +11,8 @@ export const useSettingsStore = defineStore('settings', {
       services: [],
       currentUnity: null,
       enabledServices: [],
+      speech: false,
+      alertSound: null,
     }
 
     const saved = storage.get('settings')

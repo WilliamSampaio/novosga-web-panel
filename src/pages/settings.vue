@@ -48,7 +48,7 @@
 </v-navigation-drawer> -->
 
   <v-main>
-    <v-fab :to="{ name: 'home' }" :absolute="false" :app="true" color="success" location="top right" variant="flat"
+    <v-fab :to="{ name: 'home' }" :absolute="false" :app="true" color="success" location="top center" variant="flat"
       text="Ir para o Painel" append-icon="mdi-chevron-right" extended />
 
     <v-container class="py-8 px-6" fluid>
@@ -121,7 +121,7 @@
 
               <div v-if="settingsStore.services.length > 0">
 
-                <v-switch v-for="(s, index) in settingsStore.services" :key="index"
+                <v-switch color="info" v-for="(s, index) in settingsStore.services" :key="index"
                   v-model="settingsStore.enabledServices[index]" :label="`${index} - ${s.servico.nome}`"
                   density="compact">
                 </v-switch>
@@ -186,11 +186,11 @@
 
               </v-text-field>
 
-              <v-switch v-model="panelStore.footer.showClock" prepend-icon="mdi-clock-digital"
+              <v-switch color="info" v-model="panelStore.footer.showClock" prepend-icon="mdi-clock-digital"
                 label="Exibir data e hora no rodapé" density="compact">
               </v-switch>
 
-              <v-switch v-model="panelStore.main.historyShowLocal"
+              <v-switch color="info" v-model="panelStore.main.historyShowLocal"
                 prepend-icon="mdi-arrow-top-right-thin-circle-outline" label="Exibir local no histórico"
                 density="compact">
               </v-switch>
@@ -261,6 +261,50 @@
               </v-row>
             </v-card-text>
           </v-card>
+
+          <v-card class="mb-5" prepend-icon="mdi-volume-high" title="Audio" subtitle="Configurações de audio.">
+            <v-divider></v-divider>
+
+            <v-card-text>
+
+              <v-select v-model="settingsStore.alertSound" :items="selectDataAlertAvailable" label="Som de alerta"
+                prepend-icon="mdi-bell" density="compact" clearable>
+
+                <template v-slot:append>
+
+                  <v-btn variant="flat" color="success" append-icon="mdi-play" @click="testAlert"
+                    :disabled="settingsStore.alertSound === null">
+                    Ouvir
+                  </v-btn>
+
+                </template>
+
+              </v-select>
+
+              <v-switch color="info" v-model="settingsStore.speech" prepend-icon="mdi-account-voice"
+                label="Exibir local no histórico" density="compact">
+
+                <template v-slot:append>
+
+                  <v-text-field v-model="speechTestString" label="Frase" placeholder="Digite algo aqui!" maxlength="24"
+                    density="compact" class="w-96">
+
+                    <template v-slot:append>
+                      <v-btn variant="flat" color="success" append-icon="mdi-play" @click="testSpeech(speechTestString)"
+                        :disabled="!speechTestString">
+                        Ouvir
+                      </v-btn>
+                    </template>
+
+                  </v-text-field>
+
+                </template>
+
+              </v-switch>
+
+            </v-card-text>
+
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -279,6 +323,8 @@ import DialogGetImageUrlFromCustom from '@/components/DialogGetImageUrlFromCusto
 import ColorInput from '@/components/ColorInput.vue'
 import { useI18n } from 'vue-i18n'
 import storage from '@/composables/storage'
+import { useAlert } from '@/composables/audio'
+import { useSpeech } from '@/composables/speech'
 
 // const drawer = ref(true)
 // const rail = ref(false)
@@ -292,6 +338,13 @@ const selectDataUnities = computed(() => {
   )
 })
 
+const selectDataAlertAvailable = computed(() => {
+  return Object.entries(alertsAvailable).map(([name, file]) => ({
+    title: name,
+    value: file
+  }));
+})
+
 const serverStore = useServerStore()
 
 const authStore = useAuthStore()
@@ -301,6 +354,10 @@ const settingsStore = useSettingsStore()
 const panelStore = usePanelStore()
 
 const messages = useMessagesStore()
+
+const { playAlert, alertsAvailable } = useAlert()
+const { speakAll } = useSpeech()
+const speechTestString = ref("Olá Mundo! A B C 0 1 2 3")
 
 const saveServerSettings = async () => {
   try {
@@ -360,6 +417,9 @@ const clearUnitiesAndServices = (clearCurrentUnities = false) => {
 const loadServices = () => {
   if (settingsStore.currentUnity) settingsStore.fetchServices(settingsStore.currentUnity)
 }
+
+const testAlert = () => playAlert(settingsStore.alertSound)
+const testSpeech = (text) => speakAll([text], selectedLocale.value)
 
 onBeforeMount(async () => {
 
