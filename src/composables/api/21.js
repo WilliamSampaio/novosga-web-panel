@@ -23,7 +23,7 @@ class Client {
     // Criamos uma instância dedicada para não poluir o axios global
     this.axiosInstance = axios.create({
       baseURL: this.baseURL,
-      withCredentials: true
+      withCredentials: true,
     })
 
     // Configuração de Retry na instância específica
@@ -32,9 +32,11 @@ class Client {
       retryDelay: axiosRetry.exponentialDelay,
       retryCondition: (error) => {
         // Repete apenas em erros de rede ou 5xx
-        return axiosRetry.isNetworkOrIdempotentRequestError(error) ||
+        return (
+          axiosRetry.isNetworkOrIdempotentRequestError(error) ||
           (error.response && error.response.status >= 500)
-      }
+        )
+      },
     })
   }
 
@@ -45,7 +47,7 @@ class Client {
     try {
       const response = await this.axiosInstance.request({
         url,
-        ...config
+        ...config,
       })
       return response.data
     } catch (error) {
@@ -70,19 +72,19 @@ class Client {
 
   info(token) {
     return this.request('', {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     })
   }
 
   unities(token) {
     return this.request('/unidades', {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     })
   }
 
   services(token, unityId) {
     return this.request(`/unidades/${unityId}/servicos`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     })
   }
 
@@ -91,13 +93,13 @@ class Client {
 
     // Normaliza a lista de serviços para a query string
     const servicosQuery = services
-      .map(s => parseInt(s, 10))
-      .filter(s => s > 0)
+      .map((s) => parseInt(s, 10))
+      .filter((s) => s > 0)
       .join(',')
 
     return this.request(`/unidades/${id}/painel`, {
       headers: { Authorization: `Bearer ${token}` },
-      params: { servicos: servicosQuery }
+      params: { servicos: servicosQuery },
     })
   }
 }

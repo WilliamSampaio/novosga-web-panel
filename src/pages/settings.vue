@@ -121,10 +121,9 @@
 
               <div v-if="settingsStore.services.length > 0">
 
-                <v-switch color="info" v-for="(s, index) in settingsStore.services" :key="index"
-                  v-model="settingsStore.enabledServices[index]" :label="`${index} - ${s.servico.nome}`"
-                  density="compact">
-                </v-switch>
+                <v-switch v-for="(s, index) in settingsStore.services" :key="index"
+                  :label="`${index} - ${s.servico.nome}`" :value="index" v-model="settingsStore.enabledServices"
+                  color="info" density="compact"></v-switch>
 
               </div>
 
@@ -302,7 +301,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useMessagesStore } from '@/stores/messages'
 import { usePanelStore } from '@/stores/panel'
@@ -311,8 +310,6 @@ import { useSettingsStore } from '@/stores/settings'
 import PanelPreview from '@/components/PanelPreview.vue'
 import DialogGetImageUrlFromCustom from '@/components/DialogGetImageUrlFromCustom.vue'
 import ColorInput from '@/components/ColorInput.vue'
-import { useI18n } from 'vue-i18n'
-import storage from '@/composables/storage'
 import { useAlert } from '@/composables/audio'
 import { useSpeech } from '@/composables/speech'
 
@@ -393,22 +390,6 @@ watch(
   { deep: true }
 )
 
-// Herança da antiga página de configurações. Precisa ser refatorada para o novo design.
-const { locale } = useI18n()
-
-const selectedLocale = ref(null)
-
-watch(selectedLocale, (newLocaleValue) => {
-  locale.value = newLocaleValue
-  const config = storage.get('config') || {}
-  storage.set('config', { ...config, locale: newLocaleValue })
-})
-
-onMounted(() => {
-  const config = storage.get('config') || {}
-  selectedLocale.value = config.locale || 'pt_BR'
-})
-
 const clearUnitiesAndServices = (clearCurrentUnities = false) => {
   settingsStore.currentUnity = null
   settingsStore.enabledServices = []
@@ -422,7 +403,7 @@ const loadServices = () => {
 }
 
 const testAlert = () => playAlert(settingsStore.alertSound)
-const testSpeech = (text) => speakAll([text], selectedLocale.value)
+const testSpeech = (text) => speakAll([text], settingsStore.locale)
 
 onBeforeMount(async () => {
 

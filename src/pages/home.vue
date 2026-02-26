@@ -17,10 +17,14 @@ import { onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 import GoToSettingsButton from '@/components/GoToSettingsButton.vue'
 import Panel from '@/components/Panel.vue'
 import { useAuthStore } from '@/stores/auth'
+import { useServerStore } from '@/stores/server'
+import { useSettingsStore } from '@/stores/settings'
 
 const router = useRouter()
 const mainStore = useMainStore()
 const authStore = useAuthStore()
+const serverStore = useServerStore()
+const settingsStore = useSettingsStore()
 
 let eventSource = null
 let timeoutId = null
@@ -81,9 +85,8 @@ const startTokenMonitor = () => {
  * Conexão Real-time via Mercure (EventSource)
  */
 const connect = async (attempts = 3) => {
-  const config = mainStore.config
 
-  if (!config?.server || !config?.unity) {
+  if (!serverStore.apiUrl || !settingsStore.currentUnity) {
     log('Painel não configurado. Redirecionando...')
     router.push('/settings')
     return
@@ -98,14 +101,14 @@ const connect = async (attempts = 3) => {
     // Lógica de montagem da URL do Mercure
     let mercureUrl = mainStore.apiInfo.mercureUrl || ''
     if (!mercureUrl.toLowerCase().startsWith('http')) {
-      let serverUrl = config.server.endsWith('/') ? config.server : config.server + '/'
+      let serverUrl = serverStore.apiUrl.endsWith('/') ? serverStore.apiUrl : serverStore.apiUrl + '/'
       mercureUrl = mercureUrl.startsWith('/')
         ? serverUrl + mercureUrl.substring(1)
         : serverUrl + mercureUrl
     }
 
     const url = new URL(mercureUrl)
-    url.searchParams.append('topic', `/unidades/${config.unity}/painel`)
+    url.searchParams.append('topic', `/unidades/${settingsStore.currentUnity}/painel`)
 
     eventSource = new EventSource(url)
     eventSource.onmessage = () => fetchMessages()
@@ -142,6 +145,7 @@ onUnmounted(() => {
   document.documentElement.style.overflow = 'auto'
   document.body.style.overflow = 'auto'
 })
+
 </script>
 
 <style scoped></style>

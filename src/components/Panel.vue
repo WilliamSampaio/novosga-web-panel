@@ -64,7 +64,7 @@
       <img v-if="panelStore.footerLeftLogoUrlIsDefined" class="w-60" :src="footer.leftLogoUrl" />
 
       <div class="text-4xl text-white text-center font-medium" :style="{ color: footer.textColor }">
-        <Clock v-if="footer.showClock" :locale="mainStore.config.locale" :dateFormat="$t('date_format')"
+        <Clock v-if="footer.showClock" :locale="settingsStore.locale" :dateFormat="$t('date_format')"
           :fontColor="footer.textColor" />
       </div>
 
@@ -143,7 +143,7 @@ const playAudio = async () => {
         msg.numeroLocal
       ]
 
-      await speakAll(texts, mainStore.config.locale)
+      await speakAll(texts, settingsStore.locale)
     }
   } catch (error) {
     console.error('Erro na sequência de áudio:', error)

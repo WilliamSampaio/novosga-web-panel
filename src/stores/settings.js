@@ -13,6 +13,7 @@ export const useSettingsStore = defineStore('settings', {
       enabledServices: [],
       speech: false,
       alertSound: null,
+      locale: null,
     }
 
     const saved = storage.get('settings')

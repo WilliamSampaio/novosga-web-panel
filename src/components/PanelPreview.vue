@@ -101,7 +101,7 @@
 
               <div class="text-1xl text-white text-center font-medium">
 
-                <Clock v-if="footer.showClock" :locale="mainStore.config.locale" :dateFormat="$t('date_format')"
+                <Clock v-if="footer.showClock" :locale="settingsStore.locale" :dateFormat="$t('date_format')"
                   :fontColor="footer.textColor" />
 
               </div>
@@ -138,8 +138,8 @@
 </template>
 
 <script setup>
-import { useMainStore } from '@/stores/main'
 import { usePanelStore } from '@/stores/panel'
+import { useSettingsStore } from '@/stores/settings'
 import { computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Clock from './Clock.vue'
@@ -156,7 +156,7 @@ const panelState = reactive({
 const panelStore = usePanelStore()
 const { header, main, footer } = panelStore
 
-const mainStore = useMainStore()
+const settingsStore = useSettingsStore()
 
 const panelDataPreview = computed(() => {
 
