@@ -16,8 +16,7 @@
       >
         <v-card-text>
           <v-alert density="compact" type="info" variant="tonal">
-            Duplo-clique para pegar a URL da imagem. A pasta custom está localizada em:
-            <code>public/images/custom</code>
+            Duplo-clique para pegar a URL da imagem.
           </v-alert>
         </v-card-text>
 
