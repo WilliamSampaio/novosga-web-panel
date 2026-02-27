@@ -4,6 +4,7 @@ import { useServerStore } from './server'
 import { useAuthStore } from './auth'
 import storage from '@/composables/storage'
 import { useMessagesStore } from './messages'
+import { useI18n } from 'vue-i18n'
 
 export const useSettingsStore = defineStore('settings', {
   state: () => {
@@ -25,6 +26,16 @@ export const useSettingsStore = defineStore('settings', {
       ...defaults,
       ...saved,
     }
+  },
+
+  getters: {
+    getLocales: () => {
+      const { messages, availableLocales } = useI18n()
+      return availableLocales.map((lang) => ({
+        title: messages.value[lang].language_name || lang,
+        value: lang,
+      }))
+    },
   },
 
   actions: {

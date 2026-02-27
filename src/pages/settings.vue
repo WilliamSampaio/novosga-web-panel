@@ -1,36 +1,80 @@
 <template>
-  <v-navigation-drawer v-model:rail="isRail" expand-on-hover permanent>
+  <v-navigation-drawer permanent rail>
     <v-list>
       <v-list-item class="pa-0 text-center">
-        <v-avatar v-if="isRail" image="/favicon.ico" size="40"></v-avatar>
-        <v-img v-else class="mx-auto" width="120" src="/images/logo.png" cover></v-img>
+        <v-avatar image="/favicon.ico" size="40"></v-avatar>
       </v-list-item>
     </v-list>
 
     <v-divider></v-divider>
 
     <v-list class="text-center" density="compact" nav>
-      <v-icon v-if="isRail" size="large">mdi-translate</v-icon>
-      <v-select v-else density="compact">
-        <template v-slot:prepend>
-          <v-icon size="large">mdi-translate</v-icon>
+      <v-dialog max-width="400">
+        <template v-slot:activator="{ props: activatorProps }">
+          <v-icon v-bind="activatorProps" size="large">mdi-translate</v-icon>
         </template>
-      </v-select>
+        <template v-slot:default="{ isActive }">
+          <v-card>
+            <v-card-text class="flex flex-column justify-center">
+              <v-select
+                v-model="locale"
+                :items="settingsStore.getLocales"
+                item-title="title"
+                item-value="value"
+                density="compact"
+              >
+                <template v-slot:prepend>
+                  <v-icon size="large">mdi-translate</v-icon>
+                </template>
+              </v-select>
+              <v-btn
+                text="fechar"
+                variant="flat"
+                color="primary"
+                @click="isActive.value = false"
+              ></v-btn>
+            </v-card-text>
+          </v-card>
+        </template>
+      </v-dialog>
     </v-list>
 
     <v-divider></v-divider>
 
     <v-list class="text-center" density="compact" nav>
-      <v-icon v-if="isRail" size="large">mdi-brightness-6</v-icon>
-      <v-switch v-else label="Modo escuro" density="compact" v-model="settingsStore.darkTheme">
-        <template v-slot:prepend>
-          <v-icon size="large">mdi-brightness-6</v-icon>
+      <v-dialog max-width="400">
+        <template v-slot:activator="{ props: activatorProps }">
+          <v-icon v-bind="activatorProps" size="large">mdi-brightness-6</v-icon>
         </template>
-      </v-switch>
+        <template v-slot:default="{ isActive }">
+          <v-card>
+            <v-card-text class="flex flex-column justify-center">
+              <v-switch
+                class="mx-auto"
+                label="Modo escuro"
+                density="compact"
+                v-model="settingsStore.darkTheme"
+              >
+                <template v-slot:prepend>
+                  <v-icon size="large">mdi-brightness-6</v-icon>
+                </template>
+              </v-switch>
+              <v-btn
+                text="fechar"
+                variant="flat"
+                color="primary"
+                @click="isActive.value = false"
+              ></v-btn>
+            </v-card-text>
+          </v-card>
+        </template>
+      </v-dialog>
     </v-list>
 
     <template #append>
-      <!-- link para o GitHub -->
+      <v-list class="text-center" density="compact" nav>
+        <v-icon size="large" @click="openGitHub">mdi-github</v-icon>
+      </v-list>
     </template>
   </v-navigation-drawer>
 
@@ -53,7 +97,7 @@
           <v-card
             class="mb-5"
             prepend-icon="mdi-server-outline"
-            title="Servidor"
+            :title="$t('menu.server')"
             subtitle="Conexão com o servidor."
           >
             <v-divider></v-divider>
@@ -458,8 +502,8 @@ import ColorInput from '@/components/ColorInput.vue'
 import { useAlert } from '@/composables/audio'
 import { useSpeech } from '@/composables/speech'
 
-// isRail true significa que ele começa apenas como uma barra estreita
-const isRail = ref(true)
+import { useI18n } from 'vue-i18n'
+const { locale } = useI18n()
 
 const selectDataUnities = computed(() => {
   return settingsStore.unities.map((u) => ({
@@ -474,6 +518,14 @@ const selectDataAlertAvailable = computed(() => {
     value: file,
   }))
 })
+
+const openGitHub = () => {
+  window.open(
+    'https://github.com/WilliamSampaio/novosga-web-panel',
+    '_blank',
+    'noopener,noreferrer',
+  )
+}
 
 const serverStore = useServerStore()
 
