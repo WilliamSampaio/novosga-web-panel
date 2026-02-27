@@ -1,38 +1,38 @@
 <template>
-
   <div class="absolute inset-0 z-50 flex flex-col bg-white overflow-hidden">
-
     <!-- HEADER -->
-    <div class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
-      :style="{ backgroundColor: header.bgColor, color: header.textColor }">
-
+    <div
+      class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
+      :style="{ backgroundColor: header.bgColor, color: header.textColor }"
+    >
       <img v-if="panelStore.headerLeftLogoUrlIsDefined" class="w-60" :src="header.leftLogoUrl" />
 
       <span class="text-5xl font-bold uppercase">{{ unityDescription }}</span>
-
     </div>
 
     <!-- MAIN -->
-    <div class="flex flex-1 py-10 items-center justify-between" :style="{ backgroundColor: main.bgColor }">
-
+    <div
+      class="flex flex-1 py-10 items-center justify-between"
+      :style="{ backgroundColor: main.bgColor }"
+    >
       <!-- CURRENT TICKET -->
       <div class="ml-5 flex w-3/4 h-full flex-col justify-between">
-
         <span class="text-5xl font-bold uppercase" :style="{ color: main.ticketLabelColor }">
           {{ ticketLabel }}
         </span>
 
         <div class="flex flex-col">
-
           <span class="text-8xl font-bold uppercase" :style="{ color: ticketColor }">
             {{ mainStore.message.ticket ?? $t('panel.empty') }}
           </span>
 
-          <span v-if="mainStore.message.clientName" class="text-5xl font-bold uppercase"
-            :style="{ color: ticketColor }">
+          <span
+            v-if="mainStore.message.clientName"
+            class="text-5xl font-bold uppercase"
+            :style="{ color: ticketColor }"
+          >
             {{ mainStore.message.clientName }}
           </span>
-
         </div>
 
         <span class="text-5xl font-bold uppercase" :style="{ color: main.serviceColor }">
@@ -42,38 +42,43 @@
         <span class="text-8xl font-bold uppercase" :style="{ color: main.localColor }">
           {{ mainStore.message.local ?? $t('panel.empty') }}
         </span>
-
       </div>
 
       <!-- HISTORY -->
-      <div class="px-5 flex w-1/4 h-full flex-col items-center rounded-l-3xl"
-        :style="{ backgroundColor: main.historyBgColor }">
-
-        <History :history="mainStore.history" :historyLabelColor="main.historyLabelColor"
-          :historyEmptyColor="main.historyEmptyColor" :historyTicketColor="main.ticketColor"
-          :historyTicketPriorityColor="main.ticketPriorityColor" :showTicketLocal="main.historyShowLocal" />
-
+      <div
+        class="px-5 flex w-1/4 h-full flex-col items-center rounded-l-3xl"
+        :style="{ backgroundColor: main.historyBgColor }"
+      >
+        <History
+          :history="mainStore.history"
+          :historyLabelColor="main.historyLabelColor"
+          :historyEmptyColor="main.historyEmptyColor"
+          :historyTicketColor="main.ticketColor"
+          :historyTicketPriorityColor="main.ticketPriorityColor"
+          :showTicketLocal="main.historyShowLocal"
+        />
       </div>
-
     </div>
 
     <!-- FOOTER -->
-    <div class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
-      :style="{ backgroundColor: footer.bgColor }">
-
+    <div
+      class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
+      :style="{ backgroundColor: footer.bgColor }"
+    >
       <img v-if="panelStore.footerLeftLogoUrlIsDefined" class="w-60" :src="footer.leftLogoUrl" />
 
       <div class="text-4xl text-white text-center font-medium" :style="{ color: footer.textColor }">
-        <Clock v-if="footer.showClock" :locale="settingsStore.locale" :dateFormat="$t('date_format')"
-          :fontColor="footer.textColor" />
+        <Clock
+          v-if="footer.showClock"
+          :locale="settingsStore.locale"
+          :dateFormat="$t('date_format')"
+          :fontColor="footer.textColor"
+        />
       </div>
 
       <img v-if="panelStore.footerRightLogoUrlIsDefined" class="w-60" :src="footer.rightLogoUrl" />
-
     </div>
-
   </div>
-
 </template>
 
 <script setup>
@@ -108,7 +113,9 @@ const unityDescription = computed(() => {
 })
 
 const ticketLabel = computed(() => {
-  return mainStore.message.priority ? `${t('panel.ticket')} (${t('panel.priority')})` : t('panel.ticket')
+  return mainStore.message.priority
+    ? `${t('panel.ticket')} (${t('panel.priority')})`
+    : t('panel.ticket')
 })
 
 const ticketColor = computed(() => {

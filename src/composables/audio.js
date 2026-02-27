@@ -3,13 +3,13 @@ import { ref } from 'vue'
 const ALERT_PATH = 'sound'
 
 export const alertsAvailable = {
-  'Default': 'ekiga-vm.wav',
+  Default: 'ekiga-vm.wav',
   'Airport Bingbong': 'airport-bingbong.wav',
   'Ding dong': 'ding-dong.wav',
   'Doorbell Bingbong': 'doorbell-bingbong.wav',
   'Info bleep': 'infobleep.wav',
   'Quito Mariscal sucre': 'quito-mariscal-sucre.wav',
-  'Toy doorbell': 'toydoorbell.wav'
+  'Toy doorbell': 'toydoorbell.wav',
 }
 
 export function useAlert() {
@@ -53,6 +53,6 @@ export function useAlert() {
   return {
     isPlaying,
     playAlert,
-    alertsAvailable
+    alertsAvailable,
   }
 }

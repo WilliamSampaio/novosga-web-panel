@@ -48,7 +48,7 @@ export default {
    */
   clear() {
     Object.keys(localStorage)
-      .filter(key => key.startsWith(STORAGE_PREFIX))
-      .forEach(key => localStorage.removeItem(key))
-  }
+      .filter((key) => key.startsWith(STORAGE_PREFIX))
+      .forEach((key) => localStorage.removeItem(key))
+  },
 }

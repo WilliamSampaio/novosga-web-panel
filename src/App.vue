@@ -2,7 +2,13 @@
   <v-app id="inspire">
     <RouterView />
 
-    <v-snackbar-queue v-model="messages.queue" :timeout="3000" location="bottom center" variant="flat" closable>
+    <v-snackbar-queue
+      v-model="messages.queue"
+      :timeout="2000"
+      location="bottom center"
+      variant="flat"
+      closable
+    >
       <template v-slot:actions="{ props }">
         <v-btn icon="$close" variant="text" size="x-small" v-bind="props"></v-btn>
       </template>

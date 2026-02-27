@@ -15,7 +15,9 @@ export function useSpeech() {
       msg.text = text
       msg.lang = (lang || 'pt-BR').replace('_', '-').toLowerCase()
 
-      msg.onstart = () => { isSpeaking.value = true }
+      msg.onstart = () => {
+        isSpeaking.value = true
+      }
       msg.onerror = (e) => {
         isSpeaking.value = false
         reject(e)
@@ -55,6 +57,6 @@ export function useSpeech() {
     isSpeaking,
     speak,
     speakAll,
-    stop
+    stop,
   }
 }

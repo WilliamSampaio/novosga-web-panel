@@ -1,10 +1,8 @@
 <template>
   <div class="h-screen w-full relative overflow-hidden bg-white">
-
     <GoToSettingsButton />
 
     <Panel />
-
   </div>
 </template>
 
@@ -76,7 +74,7 @@ const startTokenMonitor = () => {
   timeoutId = setTimeout(async () => {
     if (!isRunning) return
     log('Monitor: Verificando validade do token...')
-    await checkAndRefreshToken().catch(() => { })
+    await checkAndRefreshToken().catch(() => {})
     startTokenMonitor()
   }, 60 * 1000)
 }
@@ -85,7 +83,6 @@ const startTokenMonitor = () => {
  * Conexão Real-time via Mercure (EventSource)
  */
 const connect = async (attempts = 3) => {
-
   if (!serverStore.apiUrl || !settingsStore.currentUnity) {
     log('Painel não configurado. Redirecionando...')
     router.push('/settings')
@@ -101,7 +98,9 @@ const connect = async (attempts = 3) => {
     // Lógica de montagem da URL do Mercure
     let mercureUrl = mainStore.apiInfo.mercureUrl || ''
     if (!mercureUrl.toLowerCase().startsWith('http')) {
-      let serverUrl = serverStore.apiUrl.endsWith('/') ? serverStore.apiUrl : serverStore.apiUrl + '/'
+      let serverUrl = serverStore.apiUrl.endsWith('/')
+        ? serverStore.apiUrl
+        : serverStore.apiUrl + '/'
       mercureUrl = mercureUrl.startsWith('/')
         ? serverUrl + mercureUrl.substring(1)
         : serverUrl + mercureUrl
@@ -145,7 +144,6 @@ onUnmounted(() => {
   document.documentElement.style.overflow = 'auto'
   document.body.style.overflow = 'auto'
 })
-
 </script>
 
 <style scoped></style>

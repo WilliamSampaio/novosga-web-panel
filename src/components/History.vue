@@ -3,17 +3,23 @@
     {{ $t('panel.history.title') }}
   </span>
 
-  <span v-if="props.history.length === 0" class="text-5xl font-bold uppercase"
-    :style="{ color: props.historyEmptyColor }">
+  <span
+    v-if="props.history.length === 0"
+    class="text-5xl font-bold uppercase"
+    :style="{ color: props.historyEmptyColor }"
+  >
     {{ $t('panel.empty') }}
   </span>
 
   <div class="w-full h-full flex flex-col items-center justify-around" v-else>
-
-    <div v-for="ticket in props.history" :key="ticket.id" class="flex flex-col text-center" :style="{
-      color: ticket.priority ? props.historyTicketPriorityColor : props.historyTicketColor
-    }">
-
+    <div
+      v-for="ticket in props.history"
+      :key="ticket.id"
+      class="flex flex-col text-center"
+      :style="{
+        color: ticket.priority ? props.historyTicketPriorityColor : props.historyTicketColor,
+      }"
+    >
       <span class="text-7xl font-bold uppercase">
         {{ ticket.ticket }}
       </span>
@@ -21,9 +27,7 @@
       <span v-if="props.showTicketLocal" class="text-3xl font-bold uppercase">
         {{ ticket.local }}
       </span>
-
     </div>
-
   </div>
 </template>
 

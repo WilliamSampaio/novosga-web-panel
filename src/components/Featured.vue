@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import PQueue from 'p-queue';
+import PQueue from 'p-queue'
 
 // Props (Substitui o export default props)
 const props = defineProps({
@@ -34,7 +34,7 @@ const emit = defineEmits(['blink'])
 const root = ref(null)
 
 // Configuração da Fila (Mantendo a lógica original)
-const queue = new PQueue({ concurrency: 1 });
+const queue = new PQueue({ concurrency: 1 })
 
 // Funções de utilidade para o efeito de piscar
 const toggleVisibility = (el) => {
