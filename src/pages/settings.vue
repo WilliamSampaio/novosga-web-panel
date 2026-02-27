@@ -1,50 +1,38 @@
 <template>
-  <!-- <v-navigation-drawer v-model="drawer" :rail="rail" permanent @click="rail = false">
-
+  <v-navigation-drawer v-model:rail="isRail" expand-on-hover permanent>
     <v-list>
-      <v-list-item>
+      <v-list-item class="pa-0 text-center">
+        <v-avatar v-if="isRail" image="/favicon.ico" size="40"></v-avatar>
+        <v-img v-else class="mx-auto" width="120" src="/images/logo.png" cover></v-img>
+      </v-list-item>
+    </v-list>
+
+    <v-divider></v-divider>
+
+    <v-list class="text-center" density="compact" nav>
+      <v-icon v-if="isRail" size="large">mdi-translate</v-icon>
+      <v-select v-else density="compact">
         <template v-slot:prepend>
-          <v-avatar v-if="rail" image="/favicon.ico"></v-avatar>
+          <v-icon size="large">mdi-translate</v-icon>
         </template>
+      </v-select>
+    </v-list>
 
-<v-img v-if="!rail" width="100" src="/images/logo.png" cover></v-img>
+    <v-divider></v-divider>
 
-<template v-slot:append>
-          <v-btn icon="mdi-chevron-left" variant="text" @click.stop="rail = !rail"></v-btn>
+    <v-list class="text-center" density="compact" nav>
+      <v-icon v-if="isRail" size="large">mdi-brightness-6</v-icon>
+      <v-switch v-else label="Modo escuro" density="compact" v-model="settingsStore.darkTheme">
+        <template v-slot:prepend>
+          <v-icon size="large">mdi-brightness-6</v-icon>
         </template>
-</v-list-item>
-</v-list>
+      </v-switch>
+    </v-list>
 
-<v-divider></v-divider>
-
-<v-list density="compact" nav>
-
-  <v-btn v-if="rail" :to="{ name: 'home' }" icon="mdi-chevron-left" size="small" variant="tonal"
-    color="primary"></v-btn>
-
-  <v-btn v-else :to="{ name: 'home' }" prepend-icon="mdi-chevron-left" variant="tonal" color="primary" block>
-    {{ $t('menu.go_back') }}
-  </v-btn>
-
-</v-list>
-
-<v-divider></v-divider>
-
-<v-list density="compact" nav>
-
-  <v-list-item prepend-icon="mdi-cog" title="Configurações" value="myfiles"></v-list-item>
-
-</v-list>
-
-<template #append>
-      <v-divider></v-divider>
-      <v-list density="compact" nav>
-        <v-list-item prepend-icon="mdi-github" title="NovoSGA Web Panel"
-          href="https://github.com/WilliamSampaio/novosga-web-panel" target="_blank"></v-list-item>
-      </v-list>
+    <template #append>
+      <!-- link para o GitHub -->
     </template>
-
-</v-navigation-drawer> -->
+  </v-navigation-drawer>
 
   <v-main>
     <v-fab
@@ -470,8 +458,8 @@ import ColorInput from '@/components/ColorInput.vue'
 import { useAlert } from '@/composables/audio'
 import { useSpeech } from '@/composables/speech'
 
-// const drawer = ref(true)
-// const rail = ref(false)
+// isRail true significa que ele começa apenas como uma barra estreita
+const isRail = ref(true)
 
 const selectDataUnities = computed(() => {
   return settingsStore.unities.map((u) => ({

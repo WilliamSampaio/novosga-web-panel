@@ -27,7 +27,7 @@ const vuetify = createVuetify({
     defaultSet: 'mdi',
   },
   theme: {
-    defaultTheme: 'system',
+    defaultTheme: 'light',
   },
 })
 

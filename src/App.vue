@@ -18,8 +18,22 @@
 
 <script setup>
 import { useMessagesStore } from '@/stores/messages'
+import { useSettingsStore } from './stores/settings'
+import { onMounted, watch } from 'vue'
+import { useTheme } from 'vuetify/lib/composables/theme'
 
 const messages = useMessagesStore()
+const settingsStore = useSettingsStore()
+
+const theme = useTheme()
+
+const applyTheme = () => {
+  theme.change(settingsStore.darkTheme ? 'dark' : 'light')
+}
+
+watch(() => settingsStore.darkTheme, applyTheme)
+
+onMounted(applyTheme)
 </script>
 
 <style scoped></style>

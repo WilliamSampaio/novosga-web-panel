@@ -15,6 +15,7 @@ export const useSettingsStore = defineStore('settings', {
       speech: false,
       alertSound: null,
       locale: null,
+      darkTheme: false,
     }
 
     const saved = storage.get('settings')
@@ -58,6 +59,11 @@ export const useSettingsStore = defineStore('settings', {
       }
 
       this.services = data
+    },
+
+    toggleDarkTheme() {
+      this.darkTheme = !this.darkTheme
+      this.save()
     },
   },
 })
