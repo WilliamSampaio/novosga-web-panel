@@ -26,6 +26,9 @@ const vuetify = createVuetify({
   icons: {
     defaultSet: 'mdi',
   },
+  theme: {
+    defaultTheme: 'system',
+  },
 })
 
 export default vuetify

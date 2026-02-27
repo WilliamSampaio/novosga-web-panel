@@ -1,45 +1,33 @@
 <template>
-  <div class="home">
-    <div class="menu">
-      <router-link to="/settings">
-        <span class="mdi mdi-cog"></span>
-        {{ $t('menu.settings') }}
-      </router-link>
-    </div>
-  </div>
+  <v-fab
+    class="menu"
+    :to="{ name: 'settings' }"
+    :absolute="false"
+    :app="true"
+    color="black"
+    location="top center"
+    variant="flat"
+    text="Ir para o Painel"
+    prepend-icon="mdi-chevron-left"
+    extended
+  >
+    {{ $t('menu.settings') }}
+  </v-fab>
 </template>
 
 <script setup></script>
 
 <style scoped lang="scss">
-.home {
-  .menu {
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    border-radius: 8px;
-    opacity: 0;
-    z-index: 100;
-    transition: opacity 0.2s ease-in-out;
+.menu {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  opacity: 0;
+  z-index: 100;
+  transition: opacity 0.2s ease-in-out;
 
-    &:hover {
-      opacity: 1;
-      background-color: rgba(0, 0, 0, 1);
-    }
-
-    a {
-      color: #ffffff;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      .icon {
-        margin-right: 5px;
-      }
-    }
+  &:hover {
+    opacity: 1;
   }
 }
 </style>

@@ -8,8 +8,6 @@ import vuetify from './plugins/vuetify'
 
 import 'moment/dist/locale/pt-br'
 
-import 'bulma/css/bulma.min.css'
-import 'font-awesome/css/font-awesome.min.css'
 import './style.css'
 
 const app = createApp(App)

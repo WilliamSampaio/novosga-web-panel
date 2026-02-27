@@ -1,0 +1,8 @@
+services:
+  web-panel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8999:80"
+    restart: always
