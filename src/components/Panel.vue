@@ -70,7 +70,7 @@
       <div class="text-4xl text-white text-center font-medium" :style="{ color: footer.textColor }">
         <Clock
           v-if="footer.showClock"
-          :locale="settingsStore.locale"
+          :locale="locale"
           :dateFormat="$t('date_format')"
           :fontColor="footer.textColor"
         />
@@ -93,7 +93,7 @@ import { useI18n } from 'vue-i18n'
 import Clock from '@/components/Clock.vue'
 import History from '@/components/History.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const mainStore = useMainStore()
 const settingsStore = useSettingsStore()
@@ -155,7 +155,7 @@ const playAudio = async () => {
       texts.push(msg.local)
       texts.push(msg.numeroLocal)
 
-      await speakAll(texts, settingsStore.locale)
+      await speakAll(texts, locale)
     }
   } catch (error) {
     console.error('Erro na sequência de áudio:', error)

@@ -501,8 +501,8 @@ import DialogGetImageUrlFromCustom from '@/components/DialogGetImageUrlFromCusto
 import ColorInput from '@/components/ColorInput.vue'
 import { useAlert } from '@/composables/audio'
 import { useSpeech } from '@/composables/speech'
-
 import { useI18n } from 'vue-i18n'
+
 const { locale } = useI18n()
 
 const selectDataUnities = computed(() => {
@@ -601,7 +601,7 @@ const loadServices = () => {
 }
 
 const testAlert = () => playAlert(settingsStore.alertSound)
-const testSpeech = (text) => speakAll([text], settingsStore.locale)
+const testSpeech = (text) => speakAll([text], locale)
 
 onBeforeMount(async () => {
   // Se já estiver autenticado, tenta atualizar o token e carregar as unidades e serviços

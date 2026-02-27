@@ -15,7 +15,6 @@ export const useSettingsStore = defineStore('settings', {
       enabledServices: [],
       speech: false,
       alertSound: null,
-      locale: null,
       darkTheme: false,
     }
 
