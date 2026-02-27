@@ -1,33 +1,26 @@
 <template>
-  <v-fab
-    class="menu"
-    :to="{ name: 'settings' }"
-    :absolute="false"
-    :app="true"
-    color="black"
-    location="top center"
-    variant="flat"
-    text="Ir para o Painel"
-    prepend-icon="mdi-chevron-left"
-    extended
-  >
-    {{ $t('menu.settings') }}
-  </v-fab>
+  <v-hover v-slot="{ isHovering, props }">
+    <v-fab
+      v-bind="props"
+      :to="{ name: 'settings' }"
+      :app="true"
+      color="black"
+      location="top center"
+      variant="flat"
+      prepend-icon="mdi-chevron-left"
+      extended
+      class="transition-swing"
+      :style="{
+        opacity: isHovering ? 1 : 0,
+        transition: 'opacity 0.3s ease-in-out',
+        pointerEvents: 'auto',
+      }"
+    >
+      {{ $t('menu.settings') }}
+    </v-fab>
+  </v-hover>
 </template>
 
 <script setup></script>
 
-<style scoped lang="scss">
-.menu {
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  opacity: 0;
-  z-index: 100;
-  transition: opacity 0.2s ease-in-out;
-
-  &:hover {
-    opacity: 1;
-  }
-}
-</style>
+<style scoped></style>

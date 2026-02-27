@@ -1,7 +1,6 @@
 <template>
   <div class="h-screen w-full relative overflow-hidden bg-white">
     <GoToSettingsButton />
-
     <Panel />
   </div>
 </template>
