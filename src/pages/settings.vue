@@ -601,7 +601,7 @@ const loadServices = () => {
 }
 
 const testAlert = () => playAlert(settingsStore.alertSound)
-const testSpeech = (text) => speakAll([text], locale)
+const testSpeech = (text) => speakAll([text], locale.value)
 
 onBeforeMount(async () => {
   // Se já estiver autenticado, tenta atualizar o token e carregar as unidades e serviços

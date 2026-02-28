@@ -147,7 +147,6 @@ const playAudio = async () => {
 
       // texts.push('Paciente')
 
-      console.log(msg.nomeCliente)
       if (msg.nomeCliente) texts.push(msg.nomeCliente)
 
       // texts.push('Local')
@@ -155,7 +154,7 @@ const playAudio = async () => {
       texts.push(msg.local)
       texts.push(msg.numeroLocal)
 
-      await speakAll(texts, locale)
+      await speakAll(texts, locale.value)
     }
   } catch (error) {
     console.error('Erro na sequência de áudio:', error)
