@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
 import storage from '@/composables/storage'
+import { LIST_PANEL_MODELS } from '@/plugins/registry'
 
 export const usePanelStore = defineStore('panel', {
   state: () => {
     const defaults = {
+      panel: import.meta.env.VITE_PANEL ?? 'default',
       header: {
         leftLogoUrl: import.meta.env.VITE_HEADER_LEFT_LOGO_URL,
         bgColor: import.meta.env.VITE_HEADER_BG_COLOR,
@@ -28,24 +30,26 @@ export const usePanelStore = defineStore('panel', {
         historyEmptyColor: import.meta.env.VITE_MAIN_HISTORY_EMPTY_COLOR,
         historyShowLocal: import.meta.env.VITE_MAIN_HISTORY_SHOW_LOCAL === 'true',
       },
-      video: {
-        videoId: import.meta.env.VITE_VIDEO_ID,
-        isPlaylist: import.meta.env.VITE_VIDEO_IS_PLAYLIST === 'true',
-      },
     }
 
     const saved = storage.get('panel')
     if (!saved) return defaults
 
     return {
+      panel: saved.panel ?? defaults.panel,
       header: { ...defaults.header, ...saved.header },
       footer: { ...defaults.footer, ...saved.footer },
       main: { ...defaults.main, ...saved.main },
-      video: { ...defaults.video, ...saved.video },
     }
   },
 
   getters: {
+    listPanelModels: () => {
+      return Object.entries(LIST_PANEL_MODELS).map(([key, data]) => ({
+        title: data.name,
+        value: key,
+      }))
+    },
     headerLeftLogoUrlIsDefined: (state) =>
       state.header.leftLogoUrl !== undefined &&
       state.header.leftLogoUrl !== null &&

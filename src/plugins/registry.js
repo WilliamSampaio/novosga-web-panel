@@ -1,0 +1,16 @@
+import { defineAsyncComponent } from 'vue'
+
+export const LIST_PANEL_MODELS = {
+  default: {
+    name: 'Default',
+    component: defineAsyncComponent(() => import('@/components/panels/Default/Panel.vue')),
+    previewComponent: defineAsyncComponent(() => import('@/components/panels/Default/Preview.vue')),
+  },
+  model001: {
+    name: 'Model001',
+    component: defineAsyncComponent(() => import('@/components/panels/Model001/Panel.vue')),
+    previewComponent: defineAsyncComponent(
+      () => import('@/components/panels/Model001/Preview.vue'),
+    ),
+  },
+}

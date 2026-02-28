@@ -13,7 +13,7 @@
 
   <div class="w-full h-full flex flex-col items-center justify-around" v-else>
     <div
-      v-for="ticket in props.history"
+      v-for="ticket in props.history.slice(0, 3)"
       :key="ticket.id"
       class="flex flex-col text-center"
       :style="{

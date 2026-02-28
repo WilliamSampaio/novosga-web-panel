@@ -11,42 +11,36 @@
     </div>
 
     <!-- MAIN -->
-    <div
-      class="flex flex-1 py-10 items-center justify-between"
-      :style="{ backgroundColor: main.bgColor }"
-    >
+    <div class="h-full flex flex-col justify-between" :style="{ backgroundColor: main.bgColor }">
       <!-- CURRENT TICKET -->
-      <div class="ml-5 flex w-3/4 h-full flex-col justify-between">
-        <span class="text-5xl font-bold uppercase" :style="{ color: main.ticketLabelColor }">
-          {{ ticketLabel }}
-        </span>
-
+      <div class="ma-5 h-1/2 flex flex-col justify-between">
         <div class="flex flex-col">
-          <span class="text-8xl font-bold uppercase" :style="{ color: ticketColor }">
-            {{ mainStore.message.ticket ?? $t('panel.empty') }}
+          <span class="text-5xl font-bold uppercase" :style="{ color: main.ticketLabelColor }">
+            {{ ticketLabel }} {{ mainStore.message.ticket ?? $t('panel.empty') }}
           </span>
 
-          <span
-            v-if="mainStore.message.clientName"
-            class="text-5xl font-bold uppercase"
-            :style="{ color: ticketColor }"
-          >
-            {{ mainStore.message.clientName }}
+          <span class="text-8xl font-bold uppercase" :style="{ color: ticketColor }">
+            {{
+              mainStore.message.clientName
+                ? formatarNome(mainStore.message.clientName)
+                : mainStore.message.ticket
+            }}
           </span>
         </div>
 
-        <span class="text-5xl font-bold uppercase" :style="{ color: main.serviceColor }">
-          {{ mainStore.message.$data?.servico.descricao ?? $t('panel.empty') }}
-        </span>
-
-        <span class="text-8xl font-bold uppercase" :style="{ color: main.localColor }">
-          {{ mainStore.message.local ?? $t('panel.empty') }}
-        </span>
+        <div class="flex flex-col">
+          <span class="text-5xl font-bold uppercase" :style="{ color: main.serviceColor }">
+            {{ mainStore.message.$data?.servico.descricao ?? $t('panel.empty') }}
+          </span>
+          <span class="text-8xl font-bold uppercase" :style="{ color: main.localColor }">
+            {{ mainStore.message.local ?? $t('panel.empty') }}
+          </span>
+        </div>
       </div>
 
       <!-- HISTORY -->
       <div
-        class="px-5 flex w-1/4 h-full flex-col items-center rounded-l-3xl"
+        class="pa-3 h-1/2 flex flex-col items-center rounded-t-3xl"
         :style="{ backgroundColor: main.historyBgColor }"
       >
         <History
@@ -88,10 +82,11 @@ import { usePanelStore } from '@/stores/panel'
 import { useSettingsStore } from '@/stores/settings'
 import { useAlert } from '@/composables/audio'
 import { useSpeech } from '@/composables/speech'
+import { formatarNome } from '@/util/functions'
 import { useI18n } from 'vue-i18n'
 
 import Clock from '@/components/Clock.vue'
-import History from '@/components/History.vue'
+import History from './History.vue'
 
 const { t, locale } = useI18n()
 
@@ -114,7 +109,7 @@ const unityDescription = computed(() => {
 
 const ticketLabel = computed(() => {
   return mainStore.message.priority
-    ? `${t('panel.ticket')} (${t('panel.priority')})`
+    ? `(${t('panel.priority')}) ${t('panel.ticket')}`
     : t('panel.ticket')
 })
 
@@ -141,9 +136,9 @@ const playAudio = async () => {
 
       const texts = []
 
-      texts.push('Senha')
-      texts.push(...msg.siglaSenha)
-      texts.push(msg.numeroSenha)
+      // texts.push('Senha')
+      // texts.push(...msg.siglaSenha)
+      // texts.push(msg.numeroSenha)
 
       // texts.push('Paciente')
 

@@ -4,7 +4,7 @@ import { useAuthStore } from './auth'
 import { useServerStore } from './server'
 import { useSettingsStore } from './settings'
 
-const HISTORY_MAX_LENGTH = 4
+const HISTORY_MAX_LENGTH = 10
 
 // const locales = import.meta.glob('../../public/i18n/*.json')
 

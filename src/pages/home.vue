@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen w-full relative overflow-hidden bg-white">
     <GoToSettingsButton />
-    <Panel />
+    <PanelLoader :panel="panelStore.panel" />
   </div>
 </template>
 
@@ -12,14 +12,16 @@ import { log } from '@/util/functions'
 import { onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
 
 import GoToSettingsButton from '@/components/GoToSettingsButton.vue'
-import Panel from '@/components/Panel.vue'
 import { useAuthStore } from '@/stores/auth'
+import { usePanelStore } from '@/stores/panel'
 import { useServerStore } from '@/stores/server'
 import { useSettingsStore } from '@/stores/settings'
+import PanelLoader from '@/components/panels/PanelLoader.vue'
 
 const router = useRouter()
-const mainStore = useMainStore()
 const authStore = useAuthStore()
+const mainStore = useMainStore()
+const panelStore = usePanelStore()
 const serverStore = useServerStore()
 const settingsStore = useSettingsStore()
 

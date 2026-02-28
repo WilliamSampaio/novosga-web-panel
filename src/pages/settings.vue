@@ -242,8 +242,19 @@
           >
             <v-divider></v-divider>
 
+            <v-card-text>
+              <v-select
+                v-model="panelStore.panel"
+                :items="panelStore.listPanelModels"
+                label="Modelo do painel"
+                prepend-icon="mdi-panorama-outline"
+                density="compact"
+              >
+              </v-select>
+            </v-card-text>
+
             <v-card-text class="pa-0">
-              <PanelPreview />
+              <PanelLoader :panel="panelStore.panel" :is-preview="true" />
             </v-card-text>
 
             <v-divider></v-divider>
@@ -491,16 +502,16 @@
 
 <script setup>
 import { computed, onBeforeMount, ref, watch } from 'vue'
+import { useAlert } from '@/composables/audio'
+import { useSpeech } from '@/composables/speech'
 import { useAuthStore } from '@/stores/auth'
 import { useMessagesStore } from '@/stores/messages'
 import { usePanelStore } from '@/stores/panel'
 import { useServerStore } from '@/stores/server'
 import { useSettingsStore } from '@/stores/settings'
-import PanelPreview from '@/components/PanelPreview.vue'
-import DialogGetImageUrlFromCustom from '@/components/DialogGetImageUrlFromCustom.vue'
 import ColorInput from '@/components/ColorInput.vue'
-import { useAlert } from '@/composables/audio'
-import { useSpeech } from '@/composables/speech'
+import DialogGetImageUrlFromCustom from '@/components/DialogGetImageUrlFromCustom.vue'
+import PanelLoader from '@/components/panels/PanelLoader.vue'
 import { useI18n } from 'vue-i18n'
 
 const { locale } = useI18n()
