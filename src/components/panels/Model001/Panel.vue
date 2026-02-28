@@ -15,8 +15,19 @@
       <!-- CURRENT TICKET -->
       <div class="ma-5 h-1/2 flex flex-col justify-between">
         <div class="flex flex-col">
-          <span class="text-5xl font-bold uppercase" :style="{ color: main.ticketLabelColor }">
+          <span
+            v-if="mainStore.message.clientName"
+            class="text-5xl font-bold uppercase"
+            :style="{ color: main.ticketLabelColor }"
+          >
             {{ ticketLabel }} {{ mainStore.message.ticket ?? $t('panel.empty') }}
+          </span>
+          <span
+            v-else
+            class="text-5xl font-bold uppercase"
+            :style="{ color: main.ticketLabelColor }"
+          >
+            {{ ticketLabel }}
           </span>
 
           <span class="text-8xl font-bold uppercase" :style="{ color: ticketColor }">
@@ -136,18 +147,20 @@ const playAudio = async () => {
 
       const texts = []
 
-      // texts.push('Senha')
-      // texts.push(...msg.siglaSenha)
-      // texts.push(msg.numeroSenha)
+      if (msg.nomeCliente) {
+        texts.push(msg.nomeCliente)
+      } else {
+        texts.push('Senha')
+        texts.push(...msg.siglaSenha)
+        texts.push(msg.numeroSenha)
+      }
 
-      // texts.push('Paciente')
-
-      if (msg.nomeCliente) texts.push(msg.nomeCliente)
-
-      // texts.push('Local')
+      texts.push('por favor, se dirigir ao ')
 
       texts.push(msg.local)
       texts.push(msg.numeroLocal)
+
+      texts.push(msg.servico.descricao)
 
       await speakAll(texts, locale.value)
     }

@@ -37,18 +37,33 @@
               <div class="ma-1 h-1/2 flex flex-col justify-between">
                 <div class="flex flex-col">
                   <span
+                    v-if="!panelState.hideClientName"
                     class="text-1xl font-bold uppercase"
                     :style="{ color: main.ticketLabelColor }"
                   >
                     {{ ticketLabel }} {{ panelDataPreview.message.ticket }}
                   </span>
+                  <span
+                    v-else
+                    class="text-1xl font-bold uppercase"
+                    :style="{ color: main.ticketLabelColor }"
+                  >
+                    {{ ticketLabel }}
+                  </span>
 
-                  <span class="text-3xl font-bold uppercase" :style="{ color: ticketColor }">
+                  <span
+                    v-if="!panelState.hideClientName"
+                    class="text-3xl font-bold uppercase"
+                    :style="{ color: ticketColor }"
+                  >
                     {{
                       panelDataPreview.message.clientName
                         ? formatarNome(panelDataPreview.message.clientName)
                         : ticketLabel
                     }}
+                  </span>
+                  <span v-else class="text-3xl font-bold uppercase" :style="{ color: ticketColor }">
+                    {{ panelDataPreview.message.ticket }}
                   </span>
                 </div>
 
@@ -147,7 +162,19 @@
         label="Painel vazio"
         hide-details
         color="primary"
-        :disabled="panelState.priority === true || panelState.historyEmpty === true"
+        :disabled="
+          panelState.hideClientName === true ||
+          panelState.priority === true ||
+          panelState.historyEmpty === true
+        "
+      ></v-switch>
+
+      <v-switch
+        v-model="panelState.hideClientName"
+        label="Nome do cliente não informado"
+        hide-details
+        color="primary"
+        :disabled="panelState.empty === true"
       ></v-switch>
 
       <v-switch
@@ -180,6 +207,7 @@ const { t } = useI18n()
 
 const panelState = reactive({
   empty: false,
+  hideClientName: false,
   priority: false,
   historyEmpty: false,
 })
