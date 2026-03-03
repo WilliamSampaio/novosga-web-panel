@@ -36,7 +36,7 @@
         </div>
 
         <span class="text-5xl font-bold uppercase" :style="{ color: main.serviceColor }">
-          {{ mainStore.message.$data?.servico.descricao ?? $t('panel.empty') }}
+          {{ mainStore.message.$data?.servico.nome ?? $t('panel.empty') }}
         </span>
 
         <span class="text-8xl font-bold uppercase" :style="{ color: main.localColor }">

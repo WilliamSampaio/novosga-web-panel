@@ -98,7 +98,7 @@
                   {{ $t('panel.empty') }}
                 </span>
 
-                <div class="w-full h-full flex flex-col justify-between" v-else>
+                <div class="w-full h-full" v-else>
                   <div
                     class="flex justify-between"
                     v-for="ticket in panelDataPreview.history.slice(0, 6)"

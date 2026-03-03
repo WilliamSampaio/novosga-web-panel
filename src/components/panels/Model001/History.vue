@@ -11,7 +11,7 @@
     {{ $t('panel.empty') }}
   </span>
 
-  <div class="w-full h-full flex flex-col justify-between" v-else>
+  <div class="w-full h-full" v-else>
     <div
       class="flex justify-between"
       v-for="ticket in props.history.slice(0, 6)"
@@ -25,7 +25,7 @@
         {{ ticket.clientName ? formatarNome(ticket.clientName, true) : $t('panel.empty') }}
       </span>
       <span class="w-[50%] text-4xl font-bold uppercase">
-        {{ formatarNome(ticket.$data?.servico.descricao) }}
+        {{ formatarNome(ticket.$data?.servico.nome) }}
       </span>
     </div>
   </div>
