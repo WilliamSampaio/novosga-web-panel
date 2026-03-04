@@ -1,10 +1,12 @@
 <template>
   <v-text-field
     v-model="panelStore.panel.speechText"
+    label="Template da chamada"
     prepend-icon="mdi-account-voice"
     density="compact"
     maxlength="100"
     :disabled="!settingsStore.speech"
+    clearable
   >
     <template v-slot:append>
       <v-btn variant="flat" color="success" append-icon="mdi-play" @click="testSpeechText">
@@ -13,49 +15,22 @@
     </template>
   </v-text-field>
 
-  <v-chip-group>
+  <div>
     <v-chip
+      v-for="tag in tags"
+      :key="tag.key"
       @click="
-        () =>
-          (panelStore.panel.speechText = String(panelStore.panel.speechText).trim() + ' $TICKET$ ')
+        () => (panelStore.panel.speechText = (panelStore.panel.speechText || '') + ` ${tag.key} `)
       "
+      :prepend-icon="tag.icon"
+      :color="tag.color"
+      variant="tonal"
+      type="primary"
+      class="mx-1 my-1"
     >
-      Ticket
+      {{ tag.text }}
     </v-chip>
-    <v-chip
-      @click="
-        () =>
-          (panelStore.panel.speechText = String(panelStore.panel.speechText).trim() + ' $CLIENT$ ')
-      "
-    >
-      Client
-    </v-chip>
-    <v-chip
-      @click="
-        () =>
-          (panelStore.panel.speechText =
-            String(panelStore.panel.speechText).trim() + ' $CLIENT_OR_TICKET$ ')
-      "
-    >
-      Client OR Ticket
-    </v-chip>
-    <v-chip
-      @click="
-        () =>
-          (panelStore.panel.speechText = String(panelStore.panel.speechText).trim() + ' $LOCAL$ ')
-      "
-    >
-      Local
-    </v-chip>
-    <v-chip
-      @click="
-        () =>
-          (panelStore.panel.speechText = String(panelStore.panel.speechText).trim() + ' $SERVICE$ ')
-      "
-    >
-      Service
-    </v-chip>
-  </v-chip-group>
+  </div>
 </template>
 
 <script setup>
@@ -63,9 +38,30 @@ import { useSpeech } from '@/composables/speech'
 import { usePanelStore } from '@/stores/panel'
 import { useSettingsStore } from '@/stores/settings'
 import { onBeforeMount } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const panelStore = usePanelStore()
 const settingsStore = useSettingsStore()
+
+const tags = [
+  { text: t('panel.ticket'), key: '$TICKET$', icon: 'mdi-invoice-list-outline', color: 'primary' },
+  {
+    text: t('panel.client'),
+    key: '$CLIENT$',
+    icon: 'mdi-account-injury-outline',
+    color: 'primary',
+  },
+  {
+    text: t('panel.client_or_ticket'),
+    key: '$CLIENT_OR_TICKET$',
+    icon: 'mdi-gate-or',
+    color: 'primary',
+  },
+  { text: t('panel.local'), key: '$LOCAL$', icon: 'mdi-map-marker-outline', color: 'primary' },
+  { text: t('panel.service'), key: '$SERVICE$', icon: 'mdi-face-agent', color: 'primary' },
+]
 
 const { speakAll } = useSpeech()
 
@@ -74,10 +70,10 @@ const testSpeechText = () => {
     panelStore.getParsedSpeechText({
       ticketCode: 'ABC',
       ticketNumber: 7,
-      clientName: 'james bond',
-      local: 'Local',
-      localNumber: 99,
-      service: 'Serviço',
+      clientName: 'James Bond',
+      local: 'Guichê',
+      localNumber: 1,
+      service: 'Triagem',
     }),
   ])
 }
