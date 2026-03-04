@@ -5,6 +5,7 @@ export const LIST_PANEL_MODELS = {
     name: 'Default',
     component: defineAsyncComponent(() => import('@/components/panels/Default/Panel.vue')),
     previewComponent: defineAsyncComponent(() => import('@/components/panels/Default/Preview.vue')),
+    text: '$TICKET$ $CLIENT$ $LOCAL$',
   },
   model001: {
     name: 'Model001',
@@ -12,5 +13,6 @@ export const LIST_PANEL_MODELS = {
     previewComponent: defineAsyncComponent(
       () => import('@/components/panels/Model001/Preview.vue'),
     ),
+    text: '$CLIENT_OR_TICKET$ $LOCAL$ $SERVICE$',
   },
 }

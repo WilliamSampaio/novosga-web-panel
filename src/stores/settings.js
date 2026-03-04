@@ -2,9 +2,9 @@ import { defineStore } from 'pinia'
 import { Client as Client21 } from '@/composables/api/21'
 import { useServerStore } from './server'
 import { useAuthStore } from './auth'
-import storage from '@/composables/storage'
 import { useMessagesStore } from './messages'
-import { useI18n } from 'vue-i18n'
+import storage from '@/composables/storage'
+import i18n from '@/plugins/i18n'
 
 export const useSettingsStore = defineStore('settings', {
   state: () => {
@@ -29,7 +29,7 @@ export const useSettingsStore = defineStore('settings', {
 
   getters: {
     getLocales: () => {
-      const { messages, availableLocales } = useI18n()
+      const { messages, availableLocales } = i18n.global
       return availableLocales.map((lang) => ({
         title: messages.value[lang].language_name || lang,
         value: lang,

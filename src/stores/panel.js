@@ -1,11 +1,15 @@
+import { LIST_PANEL_MODELS } from '@/plugins/registry'
 import { defineStore } from 'pinia'
 import storage from '@/composables/storage'
-import { LIST_PANEL_MODELS } from '@/plugins/registry'
+import i18n from '@/plugins/i18n'
 
 export const usePanelStore = defineStore('panel', {
   state: () => {
     const defaults = {
-      panel: import.meta.env.VITE_PANEL ?? 'default',
+      panel: {
+        model: import.meta.env.VITE_PANEL || 'default',
+        speechText: null,
+      },
       header: {
         leftLogoUrl: import.meta.env.VITE_HEADER_LEFT_LOGO_URL,
         bgColor: import.meta.env.VITE_HEADER_BG_COLOR,
@@ -36,7 +40,7 @@ export const usePanelStore = defineStore('panel', {
     if (!saved) return defaults
 
     return {
-      panel: saved.panel ?? defaults.panel,
+      panel: { ...defaults.panel, ...saved.panel },
       header: { ...defaults.header, ...saved.header },
       footer: { ...defaults.footer, ...saved.footer },
       main: { ...defaults.main, ...saved.main },
@@ -49,6 +53,9 @@ export const usePanelStore = defineStore('panel', {
         title: data.name,
         value: key,
       }))
+    },
+    getCurrentPanelModel: (state) => {
+      return LIST_PANEL_MODELS[state.panel.model] || null
     },
     headerLeftLogoUrlIsDefined: (state) =>
       state.header.leftLogoUrl !== undefined &&
@@ -67,6 +74,47 @@ export const usePanelStore = defineStore('panel', {
   actions: {
     save() {
       storage.set('panel', this.$state)
+    },
+
+    /**
+     * @param {Object} data
+     * @param {string} data.ticketCode
+     * @param {number} data.ticketNumber
+     * @param {string} data.clientName
+     * @param {string} data.local
+     * @param {number} data.localNumber
+     * @param {string} data.service
+     * @returns {string}
+     */
+    getParsedSpeechText({ ticketCode, ticketNumber, clientName, local, localNumber, service }) {
+      const { t } = i18n.global
+
+      if (this.$state.panel.speechText === null) return ''
+
+      let text = this.$state.panel.speechText
+
+      const ticketText = [t('panel.ticket'), ...ticketCode, ticketNumber].join(' ')
+      const clientText = clientName || ''
+      const localText = [local, localNumber].join(' ')
+
+      const replacements = {
+        $TICKET$: ticketText,
+        $CLIENT$: clientText,
+        $CLIENT_OR_TICKET$: clientText || ticketText,
+        $LOCAL$: localText,
+        $SERVICE$: service || '',
+      }
+
+      const regex = new RegExp(
+        Object.keys(replacements)
+          .map((key) => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+          .join('|'),
+        'g',
+      )
+
+      text = text.replace(regex, (matched) => replacements[matched])
+
+      return text.split(/\s+/).filter(Boolean).join(' ')
     },
   },
 })

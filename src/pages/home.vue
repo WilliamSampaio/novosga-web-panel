@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen w-full relative overflow-hidden bg-white">
     <GoToSettingsButton />
-    <PanelLoader :panel="panelStore.panel" />
+    <PanelLoader :panel="panelStore.panel.model" />
   </div>
 </template>
 

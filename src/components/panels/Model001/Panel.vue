@@ -143,26 +143,18 @@ const playAudio = async () => {
 
     // 2. Vocalização (Se habilitado)
     if (settingsStore.speech) {
-      const msg = lastMessage.value.$data
+      const message = lastMessage.value.$data
 
-      const texts = []
+      const text = panelStore.getParsedSpeechText({
+        ticketCode: message.siglaSenha,
+        ticketNumber: message.numeroSenha,
+        clientName: message.nomeCliente,
+        local: message.local,
+        localNumber: message.numeroLocal,
+        service: message.servico.nome,
+      })
 
-      if (msg.nomeCliente) {
-        texts.push(msg.nomeCliente)
-      } else {
-        texts.push('Senha')
-        texts.push(...msg.siglaSenha)
-        texts.push(msg.numeroSenha)
-      }
-
-      texts.push('por favor, se dirigir ao ')
-
-      texts.push(msg.local)
-      texts.push(msg.numeroLocal)
-
-      texts.push(msg.servico.descricao)
-
-      await speakAll(texts, locale.value)
+      await speakAll([text], locale.value)
     }
   } catch (error) {
     console.error('Erro na sequência de áudio:', error)

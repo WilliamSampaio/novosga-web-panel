@@ -244,7 +244,7 @@
 
             <v-card-text>
               <v-select
-                v-model="panelStore.panel"
+                v-model="panelStore.panel.model"
                 :items="panelStore.listPanelModels"
                 label="Modelo do painel"
                 prepend-icon="mdi-panorama-outline"
@@ -254,7 +254,7 @@
             </v-card-text>
 
             <v-card-text class="pa-0">
-              <PanelLoader :panel="panelStore.panel" :is-preview="true" />
+              <PanelLoader :panel="panelStore.panel.model" :is-preview="true" />
             </v-card-text>
 
             <v-divider></v-divider>
@@ -493,6 +493,10 @@
                 </template>
               </v-switch>
             </v-card-text>
+            <v-divider></v-divider>
+            <v-card-text>
+              <SpeechTextEditor />
+            </v-card-text>
           </v-card>
         </v-col>
       </v-row>
@@ -509,10 +513,11 @@ import { useMessagesStore } from '@/stores/messages'
 import { usePanelStore } from '@/stores/panel'
 import { useServerStore } from '@/stores/server'
 import { useSettingsStore } from '@/stores/settings'
+import { useI18n } from 'vue-i18n'
 import ColorInput from '@/components/ColorInput.vue'
 import DialogGetImageUrlFromCustom from '@/components/DialogGetImageUrlFromCustom.vue'
 import PanelLoader from '@/components/panels/PanelLoader.vue'
-import { useI18n } from 'vue-i18n'
+import SpeechTextEditor from '@/components/SpeechTextEditor.vue'
 
 const { locale } = useI18n()
 
