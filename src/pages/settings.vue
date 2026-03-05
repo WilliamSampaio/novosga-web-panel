@@ -498,6 +498,35 @@
               <SpeechTextEditor />
             </v-card-text>
           </v-card>
+
+          <v-card class="mb-8 border-error-thin" variant="outlined" elevation="0">
+            <v-card-item class="bg-error-lighten-5">
+              <template v-slot:prepend>
+                <v-icon color="error">mdi-shield-alert-outline</v-icon>
+              </template>
+              <v-card-title class="text-error font-weight-bold"> Área Crítica </v-card-title>
+            </v-card-item>
+
+            <v-card-text class="pa-6">
+              <v-row no-gutters>
+                <v-col cols="12" md="8">
+                  <div class="text-subtitle-1 font-weight-bold mb-1">
+                    Redefinir este painel para o estado de fábrica
+                  </div>
+                  <p class="text-body-2 text-medium-emphasis">
+                    Ao confirmar, todas as preferências de cores, logos, URLs de API e templates de
+                    fala armazenados neste navegador serão apagados permanentemente.
+                  </p>
+                </v-col>
+
+                <v-spacer></v-spacer>
+
+                <v-col cols="12" md="auto" class="mt-4 mt-md-0">
+                  <ResetConfiguration />
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -518,6 +547,7 @@ import ColorInput from '@/components/ColorInput.vue'
 import DialogGetImageUrlFromCustom from '@/components/DialogGetImageUrlFromCustom.vue'
 import PanelLoader from '@/components/panels/PanelLoader.vue'
 import SpeechTextEditor from '@/components/SpeechTextEditor.vue'
+import ResetConfiguration from '@/components/ResetConfiguration.vue'
 
 const { locale } = useI18n()
 
@@ -636,3 +666,13 @@ onBeforeMount(async () => {
   }
 })
 </script>
+
+<style scoped>
+/* Estilização extra para a borda ficar sutil mas visível como erro */
+.border-error-thin {
+  border: 1px solid rgba(var(--v-theme-error), 0.3) !important;
+}
+.bg-error-lighten-5 {
+  background-color: rgba(var(--v-theme-error), 0.05);
+}
+</style>
