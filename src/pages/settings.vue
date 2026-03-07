@@ -670,6 +670,7 @@ watch(toggleAllServices, (newValue) => {
 })
 
 const clearUnitiesAndServices = (clearCurrentUnities = false) => {
+  toggleAllServices.value = false
   settingsStore.currentUnity = null
   settingsStore.enabledServices = []
   if (clearCurrentUnities) settingsStore.unities = []
