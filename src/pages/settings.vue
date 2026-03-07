@@ -217,6 +217,14 @@
 
               <div v-if="settingsStore.services.length > 0">
                 <v-switch
+                  label="Marcar Todos"
+                  v-model="toggleAllServices"
+                  color="info"
+                  density="compact"
+                  :disabled="disabledToogleAllServices"
+                ></v-switch>
+
+                <v-switch
                   v-for="s in settingsStore.services"
                   :key="s.servico.id"
                   :label="`${s.servico.id} - ${s.servico.nome}`"
@@ -551,6 +559,8 @@ import ResetConfiguration from '@/components/ResetConfiguration.vue'
 
 const { locale } = useI18n()
 
+const toggleAllServices = ref(false)
+
 const selectDataUnities = computed(() => {
   return settingsStore.unities.map((u) => ({
     value: u.id,
@@ -563,6 +573,16 @@ const selectDataAlertAvailable = computed(() => {
     title: name,
     value: file,
   }))
+})
+
+const disabledToogleAllServices = computed(() => {
+  if (
+    settingsStore.enabledServices.length > 0 &&
+    settingsStore.enabledServices.length !== settingsStore.services.length
+  ) {
+    return true
+  }
+  return false
 })
 
 const openGitHub = () => {
@@ -633,6 +653,18 @@ watch(
   },
   { deep: true },
 )
+
+watch(toggleAllServices, (newValue) => {
+  if (newValue === true) {
+    settingsStore.enabledServices = settingsStore.services.map((i) => i.servico.id)
+    return
+  }
+
+  if (newValue === false) {
+    settingsStore.enabledServices = []
+    return
+  }
+})
 
 const clearUnitiesAndServices = (clearCurrentUnities = false) => {
   settingsStore.currentUnity = null
