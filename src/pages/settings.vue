@@ -17,7 +17,7 @@
           <v-card>
             <v-card-text class="flex flex-column justify-center">
               <v-select
-                v-model="locale"
+                v-model="settingsStore.locale"
                 :items="settingsStore.getLocales"
                 item-title="title"
                 item-value="value"
@@ -44,7 +44,9 @@
     <v-list class="text-center" density="compact" nav>
       <v-dialog max-width="400">
         <template v-slot:activator="{ props: activatorProps }">
-          <v-icon v-bind="activatorProps" size="large">mdi-brightness-6</v-icon>
+          <v-icon v-bind="activatorProps" size="large">
+            {{ settingsStore.darkTheme ? 'mdi-brightness-4' : 'mdi-brightness-6' }}
+          </v-icon>
         </template>
         <template v-slot:default="{ isActive }">
           <v-card>
@@ -658,16 +660,24 @@ watch(
 )
 
 watch(toggleAllServices, (newValue) => {
-  if (newValue === true) {
-    settingsStore.enabledServices = settingsStore.services.map((i) => i.servico.id)
-    return
-  }
+  const allIds = settingsStore.services.map((i) => i.servico.id)
 
-  if (newValue === false) {
+  if (newValue && settingsStore.enabledServices.length !== allIds.length) {
+    settingsStore.enabledServices = allIds
+  } else if (!newValue && settingsStore.enabledServices.length > 0) {
     settingsStore.enabledServices = []
-    return
   }
 })
+
+watch(
+  () => settingsStore.locale,
+  (newLocale) => {
+    if (newLocale && locale.value !== newLocale) {
+      locale.value = newLocale
+    }
+  },
+  { immediate: true },
+)
 
 const clearUnitiesAndServices = (clearCurrentUnities = false) => {
   toggleAllServices.value = false

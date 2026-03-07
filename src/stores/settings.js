@@ -16,11 +16,14 @@ export const useSettingsStore = defineStore('settings', {
       speech: false,
       alertSound: null,
       darkTheme: false,
+      locale: 'pt_BR',
       devMode: import.meta.env.DEV,
     }
 
     const saved = storage.get('settings')
     if (!saved) return defaults
+
+    if (saved.locale) i18n.global.locale.value = saved.locale
 
     return {
       ...defaults,
