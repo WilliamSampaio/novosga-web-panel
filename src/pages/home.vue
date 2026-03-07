@@ -10,6 +10,7 @@ import { useMainStore } from '@/stores/main'
 import { useRouter } from 'vue-router'
 import { log } from '@/util/functions'
 import { onBeforeMount, onBeforeUnmount, onMounted, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import GoToSettingsButton from '@/components/GoToSettingsButton.vue'
 import { useAuthStore } from '@/stores/auth'
@@ -18,6 +19,7 @@ import { useServerStore } from '@/stores/server'
 import { useSettingsStore } from '@/stores/settings'
 import PanelLoader from '@/components/panels/PanelLoader.vue'
 
+const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
 const mainStore = useMainStore()
@@ -35,14 +37,14 @@ let isRunning = false
 const checkAndRefreshToken = async () => {
   try {
     if (authStore.isAuthenticated && authStore.isExpired) {
-      log('Token expirado, tentando refresh...')
+      log(t('logs.token_expired'))
       await authStore.refresh()
     } else if (!authStore.isAuthenticated) {
-      log('Não autenticado, gerando novo token...')
+      log(t('logs.not_authenticated'))
       await authStore.token()
     }
   } catch (error) {
-    log('Erro crítico de autenticação: ' + error)
+    log(t('logs.auth_error') + error)
     router.push('/settings')
     throw error
   }
@@ -60,7 +62,7 @@ const fetchMessages = async () => {
   try {
     await mainStore.fetchMessages()
   } catch (e) {
-    log('Erro ao buscar mensagens: ' + e)
+    log(t('logs.fetch_error') + e)
     // Se falhar, limpa o token e tenta de novo (pode ser credencial inválida)
     authStore.updateToken(null)
     await checkAndRefreshToken()
@@ -74,7 +76,7 @@ const startTokenMonitor = () => {
   clearTimeout(timeoutId)
   timeoutId = setTimeout(async () => {
     if (!isRunning) return
-    log('Monitor: Verificando validade do token...')
+    log(t('logs.monitor_token'))
     await checkAndRefreshToken().catch(() => {})
     startTokenMonitor()
   }, 60 * 1000)
@@ -85,7 +87,7 @@ const startTokenMonitor = () => {
  */
 const connect = async (attempts = 3) => {
   if (!serverStore.apiUrl || !settingsStore.currentUnity) {
-    log('Painel não configurado. Redirecionando...')
+    log(t('logs.not_configured'))
     router.push('/settings')
     return
   }
@@ -113,11 +115,11 @@ const connect = async (attempts = 3) => {
     eventSource = new EventSource(url)
     eventSource.onmessage = () => fetchMessages()
 
-    log('Conectado ao Mercure com sucesso.')
+    log(t('logs.mercure_connected'))
   } catch (e) {
-    log('Erro ao conectar ao Mercure: ' + e)
+    log(t('logs.mercure_error') + e)
     if (attempts > 0) {
-      log(`Falha na conexão. Tentando novamente... (${attempts})`)
+      log(t('logs.mercure_retry', { attempts }))
       setTimeout(() => connect(attempts - 1), 2000)
     }
   }

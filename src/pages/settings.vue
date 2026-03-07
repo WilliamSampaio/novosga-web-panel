@@ -28,7 +28,7 @@
                 </template>
               </v-select>
               <v-btn
-                text="fechar"
+                :text="$t('common.close')"
                 variant="flat"
                 color="primary"
                 @click="isActive.value = false"
@@ -53,7 +53,7 @@
             <v-card-text class="flex flex-column justify-center">
               <v-switch
                 class="mx-auto"
-                label="Modo escuro"
+                :label="$t('settings.dark_mode')"
                 density="compact"
                 v-model="settingsStore.darkTheme"
               >
@@ -62,7 +62,7 @@
                 </template>
               </v-switch>
               <v-btn
-                text="fechar"
+                :text="$t('common.close')"
                 variant="flat"
                 color="primary"
                 @click="isActive.value = false"
@@ -88,7 +88,7 @@
       color="success"
       location="top center"
       variant="flat"
-      text="Ir para o Painel"
+      :text="$t('menu.go_to_panel')"
       append-icon="mdi-chevron-right"
       extended
     />
@@ -100,7 +100,7 @@
             class="mb-5"
             prepend-icon="mdi-server-outline"
             :title="$t('menu.server')"
-            subtitle="Conexão com o servidor."
+            :subtitle="$t('settings.server_subtitle')"
           >
             <v-divider></v-divider>
 
@@ -112,7 +112,7 @@
                   { value: '22', title: 'NovoSGA v2.2' },
                 ]"
                 density="compact"
-                label="Versão do NovoSGA"
+                :label="$t('settings.version')"
                 prepend-icon="mdi-source-branch"
                 clearable
               ></v-select>
@@ -120,7 +120,7 @@
               <div v-if="serverStore.apiVersion !== null && serverStore.apiVersion === '21'">
                 <v-text-field
                   v-model="serverStore.apiUrl"
-                  label="URL do Servidor"
+                  :label="$t('settings.url')"
                   prepend-icon="mdi-server"
                   density="compact"
                   clearable
@@ -129,7 +129,7 @@
 
                 <v-text-field
                   v-model="serverStore.apiUsername"
-                  label="Usuário da API"
+                  :label="$t('settings.user')"
                   prepend-icon="mdi-account"
                   density="compact"
                   clearable
@@ -137,7 +137,7 @@
 
                 <v-text-field
                   v-model="serverStore.apiPassword"
-                  label="Senha da API"
+                  :label="$t('settings.password')"
                   prepend-icon="mdi-lock"
                   density="compact"
                   clearable
@@ -146,7 +146,7 @@
 
                 <v-text-field
                   v-model="serverStore.apiClientId"
-                  label="Client ID da API"
+                  :label="$t('settings.client_id')"
                   prepend-icon="mdi-application"
                   density="compact"
                   clearable
@@ -154,7 +154,7 @@
 
                 <v-text-field
                   v-model="serverStore.apiClientSecret"
-                  label="Client Secret da API"
+                  :label="$t('settings.client_secret')"
                   prepend-icon="mdi-shield-key"
                   density="compact"
                   clearable
@@ -162,7 +162,7 @@
 
                 <v-text-field
                   v-model="serverStore.apiRetries"
-                  label="Número de tentativas em caso de falha"
+                  :label="$t('settings.retries')"
                   prepend-icon="mdi-repeat"
                   density="compact"
                   clearable
@@ -172,8 +172,7 @@
 
               <div v-else-if="serverStore.apiVersion !== null && serverStore.apiVersion === '22'">
                 <v-alert type="warning" variant="tonal" density="comfortable">
-                  Ainda não foi implementado o suporte para o NovoSGA v2.2. Aguarde por favor (ou
-                  melhor, implemente você mesmo!).
+                  {{ $t('settings.v22_warning') }}
                 </v-alert>
               </div>
             </v-card-text>
@@ -189,7 +188,7 @@
                 color="primary"
                 @click="saveServerSettings"
               >
-                Salvar e Conectar
+                {{ $t('settings.btn_save_connect') }}
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -197,8 +196,8 @@
           <v-card
             class="mb-5"
             prepend-icon="mdi-server-outline"
-            title="Serviços"
-            subtitle="Configurações dos serviços e unidades."
+            :title="$t('menu.services')"
+            :subtitle="$t('settings.services_subtitle')"
           >
             <v-divider></v-divider>
 
@@ -208,7 +207,7 @@
                 :items="selectDataUnities"
                 item-title="title"
                 item-value="value"
-                label="Unidade"
+                :label="$t('settings.unity')"
                 prepend-icon="mdi-domain"
                 density="compact"
                 clearable
@@ -219,7 +218,7 @@
 
               <div v-if="settingsStore.services.length > 0">
                 <v-switch
-                  label="Marcar Todos"
+                  :label="$t('settings.select_all')"
                   v-model="toggleAllServices"
                   color="info"
                   density="compact"
@@ -238,8 +237,7 @@
               </div>
 
               <v-alert v-else type="info" variant="tonal" density="comfortable">
-                Selecione a unidade e clique em "Buscar Serviços" para carregar os serviços
-                disponíveis.
+                {{ $t('settings.no_services_found') }}
               </v-alert>
             </v-card-text>
           </v-card>
@@ -247,8 +245,8 @@
           <v-card
             class="mb-5"
             prepend-icon="mdi-panorama-outline"
-            title="Painel"
-            subtitle="Configurações do Painel."
+            :title="$t('menu.panel')"
+            :subtitle="$t('settings.panel_subtitle')"
           >
             <v-divider></v-divider>
 
@@ -256,7 +254,7 @@
               <v-select
                 v-model="panelStore.panel.model"
                 :items="panelStore.listPanelModels"
-                label="Modelo do painel"
+                :label="$t('settings.panel_model')"
                 prepend-icon="mdi-panorama-outline"
                 density="compact"
               >
@@ -272,7 +270,7 @@
             <v-card-text>
               <v-text-field
                 v-model="panelStore.header.leftLogoUrl"
-                label="Logo URL do cabeçalho"
+                :label="$t('settings.logo_header')"
                 prepend-icon="mdi-image"
                 density="compact"
                 clearable
@@ -287,7 +285,7 @@
 
               <v-text-field
                 v-model="panelStore.footer.leftLogoUrl"
-                label="Logo URL do rodapé (esquerda)"
+                :label="$t('settings.logo_footer_left')"
                 prepend-icon="mdi-image"
                 density="compact"
                 clearable
@@ -302,7 +300,7 @@
 
               <v-text-field
                 v-model="panelStore.footer.rightLogoUrl"
-                label="Logo URL do rodapé (direita)"
+                :label="$t('settings.logo_footer_right')"
                 prepend-icon="mdi-image"
                 density="compact"
                 clearable
@@ -319,7 +317,7 @@
                 color="info"
                 v-model="panelStore.footer.showClock"
                 prepend-icon="mdi-clock-digital"
-                label="Exibir data e hora no rodapé"
+                :label="$t('settings.show_clock')"
                 density="compact"
               >
               </v-switch>
@@ -328,7 +326,7 @@
                 color="info"
                 v-model="panelStore.main.historyShowLocal"
                 prepend-icon="mdi-arrow-top-right-thin-circle-outline"
-                label="Exibir local no histórico"
+                :label="$t('settings.show_local_history')"
                 density="compact"
               >
               </v-switch>
@@ -342,23 +340,21 @@
                   <ColorInput
                     id="header.bgColor"
                     v-model="panelStore.header.bgColor"
-                    label="Fundo do Cabeçalho"
+                    :label="$t('labels.header_bg')"
                   />
                 </v-col>
-
                 <v-col cols="4">
                   <ColorInput
                     id="header.textColor"
                     v-model="panelStore.header.textColor"
-                    label="Texto do Cabeçalho"
+                    :label="$t('labels.header_text')"
                   />
                 </v-col>
-
                 <v-col cols="4">
                   <ColorInput
                     id="main.bgColor"
                     v-model="panelStore.main.bgColor"
-                    label="Fundo do Painel Principal"
+                    :label="$t('labels.main_bg')"
                   />
                 </v-col>
 
@@ -366,7 +362,7 @@
                   <ColorInput
                     id="main.ticketLabelColor"
                     v-model="panelStore.main.ticketLabelColor"
-                    label="Cor do Rótulo do Ticket"
+                    :label="$t('labels.ticket_label')"
                   />
                 </v-col>
 
@@ -374,7 +370,7 @@
                   <ColorInput
                     id="main.ticketColor"
                     v-model="panelStore.main.ticketColor"
-                    label="Texto do Ticket"
+                    :label="$t('labels.ticket_text')"
                   />
                 </v-col>
 
@@ -382,7 +378,7 @@
                   <ColorInput
                     id="main.ticketPriorityColor"
                     v-model="panelStore.main.ticketPriorityColor"
-                    label="Cor da Prioridade do Ticket"
+                    :label="$t('labels.ticket_priority')"
                   />
                 </v-col>
 
@@ -390,7 +386,7 @@
                   <ColorInput
                     id="main.serviceColor"
                     v-model="panelStore.main.serviceColor"
-                    label="Texto do Serviço"
+                    :label="$t('labels.service_text')"
                   />
                 </v-col>
 
@@ -398,7 +394,7 @@
                   <ColorInput
                     id="main.localColor"
                     v-model="panelStore.main.localColor"
-                    label="Texto do Local"
+                    :label="$t('labels.local_text')"
                   />
                 </v-col>
 
@@ -406,7 +402,7 @@
                   <ColorInput
                     id="main.historyBgColor"
                     v-model="panelStore.main.historyBgColor"
-                    label="Fundo do Histórico"
+                    :label="$t('labels.history_bg')"
                   />
                 </v-col>
 
@@ -414,7 +410,7 @@
                   <ColorInput
                     id="main.historyLabelColor"
                     v-model="panelStore.main.historyLabelColor"
-                    label="Texto do Histórico"
+                    :label="$t('labels.history_text')"
                   />
                 </v-col>
 
@@ -422,7 +418,7 @@
                   <ColorInput
                     id="main.historyEmptyColor"
                     v-model="panelStore.main.historyEmptyColor"
-                    label="Texto do Histórico Vazio"
+                    :label="$t('labels.history_empty')"
                   />
                 </v-col>
 
@@ -430,7 +426,7 @@
                   <ColorInput
                     id="footer.bgColor"
                     v-model="panelStore.footer.bgColor"
-                    label="Fundo do Rodapé"
+                    :label="$t('labels.footer_bg')"
                   />
                 </v-col>
 
@@ -438,7 +434,7 @@
                   <ColorInput
                     id="footer.textColor"
                     v-model="panelStore.footer.textColor"
-                    label="Texto do Rodapé"
+                    :label="$t('labels.footer_text')"
                   />
                 </v-col>
               </v-row>
@@ -448,8 +444,8 @@
           <v-card
             class="mb-5"
             prepend-icon="mdi-volume-high"
-            title="Audio"
-            subtitle="Configurações de audio."
+            :title="$t('menu.audio')"
+            :subtitle="$t('settings.audio_subtitle')"
           >
             <v-divider></v-divider>
 
@@ -457,7 +453,7 @@
               <v-select
                 v-model="settingsStore.alertSound"
                 :items="selectDataAlertAvailable"
-                label="Som de alerta"
+                :label="$t('settings.alert_sound')"
                 prepend-icon="mdi-bell"
                 density="compact"
                 clearable
@@ -470,7 +466,7 @@
                     @click="testAlert"
                     :disabled="settingsStore.alertSound === null"
                   >
-                    Ouvir
+                    {{ $t('common.listen') }}
                   </v-btn>
                 </template>
               </v-select>
@@ -479,14 +475,14 @@
                 color="info"
                 v-model="settingsStore.speech"
                 prepend-icon="mdi-account-voice"
-                label="Ativar vocalização"
+                :label="$t('settings.vocalization')"
                 density="compact"
               >
                 <template v-slot:append>
                   <v-text-field
                     v-model="speechTestString"
-                    label="Frase"
-                    placeholder="Digite algo aqui!"
+                    :label="$t('common.phrase')"
+                    :placeholder="$t('common.type_here')"
                     maxlength="24"
                     density="compact"
                     class="w-96"
@@ -499,7 +495,7 @@
                         @click="testSpeech(speechTestString)"
                         :disabled="!speechTestString"
                       >
-                        Ouvir
+                        {{ $t('common.listen') }}
                       </v-btn>
                     </template>
                   </v-text-field>
@@ -517,18 +513,19 @@
               <template v-slot:prepend>
                 <v-icon color="error">mdi-shield-alert-outline</v-icon>
               </template>
-              <v-card-title class="text-error font-weight-bold"> Área Crítica </v-card-title>
+              <v-card-title class="text-error font-weight-bold">
+                {{ $t('menu.critical_area') }}
+              </v-card-title>
             </v-card-item>
 
             <v-card-text class="pa-6">
               <v-row no-gutters>
                 <v-col cols="12" md="8">
                   <div class="text-subtitle-1 font-weight-bold mb-1">
-                    Redefinir este painel para o estado de fábrica
+                    {{ $t('settings.reset_title') }}
                   </div>
                   <p class="text-body-2 text-medium-emphasis">
-                    Ao confirmar, todas as preferências de cores, logos, URLs de API e templates de
-                    fala armazenados neste navegador serão apagados permanentemente.
+                    {{ $t('settings.reset_desc') }}
                   </p>
                 </v-col>
 
@@ -562,7 +559,7 @@ import PanelLoader from '@/components/panels/PanelLoader.vue'
 import SpeechTextEditor from '@/components/SpeechTextEditor.vue'
 import ResetConfiguration from '@/components/ResetConfiguration.vue'
 
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 
 const toggleAllServices = ref(false)
 
@@ -599,13 +596,9 @@ const openGitHub = () => {
 }
 
 const serverStore = useServerStore()
-
 const authStore = useAuthStore()
-
 const settingsStore = useSettingsStore()
-
 const panelStore = usePanelStore()
-
 const messages = useMessagesStore()
 
 const { playAlert, alertsAvailable } = useAlert()
@@ -622,10 +615,10 @@ const saveServerSettings = async () => {
 
     await settingsStore.fetchUnities()
 
-    messages.add({ text: 'Configurações do servidor salvas com sucesso!', color: 'success' })
+    messages.add({ text: t('settings.msg_server_save_success'), color: 'success' })
   } catch (error) {
     messages.add({
-      text: 'Erro ao salvar as configurações do servidor: ' + error.message,
+      text: t('common.error') + ': ' + error.message,
       color: 'error',
     })
   }
@@ -640,7 +633,7 @@ watch(
 
     timer = setTimeout(() => {
       panelStore.save()
-      messages.add({ text: 'Configurações salvas com sucesso!', color: 'success' })
+      messages.add({ text: t('settings.msg_save_success'), color: 'success' })
     }, 2000)
   },
   { deep: true },
@@ -653,7 +646,7 @@ watch(
 
     timer = setTimeout(() => {
       settingsStore.save()
-      messages.add({ text: 'Configurações salvas com sucesso!', color: 'success' })
+      messages.add({ text: t('settings.msg_save_success'), color: 'success' })
     }, 2000)
   },
   { deep: true },
@@ -696,15 +689,12 @@ const testAlert = () => playAlert(settingsStore.alertSound)
 const testSpeech = (text) => speakAll([text], locale.value)
 
 onBeforeMount(async () => {
-  // Se já estiver autenticado, tenta atualizar o token e carregar as unidades e serviços
   if (authStore.isAuthenticated) {
-    // Se o token estiver expirado, tenta atualizar. Se falhar, exibe mensagem de erro.
     if (authStore.isExpired)
       await authStore.refresh().catch(() => {
-        messages.add({ text: 'Sessão expirada. Faça login novamente.', color: 'error' })
+        messages.add({ text: t('settings.msg_session_expired'), color: 'error' })
       })
 
-    // Se ainda estiver autenticado após tentar atualizar o token, carrega as unidades e serviços
     if (serverStore.apiUrl) {
       settingsStore.fetchUnities()
       if (settingsStore.currentUnity) settingsStore.fetchServices(settingsStore.currentUnity)
@@ -714,7 +704,6 @@ onBeforeMount(async () => {
 </script>
 
 <style scoped>
-/* Estilização extra para a borda ficar sutil mas visível como erro */
 .border-error-thin {
   border: 1px solid rgba(var(--v-theme-error), 0.3) !important;
 }

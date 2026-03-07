@@ -9,7 +9,6 @@
           class="overflow-hidden relative flex flex-col"
           rounded="lg"
         >
-          <!-- HEADER -->
           <v-sheet height="80px">
             <div
               class="flex h-full px-5 items-center justify-between [&>*:only-child]:mx-auto"
@@ -20,20 +19,17 @@
                 class="w-24"
                 :src="header.leftLogoUrl"
               />
-
               <span class="text-2xl font-bold uppercase">{{
                 panelDataPreview.unityDescription
               }}</span>
             </div>
           </v-sheet>
 
-          <!-- MAIN -->
           <v-sheet height="200px">
             <div
               class="flex flex-1 h-full py-2 items-center justify-between"
               :style="{ backgroundColor: main.bgColor }"
             >
-              <!-- CURRENT TICKET -->
               <div class="ml-3 flex w-3/4 h-full flex-col justify-between">
                 <span
                   class="text-1xl font-bold uppercase"
@@ -46,7 +42,6 @@
                   <span class="text-4xl font-bold uppercase" :style="{ color: ticketColor }">
                     {{ panelDataPreview.message.ticket }}
                   </span>
-
                   <span
                     v-if="!panelState.hideClientName"
                     class="text-2xl font-bold uppercase"
@@ -65,7 +60,6 @@
                 </span>
               </div>
 
-              <!-- HISTORY -->
               <v-sheet
                 class="px-3 flex w-1/4 h-full flex-col items-center rounded-l-3xl"
                 :style="{ backgroundColor: main.historyBgColor }"
@@ -94,20 +88,16 @@
                       color: ticket.priority ? main.ticketPriorityColor : main.ticketColor,
                     }"
                   >
-                    <span class="text-2xl font-bold uppercase">
-                      {{ ticket.ticket }}
-                    </span>
-
-                    <span v-if="main.historyShowLocal" class="font-bold uppercase">
-                      {{ ticket.local }}
-                    </span>
+                    <span class="text-2xl font-bold uppercase">{{ ticket.ticket }}</span>
+                    <span v-if="main.historyShowLocal" class="font-bold uppercase">{{
+                      ticket.local
+                    }}</span>
                   </div>
                 </div>
               </v-sheet>
             </div>
           </v-sheet>
 
-          <!-- FOOTER -->
           <v-sheet height="80px">
             <div
               class="flex h-full px-5 items-center justify-between [&>*:only-child]:mx-auto"
@@ -118,16 +108,14 @@
                 class="w-24"
                 :src="footer.leftLogoUrl"
               />
-
               <div class="text-1xl text-white text-center font-medium">
                 <Clock
                   v-if="footer.showClock"
                   :locale="locale"
-                  :dateFormat="$t('date_format')"
+                  :dateFormat="$t('panel.date_format')"
                   :fontColor="footer.textColor"
                 />
               </div>
-
               <img
                 v-if="panelStore.footerRightLogoUrlIsDefined"
                 class="w-24"
@@ -142,38 +130,34 @@
     <v-col cols="3">
       <v-switch
         v-model="panelState.empty"
-        label="Painel vazio"
+        :label="$t('panel.preview.empty_panel')"
         hide-details
         color="primary"
-        :disabled="
-          panelState.hideClientName === true ||
-          panelState.priority === true ||
-          panelState.historyEmpty === true
-        "
+        :disabled="panelState.hideClientName || panelState.priority || panelState.historyEmpty"
       ></v-switch>
 
       <v-switch
         v-model="panelState.hideClientName"
-        label="Ocultar nome do cliente"
+        :label="$t('panel.preview.hide_client')"
         hide-details
         color="primary"
-        :disabled="panelState.empty === true"
+        :disabled="panelState.empty"
       ></v-switch>
 
       <v-switch
         v-model="panelState.priority"
-        label="Senha atual prioridade"
+        :label="$t('panel.preview.priority_current')"
         hide-details
         color="primary"
-        :disabled="panelState.empty === true"
+        :disabled="panelState.empty"
       ></v-switch>
 
       <v-switch
         v-model="panelState.historyEmpty"
-        label="Histórico vazio"
+        :label="$t('panel.preview.history_empty')"
         hide-details
         color="primary"
-        :disabled="panelState.empty === true"
+        :disabled="panelState.empty"
       ></v-switch>
     </v-col>
   </v-row>
@@ -185,7 +169,7 @@ import { usePanelStore } from '@/stores/panel'
 import { computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const panelState = reactive({
   empty: false,
@@ -197,37 +181,20 @@ const panelState = reactive({
 const panelStore = usePanelStore()
 const { header, main, footer } = panelStore
 
-const { locale } = useI18n()
-
 const panelDataPreview = computed(() => {
   const data = {
-    unityDescription: panelState.empty ? '---' : 'minha unidade',
+    unityDescription: panelState.empty ? '---' : t('panel.preview.mock_unity'),
     message: {
       ticket: panelState.empty ? '---' : 'A007',
-      clientName: panelState.empty ? '---' : 'james bond',
-      service: panelState.empty ? '---' : 'descrição do serviço',
-      local: panelState.empty ? '---' : 'guichê 1',
+      clientName: panelState.empty ? '---' : 'James Bond',
+      service: panelState.empty ? '---' : t('panel.preview.mock_service'),
+      local: panelState.empty ? '---' : `${t('panel.preview.mock_local')} 1`,
       priority: panelState.priority,
     },
     history: [
-      {
-        id: 1,
-        ticket: 'A001',
-        local: 'guichê 1',
-        priority: false,
-      },
-      {
-        id: 2,
-        ticket: 'A002',
-        local: 'guichê 2',
-        priority: true,
-      },
-      {
-        id: 3,
-        ticket: 'A003',
-        local: 'guichê 3',
-        priority: false,
-      },
+      { id: 1, ticket: 'A001', local: `${t('panel.preview.mock_local')} 1`, priority: false },
+      { id: 2, ticket: 'A002', local: `${t('panel.preview.mock_local')} 2`, priority: true },
+      { id: 3, ticket: 'A003', local: `${t('panel.preview.mock_local')} 3`, priority: false },
     ],
   }
 

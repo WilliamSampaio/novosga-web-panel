@@ -1,21 +1,17 @@
 <template>
   <div class="absolute inset-0 z-50 flex flex-col bg-white overflow-hidden">
-    <!-- HEADER -->
     <div
       class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
       :style="{ backgroundColor: header.bgColor, color: header.textColor }"
     >
       <img v-if="panelStore.headerLeftLogoUrlIsDefined" class="w-60" :src="header.leftLogoUrl" />
-
       <span class="text-5xl font-bold uppercase">{{ unityDescription }}</span>
     </div>
 
-    <!-- MAIN -->
     <div
       class="flex flex-1 py-10 items-center justify-between"
       :style="{ backgroundColor: main.bgColor }"
     >
-      <!-- CURRENT TICKET -->
       <div class="ml-5 flex w-3/4 h-full flex-col justify-between">
         <span class="text-5xl font-bold uppercase" :style="{ color: main.ticketLabelColor }">
           {{ ticketLabel }}
@@ -44,7 +40,6 @@
         </span>
       </div>
 
-      <!-- HISTORY -->
       <div
         class="px-5 flex w-1/4 h-full flex-col items-center rounded-l-3xl"
         :style="{ backgroundColor: main.historyBgColor }"
@@ -60,7 +55,6 @@
       </div>
     </div>
 
-    <!-- FOOTER -->
     <div
       class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
       :style="{ backgroundColor: footer.bgColor }"
@@ -71,7 +65,7 @@
         <Clock
           v-if="footer.showClock"
           :locale="locale"
-          :dateFormat="$t('date_format')"
+          :dateFormat="$t('panel.date_format')"
           :fontColor="footer.textColor"
         />
       </div>
@@ -151,7 +145,7 @@ const playAudio = async () => {
       await speakAll([text], locale.value)
     }
   } catch (error) {
-    console.error('Erro na sequência de áudio:', error)
+    console.error('Error in audio sequence:', error)
   } finally {
     isCalling.value = false
     // Tenta chamar a próxima se houver fila

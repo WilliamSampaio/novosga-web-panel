@@ -9,7 +9,6 @@
           class="overflow-hidden relative flex flex-col"
           rounded="lg"
         >
-          <!-- HEADER -->
           <v-sheet height="60px">
             <div
               class="flex h-full px-5 items-center justify-between [&>*:only-child]:mx-auto"
@@ -20,20 +19,17 @@
                 class="w-24"
                 :src="header.leftLogoUrl"
               />
-
               <span class="text-2xl font-bold uppercase">{{
                 panelDataPreview.unityDescription
               }}</span>
             </div>
           </v-sheet>
 
-          <!-- MAIN -->
           <v-sheet height="240px">
             <div
               class="h-full flex flex-col justify-between"
               :style="{ backgroundColor: main.bgColor }"
             >
-              <!-- CURRENT TICKET -->
               <div class="ma-1 h-1/2 flex flex-col justify-between">
                 <div class="flex flex-col">
                   <span
@@ -71,14 +67,12 @@
                   <span class="text-1xl font-bold uppercase" :style="{ color: main.serviceColor }">
                     {{ panelDataPreview.message.service }}
                   </span>
-
                   <span class="text-3xl font-bold uppercase" :style="{ color: main.localColor }">
                     {{ panelDataPreview.message.local }}
                   </span>
                 </div>
               </div>
 
-              <!-- HISTORY -->
               <v-sheet
                 class="pa-1 h-1/2 flex flex-col items-center rounded-t-2xl"
                 :style="{ backgroundColor: main.historyBgColor }"
@@ -124,7 +118,6 @@
             </div>
           </v-sheet>
 
-          <!-- FOOTER -->
           <v-sheet height="60px">
             <div
               class="flex h-full px-5 items-center justify-between [&>*:only-child]:mx-auto"
@@ -135,16 +128,14 @@
                 class="w-24"
                 :src="footer.leftLogoUrl"
               />
-
               <div class="text-1xl text-white text-center font-medium">
                 <Clock
                   v-if="footer.showClock"
                   :locale="locale"
-                  :dateFormat="$t('date_format')"
+                  :dateFormat="$t('panel.date_format')"
                   :fontColor="footer.textColor"
                 />
               </div>
-
               <img
                 v-if="panelStore.footerRightLogoUrlIsDefined"
                 class="w-24"
@@ -159,38 +150,34 @@
     <v-col cols="3">
       <v-switch
         v-model="panelState.empty"
-        label="Painel vazio"
+        :label="$t('panel.preview.empty_panel')"
         hide-details
         color="primary"
-        :disabled="
-          panelState.hideClientName === true ||
-          panelState.priority === true ||
-          panelState.historyEmpty === true
-        "
+        :disabled="panelState.hideClientName || panelState.priority || panelState.historyEmpty"
       ></v-switch>
 
       <v-switch
         v-model="panelState.hideClientName"
-        label="Nome do cliente não informado"
+        :label="$t('panel.preview.hide_client')"
         hide-details
         color="primary"
-        :disabled="panelState.empty === true"
+        :disabled="panelState.empty"
       ></v-switch>
 
       <v-switch
         v-model="panelState.priority"
-        label="Senha atual prioridade"
+        :label="$t('panel.preview.priority_current')"
         hide-details
         color="primary"
-        :disabled="panelState.empty === true"
+        :disabled="panelState.empty"
       ></v-switch>
 
       <v-switch
         v-model="panelState.historyEmpty"
-        label="Histórico vazio"
+        :label="$t('panel.preview.history_empty')"
         hide-details
         color="primary"
-        :disabled="panelState.empty === true"
+        :disabled="panelState.empty"
       ></v-switch>
     </v-col>
   </v-row>
@@ -203,7 +190,7 @@ import { formatarNome } from '@/util/functions'
 import { computed, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const panelState = reactive({
   empty: false,
@@ -215,74 +202,63 @@ const panelState = reactive({
 const panelStore = usePanelStore()
 const { header, main, footer } = panelStore
 
-const { locale } = useI18n()
-
 const panelDataPreview = computed(() => {
   const data = {
-    unityDescription: panelState.empty ? '---' : 'minha unidade',
+    unityDescription: panelState.empty ? '---' : t('panel.preview.mock_unity'),
     message: {
       ticket: panelState.empty ? '---' : 'A007',
-      clientName: panelState.empty ? '---' : 'james bond',
-      service: panelState.empty ? '---' : 'descrição do serviço',
-      local: panelState.empty ? '---' : 'guichê 1',
+      clientName: panelState.empty ? '---' : 'James Bond',
+      service: panelState.empty ? '---' : t('panel.preview.mock_service'),
+      local: panelState.empty ? '---' : `${t('panel.preview.mock_local')} 1`,
       priority: panelState.priority,
     },
     history: [
       {
         id: 1,
         ticket: 'A006',
-        clientName: panelState.empty ? '---' : 'maria bonita',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: 'Maria Bonita',
+        service: t('panel.preview.mock_service'),
         priority: false,
       },
       {
         id: 2,
         ticket: 'P007',
-        clientName: panelState.empty ? '---' : 'virgulino',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: 'Virgulino',
+        service: t('panel.preview.mock_service'),
         priority: true,
       },
       {
         id: 3,
         ticket: 'A005',
-        clientName: panelState.empty ? '---' : 'fulano de tal',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: 'Fulano de Tal',
+        service: t('panel.preview.mock_service'),
         priority: false,
       },
       {
         id: 4,
         ticket: 'A004',
-        clientName: panelState.empty ? '---' : 'ana bolinha',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: 'Ana Bolinha',
+        service: t('panel.preview.mock_service'),
         priority: false,
       },
       {
         id: 5,
         ticket: 'A003',
-        clientName: panelState.empty ? '---' : 'severino',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: 'Severino',
+        service: t('panel.preview.mock_service'),
         priority: false,
       },
       {
         id: 6,
         ticket: 'A002',
-        clientName: panelState.empty ? '---' : 'luva de pedreiro',
-        service: panelState.empty ? '---' : 'descrição do serviço',
-        priority: false,
-      },
-      {
-        id: 7,
-        ticket: 'A001',
-        clientName: panelState.empty ? '---' : 'james bond',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: 'Luva de Pedreiro',
+        service: t('panel.preview.mock_service'),
         priority: false,
       },
     ],
   }
 
-  if (panelState.empty || panelState.historyEmpty) {
-    data.history = []
-  }
+  if (panelState.empty || panelState.historyEmpty) data.history = []
 
   return data
 })

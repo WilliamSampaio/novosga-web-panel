@@ -1,18 +1,14 @@
 <template>
   <div class="absolute inset-0 z-50 flex flex-col bg-white overflow-hidden">
-    <!-- HEADER -->
     <div
       class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
       :style="{ backgroundColor: header.bgColor, color: header.textColor }"
     >
       <img v-if="panelStore.headerLeftLogoUrlIsDefined" class="w-60" :src="header.leftLogoUrl" />
-
       <span class="text-5xl font-bold uppercase">{{ unityDescription }}</span>
     </div>
 
-    <!-- MAIN -->
     <div class="h-full flex flex-col justify-between" :style="{ backgroundColor: main.bgColor }">
-      <!-- CURRENT TICKET -->
       <div class="ma-5 h-1/2 flex flex-col justify-between">
         <div class="flex flex-col">
           <span
@@ -49,7 +45,6 @@
         </div>
       </div>
 
-      <!-- HISTORY -->
       <div
         class="pa-3 h-1/2 flex flex-col items-center rounded-t-3xl"
         :style="{ backgroundColor: main.historyBgColor }"
@@ -64,7 +59,6 @@
       </div>
     </div>
 
-    <!-- FOOTER -->
     <div
       class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
       :style="{ backgroundColor: footer.bgColor }"
@@ -75,7 +69,7 @@
         <Clock
           v-if="footer.showClock"
           :locale="locale"
-          :dateFormat="$t('date_format')"
+          :dateFormat="$t('panel.date_format')"
           :fontColor="footer.textColor"
         />
       </div>
@@ -114,7 +108,7 @@ const lastMessage = ref({})
 const messageQueue = []
 
 const unityDescription = computed(() => {
-  return settingsStore.unities.filter((u) => u.id === settingsStore.currentUnity)[0]?.nome || '---'
+  return settingsStore.unities.find((u) => u.id === settingsStore.currentUnity)?.nome || '---'
 })
 
 const ticketLabel = computed(() => {
@@ -127,9 +121,6 @@ const ticketColor = computed(() => {
   return mainStore.message.priority ? main.ticketPriorityColor : main.ticketColor
 })
 
-/**
- * Lógica de Chamada (Áudio + Voz)
- */
 const playAudio = async () => {
   if (isCalling.value || messageQueue.length === 0) return
 
@@ -137,13 +128,10 @@ const playAudio = async () => {
   lastMessage.value = messageQueue.shift()
 
   try {
-    // 1. Toca o Alerta Sonoro
     await playAlert(settingsStore.alertSound)
 
-    // 2. Vocalização (Se habilitado)
     if (settingsStore.speech) {
       const message = lastMessage.value.$data
-
       const text = panelStore.getParsedSpeechText({
         ticketCode: message.siglaSenha,
         ticketNumber: message.numeroSenha,
@@ -152,17 +140,13 @@ const playAudio = async () => {
         localNumber: message.numeroLocal,
         service: message.servico.nome,
       })
-
       await speakAll([text], locale.value)
     }
   } catch (error) {
     console.error('Erro na sequência de áudio:', error)
   } finally {
     isCalling.value = false
-    // Tenta chamar a próxima se houver fila
-    if (messageQueue.length > 0) {
-      playAudio()
-    }
+    if (messageQueue.length > 0) playAudio()
   }
 }
 
@@ -171,7 +155,6 @@ const call = () => {
   playAudio()
 }
 
-// Watcher para novas mensagens vindas da Store
 watch(
   () => mainStore.message,
   (newVal) => {
@@ -181,5 +164,3 @@ watch(
   },
 )
 </script>
-
-<style scoped></style>
