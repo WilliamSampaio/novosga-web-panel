@@ -60,7 +60,6 @@
           :historyEmptyColor="main.historyEmptyColor"
           :historyTicketColor="main.ticketColor"
           :historyTicketPriorityColor="main.ticketPriorityColor"
-          :showTicketLocal="main.historyShowLocal"
         />
       </div>
     </div>
