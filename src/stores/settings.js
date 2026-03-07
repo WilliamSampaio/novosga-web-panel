@@ -16,6 +16,7 @@ export const useSettingsStore = defineStore('settings', {
       speech: false,
       alertSound: null,
       darkTheme: false,
+      devMode: import.meta.env.DEV,
     }
 
     const saved = storage.get('settings')

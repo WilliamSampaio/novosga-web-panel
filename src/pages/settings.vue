@@ -277,6 +277,7 @@
               >
                 <template v-slot:append>
                   <DialogGetImageUrlFromCustom
+                    v-if="settingsStore.devMode"
                     @select="(imagePath) => (panelStore.header.leftLogoUrl = imagePath)"
                   />
                 </template>
@@ -291,6 +292,7 @@
               >
                 <template v-slot:append>
                   <DialogGetImageUrlFromCustom
+                    v-if="settingsStore.devMode"
                     @select="(imagePath) => (panelStore.footer.leftLogoUrl = imagePath)"
                   />
                 </template>
@@ -305,6 +307,7 @@
               >
                 <template v-slot:append>
                   <DialogGetImageUrlFromCustom
+                    v-if="settingsStore.devMode"
                     @select="(imagePath) => (panelStore.footer.rightLogoUrl = imagePath)"
                   />
                 </template>
