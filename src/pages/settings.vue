@@ -117,7 +117,12 @@
                 clearable
               ></v-select>
 
-              <div v-if="serverStore.apiVersion !== null && serverStore.apiVersion === '21'">
+              <div
+                v-if="
+                  serverStore.apiVersion !== null &&
+                  (serverStore.apiVersion === '21' || serverStore.apiVersion === '22')
+                "
+              >
                 <v-text-field
                   v-model="serverStore.apiUrl"
                   label="URL do Servidor"
@@ -170,12 +175,12 @@
                 ></v-text-field>
               </div>
 
-              <div v-else-if="serverStore.apiVersion !== null && serverStore.apiVersion === '22'">
+              <!-- <div v-else-if="serverStore.apiVersion !== null && serverStore.apiVersion === '22'">
                 <v-alert type="warning" variant="tonal" density="comfortable">
                   Ainda não foi implementado o suporte para o NovoSGA v2.2. Aguarde por favor (ou
                   melhor, implemente você mesmo!).
                 </v-alert>
-              </div>
+              </div> -->
             </v-card-text>
 
             <v-divider></v-divider>
