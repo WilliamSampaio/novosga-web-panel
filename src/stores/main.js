@@ -6,17 +6,15 @@ import { useSettingsStore } from './settings'
 
 const HISTORY_MAX_LENGTH = 10
 
-// const locales = import.meta.glob('../../public/i18n/*.json')
-
 export const useMainStore = defineStore('main', {
   state: () => ({
     apiInfo: {},
-    messages: [], // A primeira mensagem [0] é a atual, o resto é histórico
+    messages: [],
     dict: {},
   }),
 
   getters: {
-    message: (state) => state.messages[0] || { id: 0, title: '', subtitle: '', description: '' },
+    message: (state) => state.messages[0] || { id: 0, ticket: '', clientName: '', local: '' },
     history: (state) => state.messages.slice(1),
   },
 
@@ -33,29 +31,20 @@ export const useMainStore = defineStore('main', {
       const authStore = useAuthStore()
       const settingsStore = useSettingsStore()
       const api = new Client21(serverStore.apiUrl, null, serverStore.apiRetries)
-      const messages = await api.messages(
-        authStore.accessToken,
-        settingsStore.currentUnity,
-        settingsStore.enabledServices,
-      )
 
-      if (messages.length > 0) {
-        this.newMessage(this.normalizeMessage(messages[0]))
+      try {
+        const messages = await api.messages(
+          authStore.accessToken,
+          settingsStore.currentUnity,
+          settingsStore.enabledServices,
+        )
+
+        if (messages && messages.length > 0) {
+          this.messages = messages.map((m) => this.normalizeMessage(m)).slice(0, HISTORY_MAX_LENGTH)
+        }
+      } catch (error) {
+        console.error('Erro ao buscar histórico inicial:', error)
       }
-    },
-
-    newMessage(message) {
-      // Evita duplicados
-      if (this.messages.length > 0 && this.messages[0].id === message.id) return
-
-      // Remove se a mesma senha já existe no histórico para não repetir na lateral
-      const idx = this.messages.findIndex(
-        (m) => m.ticket === message.ticket && m.type === message.type,
-      )
-      if (idx !== -1) this.messages.splice(idx, 1)
-
-      this.messages.unshift(message)
-      if (this.messages.length > HISTORY_MAX_LENGTH) this.messages.pop()
     },
 
     normalizeMessage(data) {
@@ -63,9 +52,9 @@ export const useMainStore = defineStore('main', {
         id: data.id,
         type: 'ticket',
         ticket: data.siglaSenha + ('000' + data.numeroSenha).slice(-3),
-        clientName: data.nomeCliente,
+        clientName: data.nomeCliente || '',
         local: `${data.local} ${('000' + data.numeroLocal).slice(-3)}`,
-        priority: data.prioridade === 'Prioridade' ? true : false,
+        priority: data.prioridade === 'Prioridade',
         $data: data,
       }
     },
