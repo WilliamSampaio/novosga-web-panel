@@ -1,0 +1,26 @@
+# Dependências (O Docker fará o npm install lá dentro)
+node_modules
+npm-debug.log
+
+# Build local (Você não quer enviar o build da sua máquina, o Docker fará o build dele)
+dist
+
+# Arquivos de ambiente (SEGURANÇA!)
+# Como você está passando as variáveis via build-args no Compose, 
+# não deixe os arquivos .env entrarem na imagem.
+# .env
+# .env.local
+# .env.production
+# .env.*
+
+# Git
+.git
+.gitignore
+
+# Sistema e Editores
+.DS_Store
+.vscode
+.idea
+README.md
+docker-compose.yml
+Dockerfile

@@ -1,0 +1,10 @@
+services:
+  web-panel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${DOCKER_COMPOSE_HOST_PORT:-8081}:80"
+    restart: always
+    volumes:
+      - ${DOCKER_COMPOSE_CUSTOM_IMAGES_DIR:-./images}:/usr/share/nginx/html/images/custom
