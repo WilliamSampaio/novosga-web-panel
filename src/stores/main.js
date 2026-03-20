@@ -36,18 +36,18 @@ export const useMainStore = defineStore('main', {
 
       if (!rawMessages || rawMessages.length === 0) return
 
-      const novas = rawMessages
+      const newTickets = rawMessages
         .map((m) => this.normalizeMessage(m))
         .filter(
-          (novaTicket) =>
+          (newTicket) =>
             !this.messages.some(
               (existing) =>
-                existing.ticket === novaTicket.ticket && existing.local === novaTicket.local,
+                existing.ticket === newTicket.ticket && existing.type === newTicket.type,
             ),
         )
 
-      if (novas.length > 0) {
-        this.messages = [...novas, ...this.messages].slice(0, HISTORY_MAX_LENGTH)
+      if (newTickets.length > 0) {
+        this.messages = [...newTickets, ...this.messages].slice(0, HISTORY_MAX_LENGTH)
       }
     },
 
