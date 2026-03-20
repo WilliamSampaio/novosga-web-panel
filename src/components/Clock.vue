@@ -1,12 +1,10 @@
 <template>
   <div v-if="showDate" :style="{ color: fontColor }">
-    <span>{{ formattedDate }}</span>
+    {{ formattedDate }}
   </div>
 
   <div :style="{ color: fontColor }">
-    <span v-if="showHours">
-      {{ hours }}
-    </span>
+    <span v-if="showHours">{{ hours }}</span>
 
     <span v-if="showMinutes">:</span>
     <span v-if="showMinutes">
@@ -22,43 +20,36 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import moment from 'moment'
 
-// Definindo as Props (Equivalente ao props do Vue 2)
 const props = defineProps({
   showHours: { type: Boolean, default: true },
   showMinutes: { type: Boolean, default: true },
   showSeconds: { type: Boolean, default: true },
   showDate: { type: Boolean, default: true },
-  dateFormat: { type: String, default: 'MMMM Do YYYY' },
-  locale: { type: String, default: 'pt-br' }, // Ajustado para sua preferência pt-br
+  locale: { type: String, default: 'pt-BR' },
   fontColor: { type: String, default: '#000000' },
 })
 
-// Estado Reativo (Equivalente ao data)
-const date = ref(new Date())
+const now = ref(new Date())
 let timer = null
 
-// Propriedades Computadas (Equivalente ao computed)
-const hours = computed(() => moment(date.value).format('HH'))
-const minutes = computed(() => moment(date.value).format('mm'))
-const seconds = computed(() => moment(date.value).format('ss'))
+const hours = computed(() => now.value.getHours().toString().padStart(2, '0'))
+const minutes = computed(() => now.value.getMinutes().toString().padStart(2, '0'))
+const seconds = computed(() => now.value.getSeconds().toString().padStart(2, '0'))
+
 const formattedDate = computed(() => {
-  moment.locale(props.locale)
-  return moment(date.value).format(props.dateFormat)
+  return new Intl.DateTimeFormat(props.locale.replace('_', '-'), {
+    dateStyle: 'long',
+  }).format(now.value)
 })
 
-// Lifecycle Hooks (Equivalente ao created/mounted)
 onMounted(() => {
   timer = setInterval(() => {
-    date.value = new Date()
+    now.value = new Date()
   }, 1000)
 })
 
-// Boa prática: limpar o intervalo quando o componente for destruído
 onUnmounted(() => {
   if (timer) clearInterval(timer)
 })
 </script>
-
-<style scoped></style>

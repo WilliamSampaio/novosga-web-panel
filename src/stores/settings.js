@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { Client as Client21 } from '@/composables/api/21'
 import { useServerStore } from './server'
-import { useAuthStore } from './auth'
 import { useMessagesStore } from './messages'
 import storage from '@/composables/storage'
 import i18n from '@/plugins/i18n'
@@ -48,9 +47,8 @@ export const useSettingsStore = defineStore('settings', {
 
     async fetchUnities() {
       const serverStore = useServerStore()
-      const authStore = useAuthStore()
       const api = new Client21(serverStore.apiUrl, null, serverStore.apiRetries)
-      const data = await api.unities(authStore.accessToken)
+      const data = await api.unities()
       this.unities = data
     },
 
@@ -60,9 +58,8 @@ export const useSettingsStore = defineStore('settings', {
         return
       }
       const serverStore = useServerStore()
-      const authStore = useAuthStore()
       const api = new Client21(serverStore.apiUrl, null, serverStore.apiRetries)
-      const data = await api.services(authStore.accessToken, unityId)
+      const data = await api.services(unityId)
 
       const messages = useMessagesStore()
 

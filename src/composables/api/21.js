@@ -1,104 +1,96 @@
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
 
-/**
- * Cliente API para o Novo SGA v2
- */
 class Client {
   constructor(server, moduleName, retries = 5) {
-    let host = String(server || '')
+    const host = String(server || '').replace(/\/+$/, '')
+    const module = moduleName ? `/${moduleName.replace(/^\/+|\/+$/g, '')}` : ''
 
-    if (host && !host.endsWith('/')) {
-      host += '/'
-    }
-
-    if (moduleName) {
-      host += moduleName + '/'
-    }
-
+    this.baseURL = `${host}${module}/api`
     this.retries = retries
-    // No Novo SGA v2 a base é sempre /api após o host/modulo
-    this.baseURL = `${host}api`
 
-    // Criamos uma instância dedicada para não poluir o axios global
     this.axiosInstance = axios.create({
       baseURL: this.baseURL,
       withCredentials: true,
     })
 
-    // Configuração de Retry na instância específica
+    this.axiosInstance.interceptors.request.use(
+      async (config) => {
+        const { useAuthStore } = await import('@/stores/auth')
+        const authStore = useAuthStore()
+
+        if (authStore.accessToken) {
+          config.headers.Authorization = `Bearer ${authStore.accessToken}`
+        }
+        return config
+      },
+      (error) => Promise.reject(error),
+    )
+
+    this.axiosInstance.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config
+
+        if (error.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true
+
+          try {
+            const { useAuthStore } = await import('@/stores/auth')
+            const authStore = useAuthStore()
+
+            await authStore.refresh()
+            originalRequest.headers.Authorization = `Bearer ${authStore.accessToken}`
+            return this.axiosInstance(originalRequest)
+          } catch (refreshError) {
+            return Promise.reject(refreshError)
+          }
+        }
+        return Promise.reject(error)
+      },
+    )
+
     axiosRetry(this.axiosInstance, {
       retries: this.retries,
       retryDelay: axiosRetry.exponentialDelay,
       retryCondition: (error) => {
-        // Repete apenas em erros de rede ou 5xx
-        return (
-          axiosRetry.isNetworkOrIdempotentRequestError(error) ||
-          (error.response && error.response.status >= 500)
-        )
+        return axiosRetry.isNetworkOrIdempotentRequestError(error) || error.response?.status >= 500
       },
     })
   }
 
-  /**
-   * Método genérico de requisição usando async/await
-   */
   async request(url, config = {}) {
     try {
-      const response = await this.axiosInstance.request({
-        url,
-        ...config,
-      })
+      const response = await this.axiosInstance.request({ url, ...config })
       return response.data
     } catch (error) {
-      let message = error.message
-
-      if (error.response) {
-        // Se a API retornou um erro estruturado
-        const { data, statusText } = error.response
-        message = statusText
-        if (data && data.error_description) {
-          message += `: ${data.error_description}`
-        } else if (data && data.message) {
-          message += `: ${data.message}`
-        }
-      }
-
-      throw message
+      const message =
+        error.response?.data?.error_description ||
+        error.response?.data?.message ||
+        error.message ||
+        'Erro desconhecido na API'
+      throw new Error(message)
     }
   }
 
-  // Métodos de atalho para a API
-
-  info(token) {
-    return this.request('', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  info() {
+    return this.request('')
+  }
+  unities() {
+    return this.request('/unidades')
+  }
+  services(unityId) {
+    return this.request(`/unidades/${unityId}/servicos`)
   }
 
-  unities(token) {
-    return this.request('/unidades', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-  }
-
-  services(token, unityId) {
-    return this.request(`/unidades/${unityId}/servicos`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-  }
-
-  messages(token, unity, services = []) {
+  messages(unity, services = []) {
     const id = typeof unity === 'object' ? unity.id : unity
-
-    // Normaliza a lista de serviços para a query string
     const servicosQuery = services
       .map((s) => parseInt(s, 10))
       .filter((s) => s > 0)
       .join(',')
 
     return this.request(`/unidades/${id}/painel`, {
-      headers: { Authorization: `Bearer ${token}` },
       params: { servicos: servicosQuery },
     })
   }

@@ -1,5 +1,4 @@
 import storage from '@/composables/storage'
-import moment from 'moment'
 import { defineStore } from 'pinia'
 import { useServerStore } from './server'
 import { Client as Client21 } from '@/composables/api/21'
@@ -13,19 +12,14 @@ export const useAuthStore = defineStore('auth', {
     }
 
     const saved = storage.get('auth')
-    if (!saved) return defaults
-
-    return {
-      ...defaults,
-      ...saved,
-    }
+    return { ...defaults, ...saved }
   },
 
   getters: {
     isAuthenticated: (state) => !!state.accessToken,
     isExpired: (state) => {
       if (!state.expireDate) return true
-      return moment(state.expireDate).isSameOrBefore(moment())
+      return new Date(state.expireDate) <= new Date()
     },
   },
 
@@ -34,18 +28,16 @@ export const useAuthStore = defineStore('auth', {
       storage.set('auth', this.$state)
     },
 
-    updateToken(token) {
-      if (!token) {
-        token = { access_token: null, refresh_token: null, expires_in: null }
-      }
+    updateToken(token = {}) {
+      const { access_token = null, refresh_token = null, expires_in = null } = token || {}
 
-      this.accessToken = token.access_token
-      this.refreshToken = token.refresh_token
+      this.accessToken = access_token
+      this.refreshToken = refresh_token
 
-      if (token.expires_in) {
-        // Expira 5 minutos antes para segurança
-        const dt = moment().add(token.expires_in - 300, 's')
-        this.expireDate = dt.format()
+      if (expires_in) {
+        const dt = new Date()
+        dt.setSeconds(dt.getSeconds() + (expires_in - 300))
+        this.expireDate = dt.toISOString()
       } else {
         this.expireDate = null
       }
@@ -56,8 +48,9 @@ export const useAuthStore = defineStore('auth', {
     async token() {
       const serverStore = useServerStore()
 
-      if (!serverStore.apiUrl || !serverStore.apiClientId || !serverStore.apiUsername)
-        throw new Error('Configurações incompletas')
+      if (!serverStore.apiUrl || !serverStore.apiClientId || !serverStore.apiUsername) {
+        throw new Error('Configurações de API incompletas no servidor.')
+      }
 
       const params = new URLSearchParams({
         grant_type: 'password',
@@ -75,6 +68,7 @@ export const useAuthStore = defineStore('auth', {
 
     async refresh() {
       const serverStore = useServerStore()
+      if (!this.refreshToken) throw new Error('Nenhum Refresh Token disponível.')
 
       const params = new URLSearchParams({
         grant_type: 'refresh_token',
@@ -87,6 +81,11 @@ export const useAuthStore = defineStore('auth', {
       const data = await api.request('/token', { method: 'POST', data: params })
       this.updateToken(data)
       return data
+    },
+
+    logout() {
+      this.updateToken(null)
+      storage.remove('auth')
     },
   },
 })
