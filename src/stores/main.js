@@ -13,7 +13,7 @@ export const useMainStore = defineStore('main', {
   }),
 
   getters: {
-    message: (state) => state.messages[0] || { id: 0, ticket: '', clientName: '', local: '' },
+    message: (state) => state.messages[0] || { id: 0, title: '', subtitle: '', description: '' },
     history: (state) => state.messages.slice(1),
   },
 
@@ -28,27 +28,28 @@ export const useMainStore = defineStore('main', {
       const serverStore = useServerStore()
       const settingsStore = useSettingsStore()
       const api = new Client21(serverStore.apiUrl, null, serverStore.apiRetries)
-
       const rawMessages = await api.messages(
         settingsStore.currentUnity,
         settingsStore.enabledServices,
       )
 
-      if (!rawMessages || rawMessages.length === 0) return
-
-      const newTickets = rawMessages
-        .map((m) => this.normalizeMessage(m))
-        .filter(
-          (newTicket) =>
-            !this.messages.some(
-              (existing) =>
-                existing.ticket === newTicket.ticket && existing.type === newTicket.type,
-            ),
-        )
-
-      if (newTickets.length > 0) {
-        this.messages = [...newTickets, ...this.messages].slice(0, HISTORY_MAX_LENGTH)
+      if (rawMessages?.length > 0) {
+        this.newMessage(this.normalizeMessage(rawMessages[0]))
       }
+    },
+
+    newMessage(message) {
+      // Evita duplicados
+      if (this.messages.length > 0 && this.messages[0].id === message.id) return
+
+      // Remove se a mesma senha já existe no histórico para não repetir na lateral
+      const idx = this.messages.findIndex(
+        (m) => m.ticket === message.ticket && m.type === message.type,
+      )
+      if (idx !== -1) this.messages.splice(idx, 1)
+
+      this.messages.unshift(message)
+      if (this.messages.length > HISTORY_MAX_LENGTH) this.messages.pop()
     },
 
     normalizeMessage(data) {
