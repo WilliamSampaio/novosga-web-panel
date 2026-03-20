@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { Client as Client21 } from '@/composables/api/21'
-import { useAuthStore } from './auth'
 import { useServerStore } from './server'
 import { useSettingsStore } from './settings'
 
@@ -21,39 +20,47 @@ export const useMainStore = defineStore('main', {
   actions: {
     async fetchApiInfo() {
       const serverStore = useServerStore()
-      const authStore = useAuthStore()
       const api = new Client21(serverStore.apiUrl, null, serverStore.apiRetries)
-      this.apiInfo = await api.info(authStore.accessToken)
+      this.apiInfo = await api.info()
     },
 
     async fetchMessages() {
       const serverStore = useServerStore()
-      const authStore = useAuthStore()
       const settingsStore = useSettingsStore()
       const api = new Client21(serverStore.apiUrl, null, serverStore.apiRetries)
 
-      try {
-        const messages = await api.messages(
-          authStore.accessToken,
-          settingsStore.currentUnity,
-          settingsStore.enabledServices,
+      const rawMessages = await api.messages(
+        settingsStore.currentUnity,
+        settingsStore.enabledServices,
+      )
+
+      if (!rawMessages || rawMessages.length === 0) return
+
+      const novas = rawMessages
+        .map((m) => this.normalizeMessage(m))
+        .filter(
+          (novaTicket) =>
+            !this.messages.some(
+              (existing) =>
+                existing.ticket === novaTicket.ticket && existing.local === novaTicket.local,
+            ),
         )
 
-        if (messages && messages.length > 0) {
-          this.messages = messages.map((m) => this.normalizeMessage(m)).slice(0, HISTORY_MAX_LENGTH)
-        }
-      } catch (error) {
-        console.error('Erro ao buscar histórico inicial:', error)
+      if (novas.length > 0) {
+        this.messages = [...novas, ...this.messages].slice(0, HISTORY_MAX_LENGTH)
       }
     },
 
     normalizeMessage(data) {
+      const numeroSenha = String(data.numeroSenha).padStart(3, '0')
+      const numeroLocal = String(data.numeroLocal).padStart(3, '0')
+
       return {
         id: data.id,
         type: 'ticket',
-        ticket: data.siglaSenha + ('000' + data.numeroSenha).slice(-3),
+        ticket: `${data.siglaSenha}${numeroSenha}`,
         clientName: data.nomeCliente || '',
-        local: `${data.local} ${('000' + data.numeroLocal).slice(-3)}`,
+        local: `${data.local} ${numeroLocal}`,
         priority: data.prioridade === 'Prioridade',
         $data: data,
       }

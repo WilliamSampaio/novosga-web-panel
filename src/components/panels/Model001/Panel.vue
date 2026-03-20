@@ -72,12 +72,7 @@
       <img v-if="panelStore.footerLeftLogoUrlIsDefined" class="w-60" :src="footer.leftLogoUrl" />
 
       <div class="text-4xl text-white text-center font-medium" :style="{ color: footer.textColor }">
-        <Clock
-          v-if="footer.showClock"
-          :locale="locale"
-          :dateFormat="$t('date_format')"
-          :fontColor="footer.textColor"
-        />
+        <Clock v-if="footer.showClock" :locale="locale" :fontColor="footer.textColor" />
       </div>
 
       <img v-if="panelStore.footerRightLogoUrlIsDefined" class="w-60" :src="footer.rightLogoUrl" />

@@ -137,12 +137,7 @@
               />
 
               <div class="text-1xl text-white text-center font-medium">
-                <Clock
-                  v-if="footer.showClock"
-                  :locale="locale"
-                  :dateFormat="$t('date_format')"
-                  :fontColor="footer.textColor"
-                />
+                <Clock v-if="footer.showClock" :locale="locale" :fontColor="footer.textColor" />
               </div>
 
               <img
