@@ -5,8 +5,6 @@ import i18n from './plugins/i18n'
 import pinia from './plugins/pinia'
 import vuetify from './plugins/vuetify'
 
-import 'moment/dist/locale/pt-br'
-
 import './style.css'
 
 const app = createApp(App)
