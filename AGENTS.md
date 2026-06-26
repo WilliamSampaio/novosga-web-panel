@@ -22,6 +22,10 @@ Use ES modules, Vue single-file components e o alias `@` para imports a partir d
 
 O Vitest está configurado em `vitest.config.js` com `jsdom`; arquivos de teste devem ficar em `src/**/__tests__/*` e normalmente usam o sufixo `*.spec.js`, como `src/__tests__/App.spec.js`. Adicione testes para comportamentos que afetem rotas, stores, renderização, integração com API ou estado visível ao usuário. Execute `npm run test:unit` antes de enviar alterações e combine com `npm run lint` para validações de qualidade.
 
+## Workflow SDD
+
+Para mudanças de comportamento, integração, UI relevante, persistência ou regras de negócio, comece por uma spec em `docs/sdd/` usando `docs/sdd/template.md`. A spec deve registrar problema, escopo, requisitos, critérios de aceite e plano de verificação. Implemente apenas o que estiver coberto pela spec aprovada e atualize testes ou documentação diretamente relacionados.
+
 ## Diretrizes de Commits e Pull Requests
 
 O histórico atual usa mensagens curtas e imperativas, às vezes em português, como `update`, `remove` e `volta pra logica antiga...`. Prefira resumos imperativos mais claros, como `fix panel history after reload`. Pull requests devem incluir descrição objetiva, issue vinculada quando houver, resultados dos testes e screenshots ou gravações para mudanças de UI.
