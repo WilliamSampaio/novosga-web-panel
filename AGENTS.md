@@ -24,7 +24,7 @@ O Vitest está configurado em `vitest.config.js` com `jsdom`; arquivos de teste 
 
 ## Workflow SDD
 
-Para mudanças de comportamento, integração, UI relevante, persistência ou regras de negócio, comece por uma spec em `docs/sdd/` usando `docs/sdd/template.md`. A spec deve registrar problema, escopo, requisitos, critérios de aceite e plano de verificação. Implemente apenas o que estiver coberto pela spec aprovada e atualize testes ou documentação diretamente relacionados.
+Para mudanças de comportamento, integração, UI relevante, persistência ou regras de negócio, comece por uma spec em `docs/sdd/` usando `docs/sdd/template.md`. A spec deve registrar problema, escopo, requisitos, critérios de aceite, testes unitários obrigatórios e plano de verificação. Implemente apenas o que estiver coberto pela spec aprovada e inclua ou atualize testes unitários para cada nova funcionalidade ou regra alterada.
 
 ## Diretrizes de Commits e Pull Requests
 

@@ -48,7 +48,7 @@ Documente mudanças em API, eventos Mercure/EventSource, payloads, variáveis `V
 
 1. Inspecionar os caminhos afetados e confirmar o comportamento atual.
 2. Implementar a menor mudança que satisfaça os requisitos.
-3. Atualizar testes e documentação relacionados.
+3. Criar ou atualizar testes unitários para cada nova funcionalidade ou regra alterada.
 4. Rodar verificações.
 
 ## Plano de verificação
@@ -57,6 +57,14 @@ Documente mudanças em API, eventos Mercure/EventSource, payloads, variáveis `V
 - `npm run lint`:
 - `npm run build`:
 - Verificação manual:
+
+## Testes unitários obrigatórios
+
+Liste os testes que serão criados ou atualizados. Se algum comportamento não puder ser coberto por teste unitário, registre o motivo e a verificação alternativa.
+
+- Teste para R1:
+- Teste para R2:
+- Teste para R3:
 
 ## Riscos e cuidados
 

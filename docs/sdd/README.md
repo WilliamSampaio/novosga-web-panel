@@ -36,7 +36,7 @@ docs/sdd/0002-novo-modelo-painel.md
 2. Preencha problema, escopo, não objetivos, requisitos e critérios de aceite.
 3. Revise ambiguidades antes de codificar. Requisitos vagos devem virar expectativas verificáveis.
 4. Implemente apenas o necessário para atender a spec aprovada.
-5. Atualize testes e documentação diretamente relacionados.
+5. Inclua ou atualize testes unitários para toda nova funcionalidade e para regras alteradas.
 6. Rode as verificações aplicáveis e registre o resultado na spec ou no PR.
 
 ## Verificações recomendadas
@@ -65,5 +65,6 @@ Antes de implementar, confirme:
 - estados de erro, loading e vazio foram considerados quando houver UI;
 - mudanças de API ou persistência têm contrato explícito;
 - critérios de aceite são testáveis;
+- há testes unitários planejados para cada nova funcionalidade ou regra alterada;
 - riscos de segurança foram considerados, especialmente por causa de credenciais e tokens em `localStorage`;
 - há plano de verificação com comandos reais do projeto.
