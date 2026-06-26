@@ -6,14 +6,13 @@ Este é um painel web em Vue 3 + Vite. O código da aplicação fica em `src/`: 
 
 ## Comandos de Build, Teste e Desenvolvimento
 
-- `npm install`: instala as dependências. Use Node `^20.19.0` ou `>=22.12.0`.
-- `npm run dev`: inicia o servidor de desenvolvimento do Vite.
-- `npm run build`: gera o bundle de produção em `dist/`.
-- `npm run preview`: serve localmente o bundle gerado.
-- `npm run test:unit`: executa testes unitários com Vitest e `jsdom`.
-- `npm run lint`: executa Oxlint e ESLint com correções automáticas.
-- `npm run format`: formata `src/` com Prettier.
-- `docker compose up --build`: cria a imagem de produção com nginx e expõe em `${DOCKER_COMPOSE_HOST_PORT:-8081}`.
+- Instalação: `npm install` instala as dependências. Use Node `^20.19.0` ou `>=22.12.0`.
+- Desenvolvimento: `npm run dev` inicia o servidor de desenvolvimento do Vite.
+- Testes: `npm run test:unit` executa os testes unitários com Vitest e `jsdom`.
+- Lint: `npm run lint` executa `lint:oxlint` e `lint:eslint` via `run-s lint:*`.
+- Lint detalhado: `npm run lint:oxlint` roda `oxlint . --fix`; `npm run lint:eslint` roda `eslint . --fix --cache`.
+- Build: `npm run build` gera o bundle de produção com `vite build` em `dist/`.
+- Preview: `npm run preview` serve localmente o bundle gerado.
 
 ## Estilo de Código e Convenções de Nomeação
 
