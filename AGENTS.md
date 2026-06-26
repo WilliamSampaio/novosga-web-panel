@@ -22,6 +22,10 @@ Use ES modules, Vue single-file components e o alias `@` para imports a partir d
 
 O Vitest está configurado em `vitest.config.js` com `jsdom`; arquivos de teste devem ficar em `src/**/__tests__/*` e normalmente usam o sufixo `*.spec.js`, como `src/__tests__/App.spec.js`. Adicione testes para comportamentos que afetem rotas, stores, renderização, integração com API ou estado visível ao usuário. Execute `npm run test:unit` antes de enviar alterações e combine com `npm run lint` para validações de qualidade.
 
+## Internacionalização
+
+Toda nova funcionalidade ou atualização que inclua textos visíveis ao usuário deve implementar ou ajustar a internacionalização. Não deixe labels, botões, mensagens, placeholders, textos de ajuda, estados vazios, erros ou confirmações escritos diretamente no código. Use `vue-i18n` e mantenha as chaves em `src/locales/pt_BR.json`, `src/locales/en.json` e `src/locales/es.json` com o mesmo conjunto de chaves. Quando uma mudança alterar textos existentes, revise as três traduções no mesmo diff e adicione ou ajuste testes quando houver comportamento traduzido relevante.
+
 ## Workflow SDD
 
 Para mudanças de comportamento, integração, UI relevante, persistência ou regras de negócio, comece por uma spec em `docs/sdd/` usando `docs/sdd/template.md`. A spec deve registrar problema, escopo, requisitos, critérios de aceite, testes unitários obrigatórios e plano de verificação. Implemente apenas o que estiver coberto pela spec aprovada e inclua ou atualize testes unitários para cada nova funcionalidade ou regra alterada.
