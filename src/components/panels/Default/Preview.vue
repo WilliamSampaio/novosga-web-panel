@@ -137,7 +137,7 @@
     <v-col cols="3">
       <v-switch
         v-model="panelState.empty"
-        label="Painel vazio"
+        :label="$t('panel.preview.empty_panel')"
         hide-details
         color="primary"
         :disabled="
@@ -149,7 +149,7 @@
 
       <v-switch
         v-model="panelState.hideClientName"
-        label="Ocultar nome do cliente"
+        :label="$t('panel.preview.hide_client_name')"
         hide-details
         color="primary"
         :disabled="panelState.empty === true"
@@ -157,7 +157,7 @@
 
       <v-switch
         v-model="panelState.priority"
-        label="Senha atual prioridade"
+        :label="$t('panel.preview.current_ticket_priority')"
         hide-details
         color="primary"
         :disabled="panelState.empty === true"
@@ -165,7 +165,7 @@
 
       <v-switch
         v-model="panelState.historyEmpty"
-        label="Histórico vazio"
+        :label="$t('panel.preview.empty_history')"
         hide-details
         color="primary"
         :disabled="panelState.empty === true"
@@ -196,31 +196,31 @@ const { locale } = useI18n()
 
 const panelDataPreview = computed(() => {
   const data = {
-    unityDescription: panelState.empty ? '---' : 'minha unidade',
+    unityDescription: panelState.empty ? '---' : t('panel.preview.sample_unit'),
     message: {
       ticket: panelState.empty ? '---' : 'A007',
-      clientName: panelState.empty ? '---' : 'james bond',
-      service: panelState.empty ? '---' : 'descrição do serviço',
-      local: panelState.empty ? '---' : 'guichê 1',
+      clientName: panelState.empty ? '---' : t('panel.preview.sample_client_1'),
+      service: panelState.empty ? '---' : t('panel.preview.sample_service'),
+      local: panelState.empty ? '---' : t('panel.preview.sample_counter_1'),
       priority: panelState.priority,
     },
     history: [
       {
         id: 1,
         ticket: 'A001',
-        local: 'guichê 1',
+        local: t('panel.preview.sample_counter_1'),
         priority: false,
       },
       {
         id: 2,
         ticket: 'A002',
-        local: 'guichê 2',
+        local: t('panel.preview.sample_counter_2'),
         priority: true,
       },
       {
         id: 3,
         ticket: 'A003',
-        local: 'guichê 3',
+        local: t('panel.preview.sample_counter_3'),
         priority: false,
       },
     ],

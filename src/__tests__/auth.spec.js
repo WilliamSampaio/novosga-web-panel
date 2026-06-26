@@ -1,11 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
+import { useServerStore } from '@/stores/server'
+import i18n from '@/plugins/i18n'
 
 describe('auth store', () => {
   beforeEach(() => {
     localStorage.clear()
     setActivePinia(createPinia())
+    i18n.global.locale.value = 'pt_BR'
   })
 
   it('updates token data and persists it in localStorage', () => {
@@ -58,5 +61,17 @@ describe('auth store', () => {
     expect(store.refreshToken).toBeNull()
     expect(store.expireDate).toBeNull()
     expect(localStorage.getItem('painel-web.v3.auth')).toBeNull()
+  })
+
+  it('uses the active locale for visible auth errors', async () => {
+    i18n.global.locale.value = 'en'
+    const store = useAuthStore()
+    const serverStore = useServerStore()
+    serverStore.apiUrl = null
+    serverStore.apiClientId = null
+    serverStore.apiUsername = null
+
+    await expect(store.token()).rejects.toThrow('Incomplete API settings on the server.')
+    await expect(store.refresh()).rejects.toThrow('No Refresh Token available.')
   })
 })

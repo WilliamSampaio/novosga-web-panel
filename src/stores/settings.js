@@ -65,7 +65,7 @@ export const useSettingsStore = defineStore('settings', {
 
       if (!Array.isArray(data) || data.length === 0) {
         this.services = []
-        messages.add({ text: 'Nenhum serviço enocontrado!', color: 'error' })
+        messages.add({ text: i18n.global.t('settings.services.not_found'), color: 'error' })
         return
       }
 

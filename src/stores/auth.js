@@ -2,6 +2,7 @@ import storage from '@/composables/storage'
 import { defineStore } from 'pinia'
 import { useServerStore } from './server'
 import { Client as Client21 } from '@/composables/api/21'
+import i18n from '@/plugins/i18n'
 
 export const useAuthStore = defineStore('auth', {
   state: () => {
@@ -49,7 +50,7 @@ export const useAuthStore = defineStore('auth', {
       const serverStore = useServerStore()
 
       if (!serverStore.apiUrl || !serverStore.apiClientId || !serverStore.apiUsername) {
-        throw new Error('Configurações de API incompletas no servidor.')
+        throw new Error(i18n.global.t('auth.error.api_config_incomplete'))
       }
 
       const params = new URLSearchParams({
@@ -68,7 +69,7 @@ export const useAuthStore = defineStore('auth', {
 
     async refresh() {
       const serverStore = useServerStore()
-      if (!this.refreshToken) throw new Error('Nenhum Refresh Token disponível.')
+      if (!this.refreshToken) throw new Error(i18n.global.t('auth.error.refresh_token_missing'))
 
       const params = new URLSearchParams({
         grant_type: 'refresh_token',

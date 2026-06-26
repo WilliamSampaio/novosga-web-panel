@@ -1,5 +1,6 @@
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
+import i18n from '@/plugins/i18n'
 
 class Client {
   constructor(server, moduleName, retries = 5) {
@@ -68,7 +69,7 @@ class Client {
         error.response?.data?.error_description ||
         error.response?.data?.message ||
         error.message ||
-        'Erro desconhecido na API'
+        i18n.global.t('api.error.unknown')
       throw new Error(message)
     }
   }
