@@ -2,9 +2,10 @@
 
 ## Status
 
-- Estado: rascunho
+- Estado: concluída
 - Autor: Codex
 - Data: 2026-06-26
+- Conclusão: 2026-06-30
 
 ## Problema
 
@@ -194,8 +195,39 @@ Estados esperados:
 
 ## Resultado
 
-Preencha ao concluir a implementação:
-
 - Alterações realizadas:
+  - Foi criado um inventário dos textos visíveis hardcoded encontrados no escopo da spec em
+    `docs/sdd/0001-internacionalizacao-interface-inventario.md`.
+  - Textos visíveis da tela de configurações foram movidos para chaves de tradução, incluindo
+    servidor, serviços, painel, áudio, área crítica, navegação, seletor de idioma e modo escuro.
+  - Componentes reutilizáveis passaram a usar i18n para botões, diálogos, ações críticas e editor
+    de fala.
+  - Previews e modelos de painel passaram a usar chaves de tradução para labels, estados vazios,
+    histórico e exemplos visíveis.
+  - Stores e composables que geram mensagens ao usuário passaram a usar `vue-i18n`.
+  - Foram adicionadas ou reorganizadas chaves em `src/locales/pt_BR.json`, `src/locales/en.json` e
+    `src/locales/es.json`, mantendo os três arquivos com o mesmo conjunto de chaves.
+  - Foram adicionados testes unitários para paridade de locales e para fluxos traduzidos em
+    stores, composables, configurações, componentes reutilizáveis e previews de painel.
+
 - Critérios de aceite verificados:
+  - AC1: verificado por testes estáticos e busca manual. Os textos visíveis em português que ainda
+    aparecem fora de `src/locales/` são comentários, logs técnicos, nomes de variáveis ou dados de
+    domínio vindos da API, que estão fora do escopo da spec.
+  - AC2: mensagens de sucesso, erro e sessão expirada em stores/composables usam chaves de
+    tradução.
+  - AC3: `src/__tests__/locales.spec.js` valida que `pt_BR`, `en` e `es` têm as mesmas chaves.
+  - AC4: traduções mapeadas em `en.json` e `es.json` foram preenchidas nos respectivos idiomas.
+  - AC5: a troca de `settingsStore.locale` atualiza o locale ativo do `vue-i18n` sem exigir reload.
+  - AC6: `panelStore.getParsedSpeechText()` foi coberto por teste usando o idioma ativo.
+  - AC7: `npm run test:unit -- --run` passou com 10 arquivos de teste e 38 testes.
+  - AC8: `npm run lint` passou.
+  - AC9: `npm run build` passou. O Vite manteve apenas o aviso conhecido de chunks acima de 500 kB.
+  - AC10: o `README.md` não precisou ser alterado, porque a implementação não mudou instruções de
+    uso, instalação, configuração ou escolha de idioma; apenas centralizou textos já existentes em
+    chaves de tradução.
+
 - Pendências:
+  - Nenhuma pendência funcional conhecida para a spec 0001.
+  - A verificação manual completa em navegador pode ser repetida antes do release para conferir
+    visualmente todos os textos em Português, English e Español.
