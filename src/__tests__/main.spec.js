@@ -19,6 +19,7 @@ describe('main store', () => {
       local: 'Guiche',
       numeroLocal: 2,
       prioridade: 'Prioridade',
+      peso: 2,
     })
 
     expect(message).toMatchObject({
@@ -28,6 +29,29 @@ describe('main store', () => {
       clientName: 'Maria',
       local: 'Guiche 002',
       priority: true,
+      priorityText: 'Prioridade',
+    })
+  })
+
+  it('uses message weight to detect priority tickets', () => {
+    const store = useMainStore()
+
+    const message = store.normalizeMessage({
+      id: 11,
+      siglaSenha: 'B',
+      numeroSenha: 8,
+      nomeCliente: '',
+      local: 'Mesa',
+      numeroLocal: 1,
+      prioridade: 'Prioridade',
+      peso: 1,
+    })
+
+    expect(message).toMatchObject({
+      ticket: 'B008',
+      local: 'Mesa 001',
+      priority: false,
+      priorityText: 'Prioridade',
     })
   })
 

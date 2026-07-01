@@ -62,7 +62,8 @@ export const useMainStore = defineStore('main', {
         ticket: `${data.siglaSenha}${numeroSenha}`,
         clientName: data.nomeCliente || '',
         local: `${data.local} ${numeroLocal}`,
-        priority: data.prioridade === 'Prioridade',
+        priority: Number(data.peso) > 1,
+        priorityText: data.prioridade,
         $data: data,
       }
     },
