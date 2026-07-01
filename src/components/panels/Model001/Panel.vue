@@ -114,7 +114,7 @@ const unityDescription = computed(() => {
 
 const ticketLabel = computed(() => {
   return mainStore.message.priority
-    ? `(${t('panel.priority')}) ${t('panel.ticket')}`
+    ? `(${mainStore.message.priorityText || t('panel.priority')}) ${t('panel.ticket')}`
     : t('panel.ticket')
 })
 

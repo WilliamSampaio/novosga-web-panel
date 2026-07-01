@@ -1,7 +1,7 @@
 <template>
   <v-text-field
     v-model="panelStore.panel.speechText"
-    label="Template da chamada"
+    :label="$t('speech_editor.label.template')"
     prepend-icon="mdi-account-voice"
     density="compact"
     maxlength="100"
@@ -10,7 +10,7 @@
   >
     <template v-slot:append>
       <v-btn variant="flat" color="success" append-icon="mdi-play" @click="testSpeechText">
-        Ouvir
+        {{ $t('common.listen') }}
       </v-btn>
     </template>
   </v-text-field>
@@ -37,7 +37,7 @@
 import { useSpeech } from '@/composables/speech'
 import { usePanelStore } from '@/stores/panel'
 import { useSettingsStore } from '@/stores/settings'
-import { onBeforeMount } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -45,7 +45,7 @@ const { t } = useI18n()
 const panelStore = usePanelStore()
 const settingsStore = useSettingsStore()
 
-const tags = [
+const tags = computed(() => [
   { text: t('panel.ticket'), key: '$TICKET$', icon: 'mdi-invoice-list-outline', color: 'primary' },
   {
     text: t('panel.client'),
@@ -61,7 +61,7 @@ const tags = [
   },
   { text: t('panel.local'), key: '$LOCAL$', icon: 'mdi-map-marker-outline', color: 'primary' },
   { text: t('panel.service'), key: '$SERVICE$', icon: 'mdi-face-agent', color: 'primary' },
-]
+])
 
 const { speakAll } = useSpeech()
 
@@ -71,7 +71,7 @@ const testSpeechText = () => {
       ticketCode: 'ABC',
       ticketNumber: 7,
       clientName: 'James Bond',
-      local: 'Guichê',
+      local: t('speech_editor.preview.local'),
       localNumber: 1,
       service: 'Triagem',
     }),
