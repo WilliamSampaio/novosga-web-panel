@@ -17,6 +17,7 @@
 - [Folder Structure](#folder-structure)
 - [How the Application Works](#how-the-application-works)
 - [Main Files](#main-files)
+- [Panel Models](#panel-models)
 - [Adding a New Panel Model](#adding-a-new-panel-model)
 - [SDD Workflow](#sdd-workflow)
 - [Documentation Rule](#documentation-rule)
@@ -203,7 +204,7 @@ Some settings can come from `VITE_*` variables:
 | `VITE_API_CLIENT_ID` | OAuth Client ID. |
 | `VITE_API_CLIENT_SECRET` | OAuth Client Secret. |
 | `VITE_API_RETRIES` | Number of attempts on network/API failures. |
-| `VITE_PANEL` | Initial panel model, such as `default` or `model001`. |
+| `VITE_PANEL` | Initial panel model, such as `default`, `model001` or `alert`. |
 
 There are also variables for colors, logos and clock display. See `src/stores/panel.js`
 for the complete list.
@@ -259,6 +260,15 @@ Simple flow:
 - `src/composables/api/21.js`: HTTP client for the API.
 - `src/composables/storage.js`: persistence in `localStorage`.
 - `src/plugins/registry.js`: list of panel models.
+
+## Panel Models
+
+Available models:
+
+- `default`: general model with current ticket and side history.
+- `model001`: general model with the client name highlighted and bottom history.
+- `alert`: operational alert model without history, with client or ticket highlighted, current
+  call timer and recurring alert sound every 15 seconds while the same ticket remains current.
 
 ## Adding a New Panel Model
 

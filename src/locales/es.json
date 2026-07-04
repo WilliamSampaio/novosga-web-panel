@@ -125,6 +125,7 @@
   "auth.error.session_expired": "Sesión expirada. Inicie sesión nuevamente.",
   "api.error.unknown": "Error desconocido en la API",
   "panel.ticket": "Ticket",
+  "panel.alert.attendance": "Atención",
   "panel.client": "Cliente",
   "panel.client_or_ticket": "Cliente O Ticket",
   "panel.local": "Local",

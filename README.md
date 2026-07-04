@@ -17,6 +17,7 @@
 - [Estrutura de Pastas](#estrutura-de-pastas)
 - [Como a Aplicacao Funciona](#como-a-aplicacao-funciona)
 - [Principais Arquivos](#principais-arquivos)
+- [Modelos de Painel](#modelos-de-painel)
 - [Adicionando um Novo Modelo de Painel](#adicionando-um-novo-modelo-de-painel)
 - [Workflow SDD](#workflow-sdd)
 - [Regra de Documentacao](#regra-de-documentacao)
@@ -200,7 +201,7 @@ Algumas configuracoes podem vir de variaveis `VITE_*`:
 | `VITE_API_CLIENT_ID` | Client ID OAuth. |
 | `VITE_API_CLIENT_SECRET` | Client Secret OAuth. |
 | `VITE_API_RETRIES` | Numero de tentativas em falhas de rede/API. |
-| `VITE_PANEL` | Modelo inicial do painel, como `default` ou `model001`. |
+| `VITE_PANEL` | Modelo inicial do painel, como `default`, `model001` ou `alert`. |
 
 Tambem existem variaveis para cores, logos e exibicao do relogio. Veja `src/stores/panel.js` para a lista completa.
 
@@ -255,6 +256,16 @@ Fluxo simples:
 - `src/composables/api/21.js`: cliente HTTP para API.
 - `src/composables/storage.js`: persistencia em `localStorage`.
 - `src/plugins/registry.js`: lista de modelos de painel.
+
+## Modelos de Painel
+
+Modelos disponiveis:
+
+- `default`: modelo geral com senha atual e historico lateral.
+- `model001`: modelo geral com nome do cliente em destaque e historico inferior.
+- `alert`: modelo de alerta operacional sem historico, com cliente ou senha em destaque,
+  cronometro da chamada atual e alerta sonoro recorrente a cada 15 segundos enquanto a mesma senha
+  permanecer atual.
 
 ## Adicionando um Novo Modelo de Painel
 

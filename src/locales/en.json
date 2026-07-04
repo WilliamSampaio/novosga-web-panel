@@ -125,6 +125,7 @@
   "auth.error.session_expired": "Session expired. Please log in again.",
   "api.error.unknown": "Unknown API error",
   "panel.ticket": "Ticket",
+  "panel.alert.attendance": "Service",
   "panel.client": "Client",
   "panel.client_or_ticket": "Client OR Ticket",
   "panel.local": "Location",

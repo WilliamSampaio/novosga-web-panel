@@ -17,6 +17,7 @@
 - [Estructura de Carpetas](#estructura-de-carpetas)
 - [Como Funciona la Aplicacion](#como-funciona-la-aplicacion)
 - [Archivos Principales](#archivos-principales)
+- [Modelos de Panel](#modelos-de-panel)
 - [Agregando un Nuevo Modelo de Panel](#agregando-un-nuevo-modelo-de-panel)
 - [Workflow SDD](#workflow-sdd)
 - [Regla de Documentacion](#regla-de-documentacion)
@@ -205,7 +206,7 @@ Algunas configuraciones pueden venir de variables `VITE_*`:
 | `VITE_API_CLIENT_ID` | Client ID OAuth. |
 | `VITE_API_CLIENT_SECRET` | Client Secret OAuth. |
 | `VITE_API_RETRIES` | Numero de intentos en fallas de red/API. |
-| `VITE_PANEL` | Modelo inicial del panel, como `default` o `model001`. |
+| `VITE_PANEL` | Modelo inicial del panel, como `default`, `model001` o `alert`. |
 
 Tambien existen variables para colores, logos y visualizacion del reloj. Vea
 `src/stores/panel.js` para la lista completa.
@@ -261,6 +262,16 @@ Flujo simple:
 - `src/composables/api/21.js`: cliente HTTP para API.
 - `src/composables/storage.js`: persistencia en `localStorage`.
 - `src/plugins/registry.js`: lista de modelos de panel.
+
+## Modelos de Panel
+
+Modelos disponibles:
+
+- `default`: modelo general con ticket actual e historial lateral.
+- `model001`: modelo general con el nombre del cliente destacado e historial inferior.
+- `alert`: modelo de alerta operacional sin historial, con cliente o ticket destacado,
+  cronometro de la llamada actual y sonido de alerta recurrente cada 15 segundos mientras el mismo
+  ticket permanezca actual.
 
 ## Agregando un Nuevo Modelo de Panel
 

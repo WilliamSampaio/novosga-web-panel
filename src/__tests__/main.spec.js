@@ -44,7 +44,7 @@ describe('main store', () => {
       local: 'Mesa',
       numeroLocal: 1,
       prioridade: 'Prioridade',
-      peso: 1,
+      peso: 0,
     })
 
     expect(message).toMatchObject({
