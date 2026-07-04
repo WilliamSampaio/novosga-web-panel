@@ -17,6 +17,7 @@ describe('panel store', () => {
       expect.arrayContaining([
         { title: 'Default', value: 'default' },
         { title: 'Model001', value: 'model001' },
+        { title: 'Alert', value: 'alert' },
       ]),
     )
   })

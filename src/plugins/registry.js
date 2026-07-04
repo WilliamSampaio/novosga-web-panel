@@ -15,4 +15,10 @@ export const LIST_PANEL_MODELS = {
     ),
     text: '$CLIENT_OR_TICKET$ $LOCAL$ $SERVICE$',
   },
+  alert: {
+    name: 'Alert',
+    component: defineAsyncComponent(() => import('@/components/panels/Alert/Panel.vue')),
+    previewComponent: defineAsyncComponent(() => import('@/components/panels/Alert/Preview.vue')),
+    text: '$CLIENT_OR_TICKET$ $LOCAL$ $SERVICE$',
+  },
 }
