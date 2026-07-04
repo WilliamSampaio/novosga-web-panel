@@ -2,6 +2,27 @@
 
 [Portugues](README.md) | [English](README.en.md) | [Espanol](README.es.md)
 
+## Summary
+
+- [What This Project Does](#what-this-project-does)
+- [Main Stack](#main-stack)
+- [Before You Start](#before-you-start)
+- [How to Run Locally](#how-to-run-locally)
+- [Important Commands](#important-commands)
+- [How to Run Tests](#how-to-run-tests)
+- [How to Build](#how-to-build)
+- [How to Run with Docker](#how-to-run-with-docker)
+- [How to Open in Production with Chrome](#how-to-open-in-production-with-chrome)
+- [Configuration Through Environment Variables](#configuration-through-environment-variables)
+- [Folder Structure](#folder-structure)
+- [How the Application Works](#how-the-application-works)
+- [Main Files](#main-files)
+- [Adding a New Panel Model](#adding-a-new-panel-model)
+- [SDD Workflow](#sdd-workflow)
+- [Documentation Rule](#documentation-rule)
+- [Security Notes](#security-notes)
+- [Where to Read More](#where-to-read-more)
+
 A web panel for showing NovoSGA service calls on a screen.
 
 Think of it like this:
@@ -151,6 +172,23 @@ Custom images can be mounted in the container. By default, `compose.yml` uses:
 ```text
 ./images -> /usr/share/nginx/html/images/custom
 ```
+
+## How to Open in Production with Chrome
+
+On service screens, the panel usually runs on a dedicated computer connected to a TV or
+monitor. In Chrome, open the panel in kiosk mode to fill the whole screen and allow
+sound/voice without a manual click:
+
+```sh
+google-chrome --kiosk --autoplay-policy=no-user-gesture-required http://127.0.0.1:8080
+```
+
+Use the URL and port from your environment. If you are using this project's default Docker
+setup, the URL will usually be `http://127.0.0.1:8081/`.
+
+- `--kiosk`: opens Chrome in fullscreen, without the address bar and normal controls.
+- `--autoplay-policy=no-user-gesture-required`: allows automatic media playback, which is
+  important for alert sounds and browser speech.
 
 ## Configuration Through Environment Variables
 

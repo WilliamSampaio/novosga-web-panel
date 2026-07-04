@@ -2,6 +2,27 @@
 
 [Portugues](README.md) | [English](README.en.md) | [Espanol](README.es.md)
 
+## Sumario
+
+- [O Que Este Projeto Faz](#o-que-este-projeto-faz)
+- [Stack Principal](#stack-principal)
+- [Antes de Comecar](#antes-de-comecar)
+- [Como Rodar Localmente](#como-rodar-localmente)
+- [Comandos Importantes](#comandos-importantes)
+- [Como Rodar Testes](#como-rodar-testes)
+- [Como Fazer Build](#como-fazer-build)
+- [Como Rodar com Docker](#como-rodar-com-docker)
+- [Como Abrir em Producao no Chrome](#como-abrir-em-producao-no-chrome)
+- [Configuracao por Variaveis de Ambiente](#configuracao-por-variaveis-de-ambiente)
+- [Estrutura de Pastas](#estrutura-de-pastas)
+- [Como a Aplicacao Funciona](#como-a-aplicacao-funciona)
+- [Principais Arquivos](#principais-arquivos)
+- [Adicionando um Novo Modelo de Painel](#adicionando-um-novo-modelo-de-painel)
+- [Workflow SDD](#workflow-sdd)
+- [Regra de Documentacao](#regra-de-documentacao)
+- [Cuidados de Seguranca](#cuidados-de-seguranca)
+- [Onde Ler Mais](#onde-ler-mais)
+
 Um painel web para mostrar chamadas de atendimento do NovoSGA em uma tela.
 
 Pense nele assim:
@@ -148,6 +169,23 @@ Imagens customizadas podem ser montadas no container. Por padrao, o `compose.yml
 ```text
 ./images -> /usr/share/nginx/html/images/custom
 ```
+
+## Como Abrir em Producao no Chrome
+
+Em telas de atendimento, o painel normalmente roda em um computador dedicado ligado a uma
+TV ou monitor. No Chrome, abra o painel em modo kiosk para ocupar a tela inteira e permitir
+som/voz sem clique manual:
+
+```sh
+google-chrome --kiosk --autoplay-policy=no-user-gesture-required http://127.0.0.1:8080
+```
+
+Use a URL e porta do seu ambiente. Se estiver usando o Docker padrao deste projeto, a URL
+normalmente sera `http://127.0.0.1:8081/`.
+
+- `--kiosk`: abre o Chrome em tela cheia, sem barra de endereco e controles normais.
+- `--autoplay-policy=no-user-gesture-required`: permite reproducao automatica de midia,
+  importante para som de alerta e voz do navegador.
 
 ## Configuracao por Variaveis de Ambiente
 

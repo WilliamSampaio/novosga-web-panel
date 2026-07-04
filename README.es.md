@@ -2,6 +2,27 @@
 
 [Portugues](README.md) | [English](README.en.md) | [Espanol](README.es.md)
 
+## Sumario
+
+- [Que Hace Este Proyecto](#que-hace-este-proyecto)
+- [Stack Principal](#stack-principal)
+- [Antes de Comenzar](#antes-de-comenzar)
+- [Como Ejecutar Localmente](#como-ejecutar-localmente)
+- [Comandos Importantes](#comandos-importantes)
+- [Como Ejecutar Pruebas](#como-ejecutar-pruebas)
+- [Como Hacer Build](#como-hacer-build)
+- [Como Ejecutar con Docker](#como-ejecutar-con-docker)
+- [Como Abrir en Produccion con Chrome](#como-abrir-en-produccion-con-chrome)
+- [Configuracion por Variables de Entorno](#configuracion-por-variables-de-entorno)
+- [Estructura de Carpetas](#estructura-de-carpetas)
+- [Como Funciona la Aplicacion](#como-funciona-la-aplicacion)
+- [Archivos Principales](#archivos-principales)
+- [Agregando un Nuevo Modelo de Panel](#agregando-un-nuevo-modelo-de-panel)
+- [Workflow SDD](#workflow-sdd)
+- [Regla de Documentacion](#regla-de-documentacion)
+- [Cuidados de Seguridad](#cuidados-de-seguridad)
+- [Donde Leer Mas](#donde-leer-mas)
+
 Un panel web para mostrar llamadas de atencion de NovoSGA en una pantalla.
 
 Piense en el asi:
@@ -153,6 +174,23 @@ usa:
 ```text
 ./images -> /usr/share/nginx/html/images/custom
 ```
+
+## Como Abrir en Produccion con Chrome
+
+En pantallas de atencion, el panel normalmente se ejecuta en una computadora dedicada
+conectada a una TV o monitor. En Chrome, abra el panel en modo kiosk para ocupar toda la
+pantalla y permitir sonido/voz sin un clic manual:
+
+```sh
+google-chrome --kiosk --autoplay-policy=no-user-gesture-required http://127.0.0.1:8080
+```
+
+Use la URL y el puerto de su ambiente. Si esta usando el Docker por defecto de este
+proyecto, la URL normalmente sera `http://127.0.0.1:8081/`.
+
+- `--kiosk`: abre Chrome en pantalla completa, sin barra de direccion y controles normales.
+- `--autoplay-policy=no-user-gesture-required`: permite reproduccion automatica de medios,
+  importante para sonidos de alerta y voz del navegador.
 
 ## Configuracion por Variables de Entorno
 
