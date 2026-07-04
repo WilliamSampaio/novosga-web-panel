@@ -154,7 +154,7 @@
     <v-col cols="3">
       <v-switch
         v-model="panelState.empty"
-        label="Painel vazio"
+        :label="$t('panel.preview.empty_panel')"
         hide-details
         color="primary"
         :disabled="
@@ -166,7 +166,7 @@
 
       <v-switch
         v-model="panelState.hideClientName"
-        label="Nome do cliente não informado"
+        :label="$t('panel.preview.client_name_missing')"
         hide-details
         color="primary"
         :disabled="panelState.empty === true"
@@ -174,7 +174,7 @@
 
       <v-switch
         v-model="panelState.priority"
-        label="Senha atual prioridade"
+        :label="$t('panel.preview.current_ticket_priority')"
         hide-details
         color="primary"
         :disabled="panelState.empty === true"
@@ -182,7 +182,7 @@
 
       <v-switch
         v-model="panelState.historyEmpty"
-        label="Histórico vazio"
+        :label="$t('panel.preview.empty_history')"
         hide-details
         color="primary"
         :disabled="panelState.empty === true"
@@ -214,62 +214,62 @@ const { locale } = useI18n()
 
 const panelDataPreview = computed(() => {
   const data = {
-    unityDescription: panelState.empty ? '---' : 'minha unidade',
+    unityDescription: panelState.empty ? '---' : t('panel.preview.sample_unit'),
     message: {
       ticket: panelState.empty ? '---' : 'A007',
-      clientName: panelState.empty ? '---' : 'james bond',
-      service: panelState.empty ? '---' : 'descrição do serviço',
-      local: panelState.empty ? '---' : 'guichê 1',
+      clientName: panelState.empty ? '---' : t('panel.preview.sample_client_1'),
+      service: panelState.empty ? '---' : t('panel.preview.sample_service'),
+      local: panelState.empty ? '---' : t('panel.preview.sample_counter_1'),
       priority: panelState.priority,
     },
     history: [
       {
         id: 1,
         ticket: 'A006',
-        clientName: panelState.empty ? '---' : 'maria bonita',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: panelState.empty ? '---' : t('panel.preview.sample_client_2'),
+        service: panelState.empty ? '---' : t('panel.preview.sample_service'),
         priority: false,
       },
       {
         id: 2,
         ticket: 'P007',
-        clientName: panelState.empty ? '---' : 'virgulino',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: panelState.empty ? '---' : t('panel.preview.sample_client_3'),
+        service: panelState.empty ? '---' : t('panel.preview.sample_service'),
         priority: true,
       },
       {
         id: 3,
         ticket: 'A005',
-        clientName: panelState.empty ? '---' : 'fulano de tal',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: panelState.empty ? '---' : t('panel.preview.sample_client_4'),
+        service: panelState.empty ? '---' : t('panel.preview.sample_service'),
         priority: false,
       },
       {
         id: 4,
         ticket: 'A004',
-        clientName: panelState.empty ? '---' : 'ana bolinha',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: panelState.empty ? '---' : t('panel.preview.sample_client_5'),
+        service: panelState.empty ? '---' : t('panel.preview.sample_service'),
         priority: false,
       },
       {
         id: 5,
         ticket: 'A003',
-        clientName: panelState.empty ? '---' : 'severino',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: panelState.empty ? '---' : t('panel.preview.sample_client_6'),
+        service: panelState.empty ? '---' : t('panel.preview.sample_service'),
         priority: false,
       },
       {
         id: 6,
         ticket: 'A002',
-        clientName: panelState.empty ? '---' : 'luva de pedreiro',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: panelState.empty ? '---' : t('panel.preview.sample_client_7'),
+        service: panelState.empty ? '---' : t('panel.preview.sample_service'),
         priority: false,
       },
       {
         id: 7,
         ticket: 'A001',
-        clientName: panelState.empty ? '---' : 'james bond',
-        service: panelState.empty ? '---' : 'descrição do serviço',
+        clientName: panelState.empty ? '---' : t('panel.preview.sample_client_1'),
+        service: panelState.empty ? '---' : t('panel.preview.sample_service'),
         priority: false,
       },
     ],

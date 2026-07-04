@@ -8,7 +8,7 @@
         prepend-icon="mdi-delete"
         size="large"
       >
-        Redefinir Painel
+        {{ $t('reset.button.open') }}
       </v-btn>
     </template>
 
@@ -16,32 +16,34 @@
       <v-card-item class="bg-error text-white">
         <v-card-title class="text-h6">
           <v-icon start>mdi-alert-octagon</v-icon>
-          Atenção! Ação Crítica
+          {{ $t('reset.dialog.title') }}
         </v-card-title>
       </v-card-item>
 
       <v-card-text class="pt-4 text-body-1">
-        Você está prestes a <strong>limpar todos os dados locais</strong> deste painel. <br /><br />
-        Esta ação irá:
+        <span v-html="$t('reset.dialog.description')"></span> <br /><br />
+        {{ $t('reset.dialog.action_intro') }}
         <ul class="ml-4 mt-2">
-          <li>Remover templates de voz personalizados.</li>
-          <li>Resetar cores e logos configuradas.</li>
-          <li>Deslogar a sessão atual.</li>
+          <li>{{ $t('reset.dialog.action_voice_templates') }}</li>
+          <li>{{ $t('reset.dialog.action_colors_logos') }}</li>
+          <li>{{ $t('reset.dialog.action_logout') }}</li>
         </ul>
-        <p class="mt-4 text-caption text-medium-emphasis">Essa operação não pode ser desfeita.</p>
+        <p class="mt-4 text-caption text-medium-emphasis">
+          {{ $t('reset.dialog.irreversible') }}
+        </p>
       </v-card-text>
 
       <v-divider></v-divider>
 
       <v-card-actions class="pa-4">
         <v-btn variant="text" @click="dialog = false" :disabled="loading">
-          Manter Configurações
+          {{ $t('reset.button.keep') }}
         </v-btn>
 
         <v-spacer></v-spacer>
 
         <v-btn color="error" variant="flat" :loading="loading" @click="handleReset">
-          Sim, Redefinir Tudo
+          {{ $t('reset.button.confirm') }}
         </v-btn>
       </v-card-actions>
     </v-card>

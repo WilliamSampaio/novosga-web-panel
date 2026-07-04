@@ -4,19 +4,19 @@
       <v-btn
         v-bind="activatorProps"
         color="success"
-        text="Carregar da pasta custom"
+        :text="$t('custom_image.button.load')"
         variant="flat"
       ></v-btn>
     </template>
 
     <template v-slot:default="{ isActive }">
       <v-card
-        title="Carregar imagem da pasta custom"
-        subtitle="Selecione uma imagem da pasta custom para usar no painel."
+        :title="$t('custom_image.dialog.title')"
+        :subtitle="$t('custom_image.dialog.subtitle')"
       >
         <v-card-text>
           <v-alert density="compact" type="info" variant="tonal">
-            Duplo-clique para pegar a URL da imagem.
+            {{ $t('custom_image.dialog.hint') }}
           </v-alert>
         </v-card-text>
 
@@ -39,7 +39,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text="Fechar" @click="isActive.value = false"></v-btn>
+          <v-btn :text="$t('common.close')" @click="isActive.value = false"></v-btn>
         </v-card-actions>
       </v-card>
     </template>

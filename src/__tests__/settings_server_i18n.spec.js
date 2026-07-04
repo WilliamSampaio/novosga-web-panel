@@ -1,0 +1,145 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { cwd } from 'node:process'
+import { describe, expect, it } from 'vitest'
+
+const source = readFileSync(join(cwd(), 'src/pages/settings.vue'), 'utf8')
+
+describe('settings page i18n', () => {
+  it('does not keep drawer and navigation texts hardcoded in settings.vue', () => {
+    expect(source).not.toContain('text="fechar"')
+    expect(source).not.toContain('label="Modo escuro"')
+    expect(source).not.toContain('text="Ir para o Painel"')
+  })
+
+  it('uses i18n keys for drawer and navigation texts', () => {
+    expect(source).toContain("$t('common.close')")
+    expect(source).toContain("$t('settings.label.dark_mode')")
+    expect(source).toContain("$t('menu.go_to_panel')")
+  })
+
+  it('does not keep server section texts hardcoded in settings.vue', () => {
+    expect(source).not.toContain('subtitle="Conexão com o servidor."')
+    expect(source).not.toContain('label="Versão do NovoSGA"')
+    expect(source).not.toContain('label="URL do Servidor"')
+    expect(source).not.toContain('label="Usuário da API"')
+    expect(source).not.toContain('label="Senha da API"')
+    expect(source).not.toContain('label="Client ID da API"')
+    expect(source).not.toContain('label="Client Secret da API"')
+    expect(source).not.toContain('label="Número de tentativas em caso de falha"')
+    expect(source).not.toContain('Salvar e Conectar')
+    expect(source).not.toContain('Configurações do servidor salvas com sucesso!')
+    expect(source).not.toContain('Erro ao salvar as configurações do servidor:')
+  })
+
+  it('uses i18n keys for the server section texts', () => {
+    expect(source).toContain("$t('settings.server.subtitle')")
+    expect(source).toContain("$t('settings.label.novosga_version')")
+    expect(source).toContain("$t('settings.label.server_url')")
+    expect(source).toContain("$t('settings.label.api_user')")
+    expect(source).toContain("$t('settings.label.api_password')")
+    expect(source).toContain("$t('settings.label.api_client_id')")
+    expect(source).toContain("$t('settings.label.api_client_secret')")
+    expect(source).toContain("$t('settings.label.retries')")
+    expect(source).toContain("$t('settings.btn.save_connect')")
+    expect(source).toContain("t('settings.server.save_success')")
+    expect(source).toContain("t('settings.server.save_error', { message: error.message })")
+  })
+
+  it('does not keep services section texts hardcoded in settings.vue', () => {
+    expect(source).not.toContain('title="Serviços"')
+    expect(source).not.toContain('subtitle="Configurações dos serviços e unidades."')
+    expect(source).not.toContain('label="Unidade"')
+    expect(source).not.toContain('label="Marcar Todos"')
+    expect(source).not.toContain(
+      'Selecione a unidade e clique em "Buscar Serviços" para carregar os serviços',
+    )
+  })
+
+  it('uses i18n keys for the services section texts', () => {
+    expect(source).toContain("$t('menu.services')")
+    expect(source).toContain("$t('settings.services.subtitle')")
+    expect(source).toContain("$t('settings.label.unity')")
+    expect(source).toContain("$t('settings.label.select_all')")
+    expect(source).toContain("$t('settings.services.load_hint')")
+  })
+
+  it('does not keep panel section texts hardcoded in settings.vue', () => {
+    expect(source).not.toContain('title="Painel"')
+    expect(source).not.toContain('subtitle="Configurações do Painel."')
+    expect(source).not.toContain('label="Modelo do painel"')
+    expect(source).not.toContain('label="Logo URL do cabeçalho"')
+    expect(source).not.toContain('label="Logo URL do rodapé (esquerda)"')
+    expect(source).not.toContain('label="Logo URL do rodapé (direita)"')
+    expect(source).not.toContain('label="Exibir data e hora no rodapé"')
+    expect(source).not.toContain('label="Exibir local no histórico"')
+    expect(source).not.toContain('label="Fundo do Cabeçalho"')
+    expect(source).not.toContain('label="Texto do Cabeçalho"')
+    expect(source).not.toContain('label="Fundo do Painel Principal"')
+    expect(source).not.toContain('label="Cor do Rótulo do Ticket"')
+    expect(source).not.toContain('label="Texto do Ticket"')
+    expect(source).not.toContain('label="Cor da Prioridade do Ticket"')
+    expect(source).not.toContain('label="Texto do Serviço"')
+    expect(source).not.toContain('label="Texto do Local"')
+    expect(source).not.toContain('label="Fundo do Histórico"')
+    expect(source).not.toContain('label="Texto do Histórico"')
+    expect(source).not.toContain('label="Texto do Histórico Vazio"')
+    expect(source).not.toContain('label="Fundo do Rodapé"')
+    expect(source).not.toContain('label="Texto do Rodapé"')
+  })
+
+  it('uses i18n keys for the panel section texts', () => {
+    expect(source).toContain("$t('settings.panel.title')")
+    expect(source).toContain("$t('settings.panel.subtitle')")
+    expect(source).toContain("$t('settings.label.panel_model')")
+    expect(source).toContain("$t('settings.label.header_logo_url')")
+    expect(source).toContain("$t('settings.label.footer_left_logo_url')")
+    expect(source).toContain("$t('settings.label.footer_right_logo_url')")
+    expect(source).toContain("$t('settings.label.show_footer_clock')")
+    expect(source).toContain("$t('settings.label.show_history_local')")
+    expect(source).toContain("$t('settings.label.header_bg_color')")
+    expect(source).toContain("$t('settings.label.header_text_color')")
+    expect(source).toContain("$t('settings.label.main_bg_color')")
+    expect(source).toContain("$t('settings.label.ticket_label_color')")
+    expect(source).toContain("$t('settings.label.ticket_text_color')")
+    expect(source).toContain("$t('settings.label.ticket_priority_color')")
+    expect(source).toContain("$t('settings.label.service_text_color')")
+    expect(source).toContain("$t('settings.label.local_text_color')")
+    expect(source).toContain("$t('settings.label.history_bg_color')")
+    expect(source).toContain("$t('settings.label.history_text_color')")
+    expect(source).toContain("$t('settings.label.history_empty_text_color')")
+    expect(source).toContain("$t('settings.label.footer_bg_color')")
+    expect(source).toContain("$t('settings.label.footer_text_color')")
+  })
+
+  it('does not keep audio and critical area texts hardcoded in settings.vue', () => {
+    expect(source).not.toContain('title="Audio"')
+    expect(source).not.toContain('subtitle="Configurações de audio."')
+    expect(source).not.toContain('label="Som de alerta"')
+    expect(source).not.toContain('label="Ativar vocalização"')
+    expect(source).not.toContain('label="Frase"')
+    expect(source).not.toContain('placeholder="Digite algo aqui!"')
+    expect(source).not.toContain('Olá Mundo! A B C 0 1 2 3')
+    expect(source).not.toContain('Área Crítica')
+    expect(source).not.toContain('Redefinir este painel para o estado de fábrica')
+    expect(source).not.toContain('Ao confirmar, todas as preferências de cores')
+    expect(source).not.toContain('Configurações salvas com sucesso!')
+    expect(source).not.toContain('Sessão expirada. Faça login novamente.')
+  })
+
+  it('uses i18n keys for the audio and critical area texts', () => {
+    expect(source).toContain("$t('settings.audio.title')")
+    expect(source).toContain("$t('settings.audio.subtitle')")
+    expect(source).toContain("$t('settings.label.alert_sound')")
+    expect(source).toContain("$t('common.listen')")
+    expect(source).toContain("$t('settings.label.enable_speech')")
+    expect(source).toContain("$t('settings.label.speech_phrase')")
+    expect(source).toContain("$t('settings.placeholder.speech_phrase')")
+    expect(source).toContain("t('settings.speech.test_text')")
+    expect(source).toContain("$t('settings.critical.title')")
+    expect(source).toContain("$t('settings.critical.reset_title')")
+    expect(source).toContain("$t('settings.critical.reset_description')")
+    expect(source).toContain("t('settings.save_success')")
+    expect(source).toContain("t('auth.error.session_expired')")
+  })
+})
