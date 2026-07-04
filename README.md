@@ -1,5 +1,7 @@
 # NovoSGA Web Panel
 
+[Portugues](README.md) | [English](README.en.md) | [Espanol](README.es.md)
+
 Um painel web para mostrar chamadas de atendimento do NovoSGA em uma tela.
 
 Pense nele assim:
