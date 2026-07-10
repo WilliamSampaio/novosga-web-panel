@@ -57,4 +57,21 @@ describe('panel previews i18n', () => {
     expect(files.join('\n')).toContain("$t('panel.history.title')")
     expect(files.join('\n')).toContain("t('panel.ticket')")
   })
+
+  it('keeps footer logos constrained in panels and previews', () => {
+    const files = [
+      'src/components/panels/Default/Panel.vue',
+      'src/components/panels/Default/Preview.vue',
+      'src/components/panels/Model001/Panel.vue',
+      'src/components/panels/Model001/Preview.vue',
+      'src/components/panels/Alert/Panel.vue',
+      'src/components/panels/Alert/Preview.vue',
+    ].map(readSource)
+
+    expect(files.join('\n')).toContain('object-contain')
+    expect(files.join('\n')).toContain('max-h-24')
+    expect(files.join('\n')).toContain('max-h-12')
+    expect(files.join('\n')).toContain('py-2')
+    expect(files.join('\n')).toContain('py-1')
+  })
 })

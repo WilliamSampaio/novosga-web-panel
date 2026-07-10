@@ -132,7 +132,7 @@
             >
               <img
                 v-if="panelStore.footerLeftLogoUrlIsDefined"
-                class="w-24"
+                class="max-w-24 max-h-12 py-1 object-contain"
                 :src="footer.leftLogoUrl"
               />
 
@@ -142,7 +142,7 @@
 
               <img
                 v-if="panelStore.footerRightLogoUrlIsDefined"
-                class="w-24"
+                class="max-w-24 max-h-12 py-1 object-contain"
                 :src="footer.rightLogoUrl"
               />
             </div>
