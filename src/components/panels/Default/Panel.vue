@@ -65,13 +65,21 @@
       class="flex h-32 px-5 items-center justify-between [&>*:only-child]:mx-auto"
       :style="{ backgroundColor: footer.bgColor }"
     >
-      <img v-if="panelStore.footerLeftLogoUrlIsDefined" class="w-60" :src="footer.leftLogoUrl" />
+      <img
+        v-if="panelStore.footerLeftLogoUrlIsDefined"
+        class="max-w-60 max-h-24 py-2 object-contain"
+        :src="footer.leftLogoUrl"
+      />
 
       <div class="text-4xl text-white text-center font-medium" :style="{ color: footer.textColor }">
         <Clock v-if="footer.showClock" :locale="locale" :fontColor="footer.textColor" />
       </div>
 
-      <img v-if="panelStore.footerRightLogoUrlIsDefined" class="w-60" :src="footer.rightLogoUrl" />
+      <img
+        v-if="panelStore.footerRightLogoUrlIsDefined"
+        class="max-w-60 max-h-24 py-2 object-contain"
+        :src="footer.rightLogoUrl"
+      />
     </div>
   </div>
 </template>
